@@ -914,7 +914,7 @@
 
             <div class="form-group">
               <label for="scriptUrl">Apps Script Web App URL สำหรับอัปโหลดไป Drive</label>
-              <input id="scriptUrl" class="text-input" type="url" placeholder="วาง Web App URL จาก Apps Script ที่ Deploy แล้ว" />
+              <input id="scriptUrl" class="text-input" type="url" value="https://script.google.com/macros/s/AKfycbwzwKb909V3WGTVPPBv9GoucxzhIvc5azCBgT7dnNKRTunT-oRKg9ajtfFbsF8RuedA/exec" placeholder="วาง Web App URL จาก Apps Script ที่ Deploy แล้ว" />
               <div class="hint">ต้องใส่ URL ที่ลงท้ายด้วย /exec จาก Apps Script Web App ถ้าไม่ใส่ ระบบจะดาวน์โหลดลงเครื่องเท่านั้น</div>
             </div>
 
@@ -1061,6 +1061,15 @@
     const logBox = $("logBox");
     const toast = $("toast");
 
+    const DEFAULT_SETTINGS = {
+      sheetId: "1_oIKk2Sgxo4S4EqiTeaOKm3c3xzn6EriBeY1mDrAW3Q",
+      sheetGid: "0",
+      folderId: "1bOeZEJ5F2rC606_GvDGjoqQGBs2IH5rr",
+      scriptUrl: "https://script.google.com/macros/s/AKfycbwzwKb909V3WGTVPPBv9GoucxzhIvc5azCBgT7dnNKRTunT-oRKg9ajtfFbsF8RuedA/exec",
+      fileExt: "jpg",
+      replaceFile: true
+    };
+
     let stream = null;
     let devices = [];
     let currentDeviceId = "";
@@ -1098,13 +1107,42 @@
     }
 
     function loadSettings() {
-      const data = JSON.parse(localStorage.getItem("smartPhotoSettings") || "{}");
-      if (data.sheetId) sheetId.value = data.sheetId;
-      if (data.sheetGid) sheetGid.value = data.sheetGid;
-      if (data.folderId) folderId.value = data.folderId;
-      if (typeof data.replaceFile === "boolean") replaceFile.checked = data.replaceFile;
-      if (data.scriptUrl) scriptUrl.value = data.scriptUrl;
-      if (data.fileExt) fileExt.value = data.fileExt;
+      let data = {};
+
+      try {
+        data = JSON.parse(localStorage.getItem("smartPhotoSettings") || "{}");
+      } catch (err) {
+        data = {};
+      }
+
+      const finalSettings = {
+        ...DEFAULT_SETTINGS,
+        ...data
+      };
+
+      // กันปัญหาเว็บจำ Sheet/GID เก่าจาก localStorage แล้วตรวจลิงก์ผิดชีต
+      // ระบบนี้ผูกกับชีตและ Apps Script ชุดปัจจุบัน จึงบังคับค่าเริ่มต้นให้ตรงกันเสมอ
+      finalSettings.sheetId = DEFAULT_SETTINGS.sheetId;
+      finalSettings.sheetGid = DEFAULT_SETTINGS.sheetGid;
+      finalSettings.folderId = finalSettings.folderId || DEFAULT_SETTINGS.folderId;
+      finalSettings.scriptUrl = finalSettings.scriptUrl || DEFAULT_SETTINGS.scriptUrl;
+
+      sheetId.value = finalSettings.sheetId;
+      sheetGid.value = finalSettings.sheetGid;
+      folderId.value = finalSettings.folderId;
+      replaceFile.checked = typeof finalSettings.replaceFile === "boolean" ? finalSettings.replaceFile : DEFAULT_SETTINGS.replaceFile;
+      scriptUrl.value = finalSettings.scriptUrl;
+      fileExt.value = finalSettings.fileExt || DEFAULT_SETTINGS.fileExt;
+
+      localStorage.setItem("smartPhotoSettings", JSON.stringify({
+        sheetId: sheetId.value.trim(),
+        sheetGid: sheetGid.value.trim(),
+        folderId: folderId.value.trim(),
+        replaceFile: replaceFile.checked,
+        scriptUrl: scriptUrl.value.trim(),
+        fileExt: fileExt.value
+      }));
+
       updateStatus();
     }
 
@@ -1217,6 +1255,49 @@
       document.body.appendChild(script);
       showToast("กำลังโหลดฐานข้อมูลจาก Google Sheet...");
       addLog("เริ่มโหลดฐานข้อมูลจาก Google Sheet");
+    }
+
+    function loadGoogleSheetAsync() {
+      return new Promise((resolve, reject) => {
+        const id = sheetId.value.trim();
+        const gid = sheetGid.value.trim();
+
+        if (!id || !gid) {
+          reject(new Error("กรุณากรอก Sheet ID และ gid"));
+          return;
+        }
+
+        const callbackName = "__smartPhotoSheetCallbackAsync_" + Date.now();
+
+        window[callbackName] = function(response) {
+          try {
+            parseGoogleResponse(response);
+            resolve(true);
+          } catch (err) {
+            reject(err);
+          } finally {
+            delete window[callbackName];
+            const oldScript = document.getElementById(callbackName);
+            if (oldScript) oldScript.remove();
+          }
+        };
+
+        const query = encodeURIComponent("select *");
+        const cacheBuster = Date.now();
+        const src = `https://docs.google.com/spreadsheets/d/${encodeURIComponent(id)}/gviz/tq?gid=${encodeURIComponent(gid)}&headers=1&tq=${query}&tqx=out:json;responseHandler:${callbackName}&t=${cacheBuster}`;
+
+        const script = document.createElement("script");
+        script.id = callbackName;
+        script.src = src;
+        script.onerror = function() {
+          delete window[callbackName];
+          script.remove();
+          reject(new Error("โหลด Google Sheet ไม่สำเร็จ"));
+        };
+
+        document.body.appendChild(script);
+        addLog("กำลังโหลดฐานข้อมูลจาก Google Sheet แบบรอผลจริง");
+      });
     }
 
     function isSecure() {
@@ -1608,7 +1689,7 @@
           mode: "no-cors"
         });
 
-        showToast("ส่งคำขอทดสอบไป Backend แล้ว ถ้า URL ถูกต้อง Apps Script จะรับคำขอได้");
+        showToast("ส่งคำขอทดสอบไป Backend แล้ว ให้เปิดลิงก์ /exec ดูผล ok:true เพื่อยืนยัน");
         addLog("ทดสอบ Backend แล้ว กรุณาตรวจ Executions ใน Apps Script หากต้องการดูรายละเอียด");
       } catch (err) {
         showToast("ทดสอบ Backend ไม่สำเร็จ");
@@ -1625,39 +1706,44 @@
       showToast("ส่งรูปแล้ว กำลังตรวจสอบ Google Sheet...");
       addLog("เริ่มตรวจสอบคอลัมน์ H ของเลข " + searchKey);
 
-      // Apps Script อาจใช้เวลาสักครู่ในการเขียนลงชีต
-      await sleep(4500);
+      // รอให้ Apps Script เขียนไฟล์และเขียนลิงก์ลงชีตก่อน
+      await sleep(3500);
 
-      try {
-        await loadGoogleSheet();
+      for (let round = 1; round <= 6; round++) {
+        try {
+          addLog(`ตรวจสอบ Google Sheet รอบที่ ${round}`);
 
-        // รอ callback ของ Google Sheet โหลดข้อมูลกลับมา
-        await sleep(2500);
+          await loadGoogleSheetAsync();
 
-        const updatedStudent = studentMap.get(searchKey);
-        const newPhotoUrl = updatedStudent && updatedStudent.photo ? String(updatedStudent.photo).trim() : "";
+          const updatedStudent = studentMap.get(searchKey);
+          const newPhotoUrl = updatedStudent && updatedStudent.photo
+            ? String(updatedStudent.photo).trim()
+            : "";
 
-        if (newPhotoUrl && newPhotoUrl !== oldPhotoUrl) {
-          showToast("ตรวจพบลิงก์รูปใน Google Sheet แล้ว");
-          addLog("ยืนยันสำเร็จ: คอลัมน์ H มีลิงก์รูปแล้ว -> " + newPhotoUrl);
-          return true;
+          if (newPhotoUrl && newPhotoUrl !== oldPhotoUrl) {
+            showToast("บันทึกสำเร็จ พบลิงก์รูปใน Google Sheet แล้ว");
+            addLog("ยืนยันสำเร็จ: คอลัมน์ H มีลิงก์รูปใหม่ -> " + newPhotoUrl);
+            return true;
+          }
+
+          if (newPhotoUrl) {
+            showToast("พบลิงก์รูปใน Google Sheet แล้ว");
+            addLog("พบลิงก์รูปในคอลัมน์ H -> " + newPhotoUrl);
+            return true;
+          }
+
+          addLog(`รอบที่ ${round}: ยังไม่พบลิงก์ในคอลัมน์ H รอตรวจใหม่`);
+          await sleep(3000);
+
+        } catch (err) {
+          addLog("ตรวจสอบรอบที่ " + round + " ไม่สำเร็จ: " + (err.message || err.name));
+          await sleep(3000);
         }
-
-        if (newPhotoUrl) {
-          showToast("พบลิงก์รูปใน Google Sheet แล้ว แต่ดูเหมือนเป็นลิงก์เดิม");
-          addLog("พบลิงก์รูปในคอลัมน์ H แต่เป็นค่าเดิม: " + newPhotoUrl);
-          return true;
-        }
-
-        showToast("ยังไม่พบลิงก์ใน Google Sheet ให้ตรวจ Apps Script > Executions");
-        addLog("ตรวจแล้วยังไม่พบลิงก์รูปในคอลัมน์ H ของเลข " + searchKey);
-        return false;
-
-      } catch (err) {
-        showToast("ตรวจสอบ Google Sheet ไม่สำเร็จ ให้เปิดชีตดูคอลัมน์ H");
-        addLog("ตรวจสอบไม่สำเร็จ: " + (err.message || err.name));
-        return false;
       }
+
+      showToast("ยังไม่พบลิงก์ใน Google Sheet แต่รูปอาจบันทึกแล้ว ให้ตรวจคอลัมน์ H โดยตรง");
+      addLog("ตรวจครบแล้ว ยังไม่พบลิงก์รูปในคอลัมน์ H ของเลข " + searchKey);
+      return false;
     }
 
     function clearAll() {
