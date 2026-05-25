@@ -842,9 +842,18 @@
               <div class="side-card">
                 <h2>การบันทึก</h2>
                 <div class="hint" id="saveHint">ถ่ายภาพจากกล้องแล้วกดบันทึกได้ทันที ไม่ต้องเลือกไฟล์ รูปจะตั้งชื่อตามเลขนักเรียน เช่น 19929.jpg</div>
+                <div style="margin-top:14px;padding:12px;border:1px solid #d9e3f0;border-radius:10px;background:#fbfdff;">
+                  <label style="display:flex;align-items:center;gap:10px;font-weight:900;cursor:pointer;">
+                    <input id="quickMode" type="checkbox" checked style="width:20px;height:20px;">
+                    โหมดถ่ายต่อเนื่องเร็ว
+                  </label>
+                  <div class="hint">หลังบันทึก ระบบจะล้างรูปเดิมและเลื่อนไปนักเรียนคนถัดไป กล้องจะเปิดค้างไว้</div>
+                </div>
                 <div class="action-stack">
-                  <button id="saveBtn" class="btn primary full">บันทึกรูปจากกล้อง</button>
+                  <button id="saveBtn" class="btn primary full">บันทึกเข้า Drive/Sheet</button>
                   <button id="downloadBtn" class="btn full" disabled>ดาวน์โหลดรูป</button>
+                  <button id="nextStudentBtn" class="btn full">นักเรียนคนถัดไป</button>
+                  <button id="prevStudentBtn" class="btn full">นักเรียนคนก่อนหน้า</button>
                   <button id="clearBtn" class="btn full">ล้างข้อมูล</button>
                 </div>
               </div>
@@ -861,6 +870,7 @@
           </div>
           <div class="header-actions">
             <button class="pill" id="testSheetBtn">ทดสอบโหลดชีต</button>
+            <button class="pill" id="testBackendBtn">ทดสอบ Backend</button>
             <button class="pill" data-screen="manual">คู่มือการใช้งาน</button>
           </div>
         </div>
@@ -905,7 +915,7 @@
             <div class="form-group">
               <label for="scriptUrl">Apps Script Web App URL สำหรับอัปโหลดไป Drive</label>
               <input id="scriptUrl" class="text-input" type="url" placeholder="วาง Web App URL จาก Apps Script ที่ Deploy แล้ว" />
-              <div class="hint">ถ้าไม่มี URL ระบบจะบันทึกแบบดาวน์โหลดลงเครื่องเท่านั้น เพราะ GitHub Pages เขียนไฟล์เข้า Google Drive เองไม่ได้</div>
+              <div class="hint">ต้องใส่ URL ที่ลงท้ายด้วย /exec จาก Apps Script Web App ถ้าไม่ใส่ ระบบจะดาวน์โหลดลงเครื่องเท่านั้น</div>
             </div>
 
             <div class="form-group">
@@ -969,6 +979,9 @@
         <div class="main-area">
           <div class="manual">
             <h2>วิธีใช้งาน</h2>
+            <div class="note">
+              โหมดถ่ายต่อเนื่องเร็ว: เปิดกล้องค้างไว้ กรอกเลขหรือใช้ปุ่มนักเรียนคนถัดไป → กด Enter เพื่อถ่ายภาพ → กด Ctrl+Enter เพื่อบันทึก ระบบจะเลื่อนไปคนถัดไปอัตโนมัติ
+            </div>
             <ol>
               <li>เปิด Google Sheet ฐานข้อมูลนักเรียน แล้วตั้งค่าแชร์เป็น <strong>ทุกคนที่มีลิงก์ดูได้</strong></li>
               <li>เข้าเมนู <strong>Setting</strong> ตรวจสอบ Sheet ID และ gid</li>
@@ -1031,6 +1044,9 @@
     const saveBtn = $("saveBtn");
     const downloadBtn = $("downloadBtn");
     const clearBtn = $("clearBtn");
+    const quickMode = $("quickMode");
+    const nextStudentBtn = $("nextStudentBtn");
+    const prevStudentBtn = $("prevStudentBtn");
     const sheetId = $("sheetId");
     const sheetGid = $("sheetGid");
     const folderId = $("folderId");
@@ -1412,11 +1428,78 @@
       addLog(`ดาวน์โหลดไฟล์ ${getFileName()}`);
     }
 
+
+    function getCurrentStudentIndex() {
+      const key = getSearchKey();
+      if (!key || !students.length) return -1;
+
+      return students.findIndex(stu => {
+        return normalizeId(stu.id) === key ||
+               normalizeId(stu.citizenId) === key ||
+               normalizeId(stu.studentNo) === key;
+      });
+    }
+
+    function goToStudentByOffset(offset) {
+      if (!students.length) {
+        showToast("ยังไม่ได้โหลดฐานข้อมูลนักเรียน");
+        return;
+      }
+
+      let index = getCurrentStudentIndex();
+
+      if (index < 0) {
+        index = offset > 0 ? -1 : 0;
+      }
+
+      const nextIndex = Math.max(0, Math.min(students.length - 1, index + offset));
+      const stu = students[nextIndex];
+
+      if (!stu) {
+        showToast("ไม่พบนักเรียนคนถัดไป");
+        return;
+      }
+
+      studentId.value = stu.studentNo || stu.citizenId || stu.id || "";
+      lookupStudent();
+      currentImageData = "";
+      fileInput.value = "";
+      preview.removeAttribute("src");
+      preview.style.display = "none";
+      downloadBtn.disabled = true;
+      updateStatus();
+
+      studentId.focus();
+      studentId.select();
+
+      addLog(`เลื่อนไปนักเรียนลำดับ ${nextIndex + 1}: ${stu.fullName || studentId.value}`);
+    }
+
+    function prepareForNextStudentAfterSave() {
+      if (!quickMode || !quickMode.checked) return;
+
+      currentImageData = "";
+      fileInput.value = "";
+      preview.removeAttribute("src");
+      preview.style.display = "none";
+      downloadBtn.disabled = true;
+
+      goToStudentByOffset(1);
+      showToast("พร้อมถ่ายนักเรียนคนถัดไป");
+    }
+
     async function savePhoto() {
       const key = getSearchKey();
 
       if (!key) {
         showToast("กรุณากรอกเลขประจำตัวนักเรียนก่อนบันทึก");
+        return;
+      }
+
+      const stu = studentMap.get(key);
+      if (!stu) {
+        showToast("ยังไม่พบนักเรียนในฐานข้อมูล กรุณากดโหลดฐานข้อมูลใหม่ หรือเช็กเลขที่กรอก");
+        addLog("บันทึกไม่ได้: ไม่พบนักเรียนเลข " + key);
         return;
       }
 
@@ -1432,62 +1515,148 @@
       }
 
       if (!currentImageData) {
-        showToast("กรุณาเปิดกล้องแล้วกดถ่ายภาพ หรือเลือกไฟล์รูปภาพสำรอง");
+        showToast("กรุณาเปิดกล้องแล้วกดถ่ายภาพก่อนบันทึก");
         return;
       }
 
       const url = scriptUrl.value.trim();
 
       if (!url) {
+        showToast("ยังไม่ได้ใส่ Apps Script Web App URL ระบบจะดาวน์โหลดลงเครื่องแทน");
         prepareDownload();
-        addLog(`บันทึกแบบ Local: ${getFileName()}`);
+        addLog(`ไม่มี Web App URL จึงดาวน์โหลดแบบ Local: ${getFileName()}`);
+        return;
+      }
+
+      if (!url.includes("/exec")) {
+        showToast("Web App URL ควรเป็นลิงก์ที่ลงท้ายด้วย /exec");
+        addLog("URL ไม่ถูกต้อง: " + url);
+        return;
+      }
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = "กำลังบันทึก...";
+
+      const payload = {
+        searchKey: key,
+        studentId: stu.id || "",
+        citizenId: stu.citizenId || "",
+        studentNo: stu.studentNo || key,
+        fullName: stu.fullName || "",
+        classLevel: stu.classLevel || "",
+        school: stu.school || "",
+        fileName: getFileName(),
+        folderId: folderId.value.trim(),
+        replaceFile: replaceFile.checked,
+        imageData: currentImageData
+      };
+
+      try {
+        addLog("กำลังส่งรูปไป Apps Script: " + getFileName());
+
+        // Apps Script Web App มักมีข้อจำกัด CORS เมื่อเรียกจาก GitHub Pages
+        // ใช้ no-cors เพื่อให้คำขอถูกส่งไปจริง แม้เว็บจะอ่านคำตอบกลับไม่ได้
+        const oldPhotoUrl = stu.photo || "";
+
+        await fetch(url, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        showToast("ส่งรูปไป Apps Script แล้ว กำลังตรวจสอบผล...");
+        addLog(`ส่งรูปแล้ว: ${getFileName()} | นักเรียน: ${stu.fullName || key}`);
+
+        const verified = await verifyPhotoSaved(key, oldPhotoUrl);
+
+        if (verified) {
+          prepareForNextStudentAfterSave();
+        }
+
+      } catch (err) {
+        console.error(err);
+        showToast("ส่งไม่สำเร็จ จะดาวน์โหลดลงเครื่องแทน");
+        addLog("ส่งไม่สำเร็จ: " + (err.message || err.name));
+        prepareDownload();
+
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "บันทึกเข้า Drive/Sheet";
+      }
+    }
+
+    async function testBackend() {
+      const url = scriptUrl.value.trim();
+
+      if (!url) {
+        showToast("กรุณาใส่ Apps Script Web App URL ก่อน");
+        return;
+      }
+
+      if (!url.includes("/exec")) {
+        showToast("Web App URL ต้องเป็นลิงก์ที่ลงท้ายด้วย /exec");
         return;
       }
 
       try {
-        showToast("กำลังส่งรูปไปยัง Web App...");
-        addLog("เริ่มอัปโหลดรูปไปยัง Web App");
-
-        const stu = studentMap.get(key) || {};
-
-        const payload = {
-          searchKey: key,
-          studentId: stu.id || "",
-          citizenId: stu.citizenId || "",
-          studentNo: stu.studentNo || key,
-          fullName: stu.fullName || "",
-          classLevel: stu.classLevel || "",
-          school: stu.school || "",
-          fileName: getFileName(),
-          folderId: folderId.value.trim(),
-          replaceFile: replaceFile.checked,
-          imageData: currentImageData
-        };
-
-        const res = await fetch(url, {
-          method: "POST",
-          mode: "cors",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(payload)
+        addLog("กำลังทดสอบ Backend");
+        await fetch(url + "?test=1&t=" + Date.now(), {
+          method: "GET",
+          mode: "no-cors"
         });
 
-        const text = await res.text();
-        let result = null;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {}
+        showToast("ส่งคำขอทดสอบไป Backend แล้ว ถ้า URL ถูกต้อง Apps Script จะรับคำขอได้");
+        addLog("ทดสอบ Backend แล้ว กรุณาตรวจ Executions ใน Apps Script หากต้องการดูรายละเอียด");
+      } catch (err) {
+        showToast("ทดสอบ Backend ไม่สำเร็จ");
+        addLog("ทดสอบ Backend ไม่สำเร็จ: " + (err.message || err.name));
+      }
+    }
 
-        if (result && result.ok === false) {
-          throw new Error(result.message || "Apps Script ส่งกลับว่าไม่สำเร็จ");
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function verifyPhotoSaved(searchKey, oldPhotoUrl = "") {
+      showToast("ส่งรูปแล้ว กำลังตรวจสอบ Google Sheet...");
+      addLog("เริ่มตรวจสอบคอลัมน์ H ของเลข " + searchKey);
+
+      // Apps Script อาจใช้เวลาสักครู่ในการเขียนลงชีต
+      await sleep(4500);
+
+      try {
+        await loadGoogleSheet();
+
+        // รอ callback ของ Google Sheet โหลดข้อมูลกลับมา
+        await sleep(2500);
+
+        const updatedStudent = studentMap.get(searchKey);
+        const newPhotoUrl = updatedStudent && updatedStudent.photo ? String(updatedStudent.photo).trim() : "";
+
+        if (newPhotoUrl && newPhotoUrl !== oldPhotoUrl) {
+          showToast("ตรวจพบลิงก์รูปใน Google Sheet แล้ว");
+          addLog("ยืนยันสำเร็จ: คอลัมน์ H มีลิงก์รูปแล้ว -> " + newPhotoUrl);
+          return true;
         }
 
-        showToast("บันทึกรูปเข้า Drive และอัปเดต Google Sheet สำเร็จ");
-        addLog(`อัปโหลดสำเร็จ: ${(result && result.fileUrl) ? result.fileUrl : (text || getFileName())}`);
+        if (newPhotoUrl) {
+          showToast("พบลิงก์รูปใน Google Sheet แล้ว แต่ดูเหมือนเป็นลิงก์เดิม");
+          addLog("พบลิงก์รูปในคอลัมน์ H แต่เป็นค่าเดิม: " + newPhotoUrl);
+          return true;
+        }
+
+        showToast("ยังไม่พบลิงก์ใน Google Sheet ให้ตรวจ Apps Script > Executions");
+        addLog("ตรวจแล้วยังไม่พบลิงก์รูปในคอลัมน์ H ของเลข " + searchKey);
+        return false;
+
       } catch (err) {
-        console.error(err);
-        showToast("ส่งเข้า Drive ไม่สำเร็จ จึงดาวน์โหลดลงเครื่องแทน");
-        addLog("อัปโหลดไม่สำเร็จ: " + (err.message || err.name));
-        prepareDownload();
+        showToast("ตรวจสอบ Google Sheet ไม่สำเร็จ ให้เปิดชีตดูคอลัมน์ H");
+        addLog("ตรวจสอบไม่สำเร็จ: " + (err.message || err.name));
+        return false;
       }
     }
 
@@ -1569,6 +1738,8 @@
     captureBtn.addEventListener("click", captureImage);
     saveBtn.addEventListener("click", savePhoto);
     downloadBtn.addEventListener("click", prepareDownload);
+    nextStudentBtn.addEventListener("click", () => goToStudentByOffset(1));
+    prevStudentBtn.addEventListener("click", () => goToStudentByOffset(-1));
     clearBtn.addEventListener("click", clearAll);
     saveSettingBtn.addEventListener("click", () => {
       saveSettings();
@@ -1577,12 +1748,45 @@
 
     $("reloadSheetBtn").addEventListener("click", loadGoogleSheet);
     $("testSheetBtn").addEventListener("click", loadGoogleSheet);
+    $("testBackendBtn").addEventListener("click", testBackend);
     $("readyBtn").addEventListener("click", () => showToast("ระบบพร้อมใช้งาน"));
 
     scriptUrl.addEventListener("input", updateStatus);
 
+
+    function handleQuickKeys(event) {
+      const tag = (event.target && event.target.tagName || "").toLowerCase();
+
+      // Enter ในช่องเลขนักเรียน = ถ่ายภาพ ถ้ากล้องเปิดอยู่
+      if (event.key === "Enter" && event.target === studentId) {
+        event.preventDefault();
+        if (stream && video.videoWidth) {
+          captureImage();
+        }
+      }
+
+      // Ctrl + Enter = บันทึก
+      if (event.key === "Enter" && event.ctrlKey) {
+        event.preventDefault();
+        savePhoto();
+      }
+
+      // Alt + ArrowRight = นักเรียนคนถัดไป
+      if (event.key === "ArrowRight" && event.altKey) {
+        event.preventDefault();
+        goToStudentByOffset(1);
+      }
+
+      // Alt + ArrowLeft = นักเรียนคนก่อนหน้า
+      if (event.key === "ArrowLeft" && event.altKey) {
+        event.preventDefault();
+        goToStudentByOffset(-1);
+      }
+    }
+
     window.addEventListener("beforeunload", () => stopCamera(false));
     window.addEventListener("resize", updateVideoRotation);
+    document.addEventListener("keydown", handleQuickKeys);
 
     document.addEventListener("DOMContentLoaded", async () => {
       loadSettings();
