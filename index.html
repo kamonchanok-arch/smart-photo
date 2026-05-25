@@ -255,9 +255,40 @@
       background: #020815;
     }
 
+
+    .camera-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #020815;
+    }
+
+    #video {
+      transition: transform .2s ease;
+      transform-origin: center center;
+    }
+
+    .rotation-badge {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      z-index: 4;
+      background: rgba(0,0,0,.68);
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 900;
+      font-size: 14px;
+      backdrop-filter: blur(8px);
+    }
+
     .camera-tools {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 10px;
       padding: 14px;
       background: #fff;
@@ -756,16 +787,20 @@
           <div class="photo-grid">
             <section class="camera-card">
               <div class="camera-view">
-                <video id="video" autoplay playsinline muted></video>
-                <canvas id="canvas" hidden></canvas>
-                <div id="cameraEmpty" class="camera-empty">
-                  เลือกไฟล์รูปภาพจากเครื่องเพื่อบันทึก หรือกดเปิดกล้องสดจาก Browser
+                <div class="camera-stage">
+                  <video id="video" autoplay playsinline muted></video>
+                  <canvas id="canvas" hidden></canvas>
+                  <div id="rotationBadge" class="rotation-badge">หมุน 0°</div>
+                  <div id="cameraEmpty" class="camera-empty">
+                    เลือกไฟล์รูปภาพจากเครื่องเพื่อบันทึก หรือกดเปิดกล้องสดจาก Browser
+                  </div>
                 </div>
               </div>
 
               <div class="camera-tools">
                 <button id="openCameraBtn" class="btn blue">เปิดกล้อง</button>
                 <button id="switchCameraBtn" class="btn" disabled>สลับกล้อง</button>
+                <button id="rotateCameraBtn" class="btn orange">หมุนกล้อง</button>
                 <button id="captureBtn" class="btn green" disabled>ถ่ายภาพ</button>
                 <button id="closeCameraBtn" class="btn red" disabled>ปิดกล้อง</button>
               </div>
@@ -827,14 +862,14 @@
 
             <div class="form-group">
               <label for="sheetId">Google Sheet ID</label>
-              <input id="sheetId" class="text-input" type="text" value="13-AUK-LdPzTS_yTVmOooUwiX1zg-ynE1sHVleT6ORrE" />
+              <input id="sheetId" class="text-input" type="text" value="1_oIKk2Sgxo4S4EqiTeaOKm3c3xzn6EriBeY1mDrAW3Q" />
               <div class="hint">คือรหัสกลาง URL ของ Google Sheet</div>
             </div>
 
             <div class="form-group">
               <label for="sheetGid">gid ของชีต</label>
-              <input id="sheetGid" class="text-input" type="text" value="1499142628" />
-              <div class="hint">จากลิงก์ของคุณใช้ gid=1499142628</div>
+              <input id="sheetGid" class="text-input" type="text" value="0" />
+              <div class="hint">จากลิงก์ใหม่ยังไม่มี gid จึงใช้ gid=0 หากไม่ใช่แท็บแรกให้เปลี่ยนเป็น gid ของแท็บข้อมูลนักเรียน</div>
             </div>
 
             <h2 class="section-title">ตั้งค่าระบบบันทึกรูป</h2>
@@ -976,6 +1011,8 @@
     const switchCameraBtn = $("switchCameraBtn");
     const captureBtn = $("captureBtn");
     const closeCameraBtn = $("closeCameraBtn");
+    const rotateCameraBtn = $("rotateCameraBtn");
+    const rotationBadge = $("rotationBadge");
     const studentId = $("studentId");
     const studentName = $("studentName");
     const studentDetail = $("studentDetail");
@@ -1003,6 +1040,7 @@
     let currentDeviceId = "";
     let facingMode = "environment";
     let currentImageData = "";
+    let rotationDegree = 0;
     let students = [];
     let studentMap = new Map();
 
@@ -1259,16 +1297,68 @@
       }
     }
 
+
+    function updateVideoRotation() {
+      video.style.transform = `rotate(${rotationDegree}deg)`;
+      rotationBadge.textContent = `หมุน ${rotationDegree}°`;
+
+      // เมื่อหมุน 90 หรือ 270 องศา ให้ย่อภาพลงเล็กน้อยเพื่อไม่ให้ล้นกรอบมากเกินไป
+      if (rotationDegree === 90 || rotationDegree === 270) {
+        video.style.width = "auto";
+        video.style.height = "100%";
+        video.style.maxWidth = "none";
+      } else {
+        video.style.width = "100%";
+        video.style.height = "100%";
+        video.style.maxWidth = "100%";
+      }
+    }
+
+    function rotateCameraView() {
+      rotationDegree = (rotationDegree + 90) % 360;
+      updateVideoRotation();
+      showToast(`หมุนกล้องเป็น ${rotationDegree}°`);
+      addLog(`หมุนกล้องเป็น ${rotationDegree}°`);
+    }
+
+    function drawRotatedVideoToCanvas() {
+      const sourceWidth = video.videoWidth;
+      const sourceHeight = video.videoHeight;
+
+      if (rotationDegree === 90 || rotationDegree === 270) {
+        canvas.width = sourceHeight;
+        canvas.height = sourceWidth;
+      } else {
+        canvas.width = sourceWidth;
+        canvas.height = sourceHeight;
+      }
+
+      const ctx = canvas.getContext("2d");
+      ctx.save();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (rotationDegree === 90) {
+        ctx.translate(canvas.width, 0);
+        ctx.rotate(Math.PI / 2);
+      } else if (rotationDegree === 180) {
+        ctx.translate(canvas.width, canvas.height);
+        ctx.rotate(Math.PI);
+      } else if (rotationDegree === 270) {
+        ctx.translate(0, canvas.height);
+        ctx.rotate(3 * Math.PI / 2);
+      }
+
+      ctx.drawImage(video, 0, 0, sourceWidth, sourceHeight);
+      ctx.restore();
+    }
+
     function captureImage() {
       if (!stream || !video.videoWidth) {
         showToast("กรุณาเปิดกล้องก่อนถ่ายภาพ");
         return;
       }
 
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      drawRotatedVideoToCanvas();
 
       const mime = fileExt.value === "png" ? "image/png" : "image/jpeg";
       currentImageData = canvas.toDataURL(mime, 0.92);
@@ -1453,6 +1543,7 @@
 
     openCameraBtn.addEventListener("click", () => startCamera(""));
     closeCameraBtn.addEventListener("click", () => stopCamera(true));
+    rotateCameraBtn.addEventListener("click", rotateCameraView);
     switchCameraBtn.addEventListener("click", switchCamera);
     captureBtn.addEventListener("click", captureImage);
     saveBtn.addEventListener("click", savePhoto);
@@ -1478,6 +1569,7 @@
       addLog("โหลดระบบ Smart Photo แล้ว");
       if (!isSecure()) addLog("คำเตือน: ควรเปิดผ่าน HTTPS เพื่อใช้กล้อง");
       loadGoogleSheet();
+      updateVideoRotation();
       updateStatus();
     });
   </script>
