@@ -274,9 +274,9 @@
       height: 100%;
       min-height: 520px;
       object-fit: cover;
-      transition: transform .2s ease;
+      transform: none !important;
       transform-origin: center center;
-      will-change: transform;
+      background: #020815;
     }
 
     .rotation-badge {
@@ -295,7 +295,7 @@
 
     .camera-tools {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
       padding: 14px;
       background: #fff;
@@ -807,9 +807,12 @@
               <div class="camera-tools">
                 <button id="openCameraBtn" class="btn blue">เปิดกล้อง</button>
                 <button id="switchCameraBtn" class="btn" disabled>สลับกล้อง</button>
-                <button id="rotateCameraBtn" class="btn orange">หมุนกล้อง</button>
+                <button id="rotateCameraBtn" class="btn orange">หมุนรูป</button>
                 <button id="captureBtn" class="btn green" disabled>ถ่ายภาพ</button>
                 <button id="closeCameraBtn" class="btn red" disabled>ปิดกล้อง</button>
+              </div>
+              <div style="padding:0 14px 14px;background:#fff;border-radius:0 0 14px 14px;color:#667085;font-size:14px;line-height:1.6;">
+                หมายเหตุ: ปุ่ม “หมุนรูป” จะหมุนไฟล์ภาพตอนถ่าย/บันทึก เพื่อป้องกันภาพกล้องสดหลุดกรอบ
               </div>
             </section>
 
@@ -1306,31 +1309,21 @@
 
 
     function updateVideoRotation() {
-      rotationBadge.textContent = `หมุน ${rotationDegree}°`;
-
-      const stage = video.closest(".camera-stage");
-      const stageWidth = stage ? stage.clientWidth : video.clientWidth;
-      const stageHeight = stage ? stage.clientHeight : video.clientHeight;
-
-      // ใช้ scale แบบ cover เพื่อให้ภาพเต็มกรอบเสมอ แม้หมุน 90/270 องศา
-      if (rotationDegree === 90 || rotationDegree === 270) {
-        const scale = Math.max(stageWidth / Math.max(stageHeight, 1), stageHeight / Math.max(stageWidth, 1));
-        video.style.transform = `rotate(${rotationDegree}deg) scale(${scale})`;
-      } else {
-        video.style.transform = `rotate(${rotationDegree}deg) scale(1)`;
-      }
-
+      // ไม่หมุนภาพสดด้วย CSS เพราะทำให้บางเครื่องภาพหลุดกรอบ/เหลือพื้นดำ
+      // ปุ่มหมุนจะใช้กับไฟล์ภาพตอนถ่ายและบันทึกแทน
+      video.style.transform = "none";
       video.style.width = "100%";
       video.style.height = "100%";
       video.style.objectFit = "cover";
       video.style.maxWidth = "none";
+      rotationBadge.textContent = `บันทึกหมุน ${rotationDegree}°`;
     }
 
     function rotateCameraView() {
       rotationDegree = (rotationDegree + 90) % 360;
       updateVideoRotation();
-      showToast(`หมุนกล้องเป็น ${rotationDegree}°`);
-      addLog(`หมุนกล้องเป็น ${rotationDegree}°`);
+      showToast(`ตั้งค่าบันทึกรูปให้หมุน ${rotationDegree}°`);
+      addLog(`ตั้งค่าบันทึกรูปให้หมุน ${rotationDegree}°`);
     }
 
     function drawRotatedVideoToCanvas() {
