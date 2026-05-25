@@ -808,7 +808,7 @@
                 <button id="openCameraBtn" class="btn blue">เปิดกล้อง</button>
                 <button id="switchCameraBtn" class="btn" disabled>สลับกล้อง</button>
                 <button id="rotateCameraBtn" class="btn orange">หมุนรูป</button>
-                <button id="captureBtn" class="btn green" disabled>ถ่ายภาพ</button>
+                <button id="captureBtn" class="btn green" disabled>ถ่ายภาพจากกล้อง</button>
                 <button id="closeCameraBtn" class="btn red" disabled>ปิดกล้อง</button>
               </div>
               <div style="padding:0 14px 14px;background:#fff;border-radius:0 0 14px 14px;color:#667085;font-size:14px;line-height:1.6;">
@@ -833,17 +833,17 @@
               </div>
 
               <div class="side-card">
-                <h2>ไฟล์รูปภาพ</h2>
+                <h2>ไฟล์รูปภาพสำรอง</h2>
                 <input id="fileInput" type="file" accept="image/*" />
-                <div class="hint">รองรับไฟล์ JPG, PNG หรือรูปจากโปรแกรม Canon/EOS Utility</div>
+                <div class="hint">ไม่จำเป็นต้องเลือกไฟล์ ถ่ายจากกล้องแล้วบันทึกได้ทันที ใช้ช่องนี้เฉพาะกรณีต้องการอัปโหลดรูปจากเครื่อง</div>
                 <img id="preview" class="preview-img" alt="ตัวอย่างภาพ" />
               </div>
 
               <div class="side-card">
                 <h2>การบันทึก</h2>
-                <div class="hint" id="saveHint">ชื่อไฟล์จะตั้งตามเลขที่ค้นหา เช่น 19929.jpg</div>
+                <div class="hint" id="saveHint">ถ่ายภาพจากกล้องแล้วกดบันทึกได้ทันที ไม่ต้องเลือกไฟล์ รูปจะตั้งชื่อตามเลขนักเรียน เช่น 19929.jpg</div>
                 <div class="action-stack">
-                  <button id="saveBtn" class="btn primary full">บันทึกรูปภาพ</button>
+                  <button id="saveBtn" class="btn primary full">บันทึกรูปจากกล้อง</button>
                   <button id="downloadBtn" class="btn full" disabled>ดาวน์โหลดรูป</button>
                   <button id="clearBtn" class="btn full">ล้างข้อมูล</button>
                 </div>
@@ -974,8 +974,8 @@
               <li>เข้าเมนู <strong>Setting</strong> ตรวจสอบ Sheet ID และ gid</li>
               <li>กด <strong>ทดสอบโหลดชีต</strong> หรือกลับหน้าแรกแล้วกด <strong>โหลดฐานข้อมูลใหม่</strong></li>
               <li>หน้า <strong>ถ่ายภาพ</strong> กรอกเลขประจำตัว เช่น <code>19929</code> ระบบจะค้นหาข้อมูลนักเรียนจากชีต</li>
-              <li>เลือกไฟล์รูป หรือเปิดกล้องแล้วกดถ่ายภาพ</li>
-              <li>กด <strong>บันทึกรูปภาพ</strong> ถ้าไม่ได้ใส่ Apps Script URL ระบบจะดาวน์โหลดไฟล์ลงเครื่อง</li>
+              <li>เปิดกล้องแล้วกดถ่ายภาพได้ทันที โดยไม่ต้องเลือกไฟล์ หรือเลือกไฟล์เฉพาะกรณีสำรอง</li>
+              <li>กด <strong>บันทึกรูปจากกล้อง</strong> ระบบจะใช้ภาพที่ถ่ายล่าสุด ถ้ายังไม่ได้กดถ่ายภาพแต่กล้องเปิดอยู่ ระบบจะถ่ายให้อัตโนมัติก่อนบันทึก</li>
             </ol>
 
             <h2>คอลัมน์ที่ระบบอ่านจากชีต</h2>
@@ -1420,8 +1420,19 @@
         return;
       }
 
+      // ถ้ายังไม่มีรูป แต่กล้องเปิดอยู่ ให้ถ่ายภาพอัตโนมัติก่อนบันทึก
+      if (!currentImageData && stream && video.videoWidth) {
+        try {
+          captureImage();
+        } catch (err) {
+          showToast("ถ่ายภาพจากกล้องไม่สำเร็จ กรุณากดถ่ายภาพอีกครั้ง");
+          addLog("ถ่ายภาพอัตโนมัติไม่สำเร็จ: " + (err.message || err.name));
+          return;
+        }
+      }
+
       if (!currentImageData) {
-        showToast("กรุณาเลือกไฟล์หรือถ่ายภาพก่อนบันทึก");
+        showToast("กรุณาเปิดกล้องแล้วกดถ่ายภาพ หรือเลือกไฟล์รูปภาพสำรอง");
         return;
       }
 
