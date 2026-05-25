@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Photo - Student Capture</title>
+  <style>
+    :root {
+      --navy: #071a36;
+      --blue: #0078b8;
+      --blue-dark: #173f7a;
+      --page: #eef4fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #667085;
+      --border: #d9e3f0;
+      --soft: #f6f9fd;
+      --green: #16a34a;
+      --red: #dc2626;
+      --orange: #f59e0b;
+      --shadow: 0 14px 36px rgba(15, 23, 42, .08);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Sarabun", "Prompt", "Noto Sans Thai", Arial, sans-serif;
+      color: var(--text);
+      background: var(--page);
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 74px;
+      background: var(--blue);
+      display: flex;
+      justify-content: flex-end;
+      align-items: end;
+      padding: 0 28px;
+      z-index: 20;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    .topnav {
+      display: flex;
+      align-items: flex-end;
+      height: 100%;
+    }
+
+    .topnav button {
+      height: 62px;
+      min-width: 120px;
+      border: 0;
+      background: transparent;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      border-bottom: 8px solid transparent;
+      padding: 0 18px 8px;
+    }
+
+    .topnav button.active {
+      background: rgba(255,255,255,.08);
+      border-bottom-color: #fff;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 324px minmax(0, 1fr);
+      min-height: 100vh;
+      padding-top: 74px;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 74px;
+      left: 0;
+      bottom: 0;
+      width: 324px;
+      background: var(--navy);
+      color: white;
+      padding: 26px 20px;
+      z-index: 10;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 36px;
+    }
+
+    .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #143a73, #0f86c7);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.15);
+      font-size: 28px;
+    }
+
+    .brand-title {
+      font-weight: 900;
+      font-size: 20px;
+      line-height: 1.15;
+    }
+
+    .brand-sub {
+      color: #c8d3e3;
+      font-size: 15px;
+      margin-top: 3px;
+    }
+
+    .menu {
+      display: grid;
+      gap: 10px;
+    }
+
+    .menu button {
+      width: 100%;
+      height: 58px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      align-items: center;
+      text-align: left;
+      padding: 0 20px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .menu button:hover,
+    .menu button.active {
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .icon { opacity: .9; font-size: 18px; }
+
+    .content {
+      grid-column: 2;
+      min-width: 0;
+    }
+
+    .page-header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 28px 40px 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .page-title h1 {
+      margin: 0 0 4px;
+      font-size: 34px;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+    }
+
+    .page-title p {
+      margin: 0;
+      color: #7b8497;
+      font-size: 16px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      border: 1px solid #cfe0f7;
+      color: #0d2c60;
+      background: #f8fbff;
+      padding: 11px 19px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .main-area { padding: 30px 40px 44px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 405px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .camera-card,
+    .side-card,
+    .setting-card,
+    .stat,
+    .log,
+    .manual {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .camera-view {
+      position: relative;
+      min-height: 520px;
+      background: #020815;
+      border-radius: var(--radius) var(--radius) 0 0;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    video,
+    canvas {
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+      object-fit: cover;
+      display: block;
+      background: #020815;
+    }
+
+    .camera-empty {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 24px;
+      background: #020815;
+    }
+
+    .camera-tools {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 14px;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+
+    button, input, select, textarea { font: inherit; }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-weight: 900;
+      cursor: pointer;
+      background: #e7eef7;
+      color: #17315b;
+      transition: .15s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(.98);
+    }
+
+    .btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn.primary { background: var(--blue-dark); color: #fff; }
+    .btn.blue { background: #0078d4; color: #fff; }
+    .btn.green { background: var(--green); color: #fff; }
+    .btn.red { background: var(--red); color: #fff; }
+    .btn.orange { background: var(--orange); color: #fff; }
+
+    .side-card {
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .side-card h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+
+    .id-input {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .id-prefix {
+      display: grid;
+      place-items: center;
+      background: #f3f7fc;
+      font-size: 22px;
+      font-weight: 900;
+      color: #183761;
+      border-right: 1px solid var(--border);
+    }
+
+    .id-input input {
+      border: 0;
+      padding: 13px 14px;
+      font-size: 22px;
+      outline: none;
+      min-width: 0;
+    }
+
+    .hint {
+      margin-top: 8px;
+      color: #7b8497;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .student-box {
+      margin-top: 20px;
+      padding: 18px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fbfdff;
+      min-height: 105px;
+    }
+
+    .label {
+      color: #667085;
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .student-name {
+      font-size: 25px;
+      line-height: 1.25;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .student-detail {
+      margin-top: 7px;
+      color: #475467;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    input[type="file"] {
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #fff;
+      padding: 11px;
+      width: 100%;
+    }
+
+    .preview-img {
+      display: none;
+      width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 14px;
+    }
+
+    .action-stack {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .full {
+      width: 100%;
+      font-size: 18px;
+      padding: 14px 18px;
+    }
+
+    .setting-card {
+      padding: 28px;
+      max-width: 1460px;
+    }
+
+    .section-title {
+      margin: 0 0 5px;
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    .section-sub {
+      color: #7b8497;
+      margin-bottom: 26px;
+      font-size: 16px;
+    }
+
+    .form-group { margin-bottom: 22px; }
+
+    .form-group label {
+      display: block;
+      font-weight: 900;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .text-input,
+    .select-input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      outline: none;
+      font-size: 18px;
+      background: #fff;
+    }
+
+    .text-input:focus,
+    .select-input:focus,
+    textarea:focus {
+      border-color: #86b7ef;
+      box-shadow: 0 0 0 4px rgba(13,110,253,.1);
+    }
+
+    .switch-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      padding: 16px 20px;
+      border: 1px solid var(--border);
+      background: #fbfdff;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .switch-text strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 17px;
+    }
+
+    .switch-text span {
+      color: #7b8497;
+      line-height: 1.5;
+    }
+
+    .switch {
+      position: relative;
+      width: 68px;
+      height: 38px;
+      flex: 0 0 auto;
+    }
+
+    .switch input { display: none; }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #d0d8e4;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .slider::after {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 28px;
+      height: 28px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,.18);
+      transition: .2s;
+    }
+
+    .switch input:checked + .slider { background: #2f80ed; }
+    .switch input:checked + .slider::after { transform: translateX(30px); }
+
+    .save-btn {
+      background: #173f7a;
+      color: #fff;
+      border: 0;
+      width: 100%;
+      border-radius: 7px;
+      padding: 14px 18px;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .stat { padding: 22px; }
+
+    .stat .num {
+      font-size: 28px;
+      font-weight: 900;
+      color: #173f7a;
+      word-break: break-word;
+    }
+
+    .stat .cap {
+      color: #667085;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+
+    .log {
+      padding: 18px;
+      min-height: 280px;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .log-item {
+      border-bottom: 1px solid var(--border);
+      padding: 12px 4px;
+      color: #344054;
+      line-height: 1.55;
+    }
+
+    .log-item:last-child { border-bottom: 0; }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 100;
+      background: #101828;
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: 12px;
+      box-shadow: 0 16px 44px rgba(0,0,0,.24);
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s ease;
+      max-width: 460px;
+      line-height: 1.55;
+      font-weight: 800;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .manual {
+      padding: 28px;
+      line-height: 1.85;
+      font-size: 17px;
+    }
+
+    .manual h2 {
+      margin-top: 0;
+      font-size: 28px;
+    }
+
+    .manual code {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 3px 7px;
+    }
+
+    .note {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 18px;
+      font-weight: 800;
+      line-height: 1.65;
+    }
+
+    .small-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .small-table th,
+    .small-table td {
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      padding: 9px 7px;
+      vertical-align: top;
+    }
+
+    .small-table th {
+      background: #f8fafc;
+      font-weight: 900;
+    }
+
+    @media (max-width: 1180px) {
+      .layout { grid-template-columns: 250px minmax(0, 1fr); }
+      .sidebar { width: 250px; }
+      .photo-grid { grid-template-columns: 1fr; }
+      .status-grid { grid-template-columns: 1fr 1fr; }
+      .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .topbar {
+        height: 62px;
+        padding: 0 10px;
+        align-items: center;
+      }
+
+      .topnav button {
+        min-width: auto;
+        height: 54px;
+        font-size: 15px;
+        padding: 0 12px 6px;
+      }
+
+      .layout {
+        display: block;
+        padding-top: 62px;
+      }
+
+      .sidebar {
+        position: static;
+        width: 100%;
+        padding: 18px;
+      }
+
+      .brand { margin-bottom: 16px; }
+
+      .menu { grid-template-columns: repeat(3, 1fr); }
+
+      .menu button {
+        height: auto;
+        min-height: 48px;
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 10px;
+        font-size: 15px;
+      }
+
+      .icon { display: none; }
+
+      .content { grid-column: auto; }
+
+      .page-header,
+      .main-area {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .camera-tools { grid-template-columns: 1fr 1fr; }
+
+      .camera-view,
+      video,
+      canvas {
+        min-height: 360px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .menu { grid-template-columns: 1fr; }
+      .camera-tools { grid-template-columns: 1fr; }
+      .id-input { grid-template-columns: 62px 1fr; }
+      .id-input input { font-size: 18px; }
+      .page-title h1 { font-size: 28px; }
+      .status-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="topnav">
+      <button class="top-link active" data-screen="photo">Main</button>
+      <button class="top-link" data-screen="photo">Photo Script</button>
+      <button class="top-link" data-screen="manual">คู่มือ</button>
+    </nav>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">📷</div>
+        <div>
+          <div class="brand-title">Smart Photo</div>
+          <div class="brand-sub">Student Capture</div>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <button class="side-link active" data-screen="photo">
+          <span class="icon">📷</span>
+          <span>ถ่ายภาพ</span>
+        </button>
+        <button class="side-link" data-screen="setting">
+          <span class="icon">⚙️</span>
+          <span>Setting</span>
+        </button>
+        <button class="side-link" data-screen="status">
+          <span class="icon">ℹ️</span>
+          <span>สถานะระบบ</span>
+        </button>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section id="photo" class="screen active">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>ถ่ายภาพนักเรียน</h1>
+            <p>ค้นหานักเรียนจาก Google Sheet แล้วบันทึกรูปจากกล้องหรือไฟล์ภาพ</p>
+          </div>
+          <div class="header-actions">
+            <button class="pill" id="reloadSheetBtn">โหลดฐานข้อมูลใหม่</button>
+            <button class="pill" data-screen="manual">คู่มือการใช้งาน</button>
+            <button class="pill" id="readyBtn">พร้อมใช้งาน</button>
+          </div>
+        </div>
+
+        <div class="main-area">
+          <div class="photo-grid">
+            <section class="camera-card">
+              <div class="camera-view">
+                <video id="video" autoplay playsinline muted></video>
+                <canvas id="canvas" hidden></canvas>
+                <div id="cameraEmpty" class="camera-empty">
+                  เลือกไฟล์รูปภาพจากเครื่องเพื่อบันทึก หรือกดเปิดกล้องสดจาก Browser
+                </div>
+              </div>
+
+              <div class="camera-tools">
+                <button id="openCameraBtn" class="btn blue">เปิดกล้อง</button>
+                <button id="switchCameraBtn" class="btn" disabled>สลับกล้อง</button>
+                <button id="captureBtn" class="btn green" disabled>ถ่ายภาพ</button>
+                <button id="closeCameraBtn" class="btn red" disabled>ปิดกล้อง</button>
+              </div>
+            </section>
+
+            <aside>
+              <div class="side-card">
+                <h2>เลขประจำตัวนักเรียน</h2>
+                <div class="id-input">
+                  <div class="id-prefix">ID</div>
+                  <input id="studentId" type="text" inputmode="numeric" maxlength="20" placeholder="เช่น 19929" />
+                </div>
+                <div class="hint">ค้นหาได้จากคอลัมน์ ID, เลขบัตรประชาชน หรือเลขประจำตัวใน Google Sheet</div>
+
+                <div class="student-box">
+                  <div class="label">ข้อมูลนักเรียน</div>
+                  <div id="studentName" class="student-name">กำลังรอโหลดฐานข้อมูล...</div>
+                  <div id="studentDetail" class="student-detail">-</div>
+                </div>
+              </div>
+
+              <div class="side-card">
+                <h2>ไฟล์รูปภาพ</h2>
+                <input id="fileInput" type="file" accept="image/*" />
+                <div class="hint">รองรับไฟล์ JPG, PNG หรือรูปจากโปรแกรม Canon/EOS Utility</div>
+                <img id="preview" class="preview-img" alt="ตัวอย่างภาพ" />
+              </div>
+
+              <div class="side-card">
+                <h2>การบันทึก</h2>
+                <div class="hint" id="saveHint">ชื่อไฟล์จะตั้งตามเลขที่ค้นหา เช่น 19929.jpg</div>
+                <div class="action-stack">
+                  <button id="saveBtn" class="btn primary full">บันทึกรูปภาพ</button>
+                  <button id="downloadBtn" class="btn full" disabled>ดาวน์โหลดรูป</button>
+                  <button id="clearBtn" class="btn full">ล้างข้อมูล</button>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="setting" class="screen">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>Setting</h1>
+            <p>กำหนด Google Sheet, Google Drive และพฤติกรรมการบันทึกไฟล์</p>
+          </div>
+          <div class="header-actions">
+            <button class="pill" id="testSheetBtn">ทดสอบโหลดชีต</button>
+            <button class="pill" data-screen="manual">คู่มือการใช้งาน</button>
+          </div>
+        </div>
+
+        <div class="main-area">
+          <div class="setting-card">
+            <h2 class="section-title">ตั้งค่าฐานข้อมูลนักเรียน</h2>
+            <div class="section-sub">ระบบนี้ตั้งค่าให้เชื่อมกับ Google Sheet ที่คุณส่งมาไว้แล้ว</div>
+
+            <div class="form-group">
+              <label for="sheetId">Google Sheet ID</label>
+              <input id="sheetId" class="text-input" type="text" value="13-AUK-LdPzTS_yTVmOooUwiX1zg-ynE1sHVleT6ORrE" />
+              <div class="hint">คือรหัสกลาง URL ของ Google Sheet</div>
+            </div>
+
+            <div class="form-group">
+              <label for="sheetGid">gid ของชีต</label>
+              <input id="sheetGid" class="text-input" type="text" value="1499142628" />
+              <div class="hint">จากลิงก์ของคุณใช้ gid=1499142628</div>
+            </div>
+
+            <h2 class="section-title">ตั้งค่าระบบบันทึกรูป</h2>
+            <div class="section-sub">ตั้งค่า Drive และ Web App ถ้าต้องการอัปโหลดเข้า Google Drive จริง</div>
+
+            <div class="form-group">
+              <label for="folderId">Google Drive Folder ID</label>
+              <input id="folderId" class="text-input" type="text" value="1bOeZEJ5F2rC606_GvDGjoqQGBs2IH5rr" />
+              <div class="hint">ตัวอย่าง Folder ID คือข้อความหลัง /folders/ ใน URL ของ Google Drive</div>
+            </div>
+
+            <div class="switch-row">
+              <div class="switch-text">
+                <strong>แทนที่ไฟล์เดิมเมื่อซ้ำชื่อ</strong>
+                <span>เมื่อเปิด ระบบจะตั้งใจให้ไฟล์ชื่อเดิมถูกแทนที่ หากใช้ Apps Script Web App สำหรับ Drive</span>
+              </div>
+              <label class="switch">
+                <input id="replaceFile" type="checkbox" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="scriptUrl">Apps Script Web App URL สำหรับอัปโหลดไป Drive</label>
+              <input id="scriptUrl" class="text-input" type="url" placeholder="วาง Web App URL จาก Apps Script ที่ Deploy แล้ว" />
+              <div class="hint">ถ้าไม่มี URL ระบบจะบันทึกแบบดาวน์โหลดลงเครื่องเท่านั้น เพราะ GitHub Pages เขียนไฟล์เข้า Google Drive เองไม่ได้</div>
+            </div>
+
+            <div class="form-group">
+              <label for="fileExt">นามสกุลไฟล์</label>
+              <select id="fileExt" class="select-input">
+                <option value="jpg">jpg</option>
+                <option value="png">png</option>
+              </select>
+            </div>
+
+            <button id="saveSettingBtn" class="save-btn">บันทึกการตั้งค่า</button>
+
+            <div class="note">
+              สำคัญ: ถ้าจะให้เว็บบน GitHub Pages อ่าน Google Sheet ได้โดยตรง ต้องตั้งค่าแชร์ชีตเป็น “ทุกคนที่มีลิงก์ดูได้”
+              หากไม่ต้องการเปิดชีตสาธารณะ ต้องใช้ Apps Script Web App เป็นตัวกลาง
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="status" class="screen">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>สถานะระบบ</h1>
+            <p>ตรวจสอบสถานะกล้อง ฐานข้อมูล และประวัติการทำงาน</p>
+          </div>
+        </div>
+
+        <div class="main-area">
+          <div class="status-grid">
+            <div class="stat">
+              <div id="cameraStatus" class="num">ปิด</div>
+              <div class="cap">สถานะกล้อง</div>
+            </div>
+            <div class="stat">
+              <div id="studentStatus" class="num">0</div>
+              <div class="cap">จำนวนนักเรียนจากชีต</div>
+            </div>
+            <div class="stat">
+              <div id="imageStatus" class="num">0</div>
+              <div class="cap">จำนวนรูปที่เตรียมบันทึก</div>
+            </div>
+            <div class="stat">
+              <div id="backendStatus" class="num">Local</div>
+              <div class="cap">โหมดการบันทึก</div>
+            </div>
+          </div>
+
+          <div class="log" id="logBox"></div>
+        </div>
+      </section>
+
+      <section id="manual" class="screen">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>คู่มือการใช้งาน</h1>
+            <p>ขั้นตอนใช้งานระบบ Smart Photo Student Capture</p>
+          </div>
+        </div>
+
+        <div class="main-area">
+          <div class="manual">
+            <h2>วิธีใช้งาน</h2>
+            <ol>
+              <li>เปิด Google Sheet ฐานข้อมูลนักเรียน แล้วตั้งค่าแชร์เป็น <strong>ทุกคนที่มีลิงก์ดูได้</strong></li>
+              <li>เข้าเมนู <strong>Setting</strong> ตรวจสอบ Sheet ID และ gid</li>
+              <li>กด <strong>ทดสอบโหลดชีต</strong> หรือกลับหน้าแรกแล้วกด <strong>โหลดฐานข้อมูลใหม่</strong></li>
+              <li>หน้า <strong>ถ่ายภาพ</strong> กรอกเลขประจำตัว เช่น <code>19929</code> ระบบจะค้นหาข้อมูลนักเรียนจากชีต</li>
+              <li>เลือกไฟล์รูป หรือเปิดกล้องแล้วกดถ่ายภาพ</li>
+              <li>กด <strong>บันทึกรูปภาพ</strong> ถ้าไม่ได้ใส่ Apps Script URL ระบบจะดาวน์โหลดไฟล์ลงเครื่อง</li>
+            </ol>
+
+            <h2>คอลัมน์ที่ระบบอ่านจากชีต</h2>
+            <table class="small-table">
+              <thead>
+                <tr><th>คอลัมน์</th><th>ข้อมูล</th><th>การใช้งาน</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>A</td><td>ID</td><td>ใช้ค้นหาได้</td></tr>
+                <tr><td>B</td><td>เลขบัตรประชาชน / เลขอ้างอิง</td><td>ใช้ค้นหาได้</td></tr>
+                <tr><td>C</td><td>ชื่อ-นามสกุล</td><td>แสดงในหน้าข้อมูลนักเรียน</td></tr>
+                <tr><td>D</td><td>ระดับชั้น</td><td>แสดงในรายละเอียด</td></tr>
+                <tr><td>E</td><td>สถานะ</td><td>แสดงในรายละเอียด</td></tr>
+                <tr><td>F</td><td>โรงเรียน</td><td>แสดงในรายละเอียด</td></tr>
+                <tr><td>G</td><td>สังกัด</td><td>แสดงในรายละเอียด</td></tr>
+                <tr><td>I</td><td>เลขประจำตัว</td><td>ใช้ค้นหาและตั้งชื่อไฟล์</td></tr>
+              </tbody>
+            </table>
+
+            <div class="note">
+              ถ้า Google Sheet ไม่โหลด ให้ตรวจสอบสิทธิ์แชร์ของชีต หรือใช้ Apps Script Web App เป็นตัวกลางแทน
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const screens = document.querySelectorAll(".screen");
+    const sideLinks = document.querySelectorAll(".side-link");
+    const topLinks = document.querySelectorAll(".top-link");
+    const screenButtons = document.querySelectorAll("[data-screen]");
+
+    const video = $("video");
+    const canvas = $("canvas");
+    const cameraEmpty = $("cameraEmpty");
+    const openCameraBtn = $("openCameraBtn");
+    const switchCameraBtn = $("switchCameraBtn");
+    const captureBtn = $("captureBtn");
+    const closeCameraBtn = $("closeCameraBtn");
+    const studentId = $("studentId");
+    const studentName = $("studentName");
+    const studentDetail = $("studentDetail");
+    const fileInput = $("fileInput");
+    const preview = $("preview");
+    const saveBtn = $("saveBtn");
+    const downloadBtn = $("downloadBtn");
+    const clearBtn = $("clearBtn");
+    const sheetId = $("sheetId");
+    const sheetGid = $("sheetGid");
+    const folderId = $("folderId");
+    const replaceFile = $("replaceFile");
+    const scriptUrl = $("scriptUrl");
+    const fileExt = $("fileExt");
+    const saveSettingBtn = $("saveSettingBtn");
+    const cameraStatus = $("cameraStatus");
+    const studentStatus = $("studentStatus");
+    const imageStatus = $("imageStatus");
+    const backendStatus = $("backendStatus");
+    const logBox = $("logBox");
+    const toast = $("toast");
+
+    let stream = null;
+    let devices = [];
+    let currentDeviceId = "";
+    let facingMode = "environment";
+    let currentImageData = "";
+    let students = [];
+    let studentMap = new Map();
+
+    function showScreen(id) {
+      screens.forEach(s => s.classList.toggle("active", s.id === id));
+      sideLinks.forEach(b => b.classList.toggle("active", b.dataset.screen === id));
+      topLinks.forEach(b => b.classList.toggle("active", b.dataset.screen === id || (id === "photo" && b.textContent.trim() === "Photo Script")));
+    }
+
+    screenButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.screen;
+        if (target) showScreen(target);
+      });
+    });
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3200);
+    }
+
+    function addLog(message) {
+      const div = document.createElement("div");
+      div.className = "log-item";
+      const now = new Date().toLocaleString("th-TH");
+      div.textContent = `[${now}] ${message}`;
+      logBox.prepend(div);
+    }
+
+    function loadSettings() {
+      const data = JSON.parse(localStorage.getItem("smartPhotoSettings") || "{}");
+      if (data.sheetId) sheetId.value = data.sheetId;
+      if (data.sheetGid) sheetGid.value = data.sheetGid;
+      if (data.folderId) folderId.value = data.folderId;
+      if (typeof data.replaceFile === "boolean") replaceFile.checked = data.replaceFile;
+      if (data.scriptUrl) scriptUrl.value = data.scriptUrl;
+      if (data.fileExt) fileExt.value = data.fileExt;
+      updateStatus();
+    }
+
+    function saveSettings() {
+      const data = {
+        sheetId: sheetId.value.trim(),
+        sheetGid: sheetGid.value.trim(),
+        folderId: folderId.value.trim(),
+        replaceFile: replaceFile.checked,
+        scriptUrl: scriptUrl.value.trim(),
+        fileExt: fileExt.value
+      };
+      localStorage.setItem("smartPhotoSettings", JSON.stringify(data));
+      showToast("บันทึกการตั้งค่าเรียบร้อย");
+      addLog("บันทึกการตั้งค่าระบบ");
+      updateStatus();
+    }
+
+    function updateStatus() {
+      cameraStatus.textContent = stream ? "เปิด" : "ปิด";
+      studentStatus.textContent = String(students.length || 0);
+      imageStatus.textContent = currentImageData ? "1" : "0";
+      backendStatus.textContent = scriptUrl.value.trim() ? "Drive" : "Local";
+    }
+
+    function getCell(row, index) {
+      const cell = row.c && row.c[index];
+      if (!cell) return "";
+      return String(cell.f ?? cell.v ?? "").trim();
+    }
+
+    function normalizeId(value) {
+      return String(value || "").trim().replace(/\s+/g, "");
+    }
+
+    function rebuildStudentMap() {
+      studentMap = new Map();
+
+      students.forEach(stu => {
+        [stu.id, stu.citizenId, stu.studentNo].forEach(key => {
+          const k = normalizeId(key);
+          if (k) studentMap.set(k, stu);
+        });
+      });
+
+      updateStatus();
+    }
+
+    function parseGoogleResponse(response) {
+      const rows = response.table && response.table.rows ? response.table.rows : [];
+
+      students = rows
+        .map(row => ({
+          id: getCell(row, 0),
+          citizenId: getCell(row, 1),
+          fullName: getCell(row, 2),
+          classLevel: getCell(row, 3),
+          status: getCell(row, 4),
+          school: getCell(row, 5),
+          affiliation: getCell(row, 6),
+          photo: getCell(row, 7),
+          studentNo: getCell(row, 8)
+        }))
+        .filter(stu => stu.fullName || stu.studentNo || stu.id || stu.citizenId);
+
+      rebuildStudentMap();
+      lookupStudent();
+
+      showToast(`โหลดฐานข้อมูลสำเร็จ ${students.length} รายการ`);
+      addLog(`โหลดฐานข้อมูลจาก Google Sheet สำเร็จ ${students.length} รายการ`);
+    }
+
+    function loadGoogleSheet() {
+      const id = sheetId.value.trim();
+      const gid = sheetGid.value.trim();
+
+      if (!id || !gid) {
+        showToast("กรุณากรอก Sheet ID และ gid");
+        return;
+      }
+
+      const callbackName = "__smartPhotoSheetCallback_" + Date.now();
+      window[callbackName] = function(response) {
+        try {
+          parseGoogleResponse(response);
+        } catch (err) {
+          console.error(err);
+          showToast("อ่านข้อมูลจากชีตไม่สำเร็จ กรุณาตรวจคอลัมน์และสิทธิ์แชร์");
+          addLog("อ่านข้อมูลจากชีตไม่สำเร็จ: " + (err.message || err.name));
+        } finally {
+          delete window[callbackName];
+          const oldScript = document.getElementById(callbackName);
+          if (oldScript) oldScript.remove();
+        }
+      };
+
+      const query = encodeURIComponent("select *");
+      const src = `https://docs.google.com/spreadsheets/d/${encodeURIComponent(id)}/gviz/tq?gid=${encodeURIComponent(gid)}&headers=1&tq=${query}&tqx=out:json;responseHandler:${callbackName}`;
+
+      const script = document.createElement("script");
+      script.id = callbackName;
+      script.src = src;
+      script.onerror = function() {
+        showToast("โหลด Google Sheet ไม่สำเร็จ กรุณาตั้งค่าแชร์ชีตเป็นทุกคนที่มีลิงก์ดูได้");
+        addLog("โหลด Google Sheet ไม่สำเร็จ อาจติดสิทธิ์การเข้าถึง");
+        delete window[callbackName];
+        script.remove();
+      };
+
+      document.body.appendChild(script);
+      showToast("กำลังโหลดฐานข้อมูลจาก Google Sheet...");
+      addLog("เริ่มโหลดฐานข้อมูลจาก Google Sheet");
+    }
+
+    function isSecure() {
+      return location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1";
+    }
+
+    async function enumerateCameras() {
+      try {
+        const all = await navigator.mediaDevices.enumerateDevices();
+        devices = all.filter(d => d.kind === "videoinput");
+      } catch (e) {
+        devices = [];
+      }
+    }
+
+    async function startCamera(deviceId = "") {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showToast("เบราว์เซอร์นี้ไม่รองรับการเปิดกล้อง");
+        addLog("เปิดกล้องไม่สำเร็จ: Browser ไม่รองรับ getUserMedia");
+        return;
+      }
+
+      if (!isSecure()) {
+        showToast("ต้องเปิดผ่าน HTTPS เช่น GitHub Pages จึงจะใช้กล้องได้");
+        addLog("เปิดกล้องไม่สำเร็จ: ไม่ใช่ HTTPS");
+        return;
+      }
+
+      stopCamera(false);
+
+      try {
+        addLog("กำลังเปิดกล้อง");
+        const constraints = {
+          audio: false,
+          video: deviceId ? { deviceId: { exact: deviceId } } : {
+            facingMode: { ideal: facingMode },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          }
+        };
+
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream;
+        await video.play();
+        await enumerateCameras();
+
+        const track = stream.getVideoTracks()[0];
+        currentDeviceId = track.getSettings().deviceId || "";
+
+        cameraEmpty.style.display = "none";
+        openCameraBtn.disabled = true;
+        switchCameraBtn.disabled = false;
+        captureBtn.disabled = false;
+        closeCameraBtn.disabled = false;
+        showToast("เปิดกล้องสำเร็จ");
+        addLog("เปิดกล้องสำเร็จ");
+      } catch (err) {
+        console.error(err);
+        if (err.name === "NotAllowedError") {
+          showToast("กล้องถูกบล็อก กรุณาอนุญาตกล้องในเบราว์เซอร์");
+          addLog("เปิดกล้องไม่สำเร็จ: Permission denied");
+        } else if (err.name === "NotFoundError") {
+          showToast("ไม่พบกล้องในอุปกรณ์นี้");
+          addLog("เปิดกล้องไม่สำเร็จ: ไม่พบกล้อง");
+        } else {
+          showToast("เปิดกล้องไม่สำเร็จ: " + (err.message || err.name));
+          addLog("เปิดกล้องไม่สำเร็จ: " + (err.message || err.name));
+        }
+        stopCamera(false);
+      }
+
+      updateStatus();
+    }
+
+    function stopCamera(showMessage = true) {
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+        stream = null;
+      }
+
+      video.srcObject = null;
+      cameraEmpty.style.display = "grid";
+      openCameraBtn.disabled = false;
+      switchCameraBtn.disabled = true;
+      captureBtn.disabled = true;
+      closeCameraBtn.disabled = true;
+
+      if (showMessage) {
+        showToast("ปิดกล้องแล้ว");
+        addLog("ปิดกล้องแล้ว");
+      }
+
+      updateStatus();
+    }
+
+    async function switchCamera() {
+      if (devices.length > 1 && currentDeviceId) {
+        const index = devices.findIndex(d => d.deviceId === currentDeviceId);
+        const next = devices[(index + 1) % devices.length];
+        await startCamera(next.deviceId);
+      } else {
+        facingMode = facingMode === "environment" ? "user" : "environment";
+        await startCamera("");
+      }
+    }
+
+    function captureImage() {
+      if (!stream || !video.videoWidth) {
+        showToast("กรุณาเปิดกล้องก่อนถ่ายภาพ");
+        return;
+      }
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const mime = fileExt.value === "png" ? "image/png" : "image/jpeg";
+      currentImageData = canvas.toDataURL(mime, 0.92);
+      showPreview(currentImageData);
+      showToast("ถ่ายภาพสำเร็จ");
+      addLog("ถ่ายภาพจากกล้องสำเร็จ");
+      updateStatus();
+    }
+
+    function showPreview(dataUrl) {
+      preview.src = dataUrl;
+      preview.style.display = "block";
+      downloadBtn.disabled = false;
+      currentImageData = dataUrl;
+      updateStatus();
+    }
+
+    function getSearchKey() {
+      return normalizeId(studentId.value);
+    }
+
+    function getFileName() {
+      const key = getSearchKey() || "student-photo";
+      const ext = fileExt.value || "jpg";
+      return `${key}.${ext}`;
+    }
+
+    function prepareDownload() {
+      if (!currentImageData) {
+        showToast("ยังไม่มีรูปภาพสำหรับดาวน์โหลด");
+        return;
+      }
+
+      const a = document.createElement("a");
+      a.href = currentImageData;
+      a.download = getFileName();
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      showToast("ดาวน์โหลดรูปแล้ว");
+      addLog(`ดาวน์โหลดไฟล์ ${getFileName()}`);
+    }
+
+    async function savePhoto() {
+      const key = getSearchKey();
+
+      if (!key) {
+        showToast("กรุณากรอกเลขประจำตัวนักเรียนก่อนบันทึก");
+        return;
+      }
+
+      if (!currentImageData) {
+        showToast("กรุณาเลือกไฟล์หรือถ่ายภาพก่อนบันทึก");
+        return;
+      }
+
+      const url = scriptUrl.value.trim();
+
+      if (!url) {
+        prepareDownload();
+        addLog(`บันทึกแบบ Local: ${getFileName()}`);
+        return;
+      }
+
+      try {
+        showToast("กำลังส่งรูปไปยัง Web App...");
+        addLog("เริ่มอัปโหลดรูปไปยัง Web App");
+
+        const stu = studentMap.get(key) || {};
+
+        const payload = {
+          searchKey: key,
+          studentId: stu.id || "",
+          citizenId: stu.citizenId || "",
+          studentNo: stu.studentNo || key,
+          fullName: stu.fullName || "",
+          classLevel: stu.classLevel || "",
+          school: stu.school || "",
+          fileName: getFileName(),
+          folderId: folderId.value.trim(),
+          replaceFile: replaceFile.checked,
+          imageData: currentImageData
+        };
+
+        const res = await fetch(url, {
+          method: "POST",
+          mode: "cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        let result = null;
+        try {
+          result = JSON.parse(text);
+        } catch (e) {}
+
+        if (result && result.ok === false) {
+          throw new Error(result.message || "Apps Script ส่งกลับว่าไม่สำเร็จ");
+        }
+
+        showToast("บันทึกรูปเข้า Drive และอัปเดต Google Sheet สำเร็จ");
+        addLog(`อัปโหลดสำเร็จ: ${(result && result.fileUrl) ? result.fileUrl : (text || getFileName())}`);
+      } catch (err) {
+        console.error(err);
+        showToast("ส่งเข้า Drive ไม่สำเร็จ จึงดาวน์โหลดลงเครื่องแทน");
+        addLog("อัปโหลดไม่สำเร็จ: " + (err.message || err.name));
+        prepareDownload();
+      }
+    }
+
+    function clearAll() {
+      studentId.value = "";
+      studentName.textContent = students.length ? "ยังไม่ได้ระบุเลขประจำตัว" : "ยังไม่ได้โหลดฐานข้อมูล";
+      studentDetail.textContent = "-";
+      fileInput.value = "";
+      currentImageData = "";
+      preview.removeAttribute("src");
+      preview.style.display = "none";
+      downloadBtn.disabled = true;
+      showToast("ล้างข้อมูลแล้ว");
+      addLog("ล้างข้อมูลหน้าถ่ายภาพ");
+      updateStatus();
+    }
+
+    function lookupStudent() {
+      const key = getSearchKey();
+
+      if (!students.length) {
+        studentName.textContent = "ยังไม่ได้โหลดฐานข้อมูล";
+        studentDetail.textContent = "กดปุ่ม “โหลดฐานข้อมูลใหม่” ก่อนค้นหา";
+        return;
+      }
+
+      if (!key) {
+        studentName.textContent = "ยังไม่ได้ระบุเลขประจำตัว";
+        studentDetail.textContent = "-";
+        return;
+      }
+
+      const stu = studentMap.get(key);
+
+      if (stu) {
+        studentName.textContent = stu.fullName || "ไม่พบชื่อ-นามสกุล";
+        studentDetail.innerHTML =
+          `ID: ${stu.id || "-"}<br>` +
+          `เลขประจำตัว: ${stu.studentNo || "-"}<br>` +
+          `ระดับชั้น: ${stu.classLevel || "-"} | สถานะ: ${stu.status || "-"}<br>` +
+          `โรงเรียน: ${stu.school || "-"}<br>` +
+          `สังกัด: ${stu.affiliation || "-"}`;
+        addLog(`ค้นพบนักเรียน: ${key} - ${stu.fullName || ""}`);
+      } else {
+        studentName.textContent = "ไม่พบข้อมูลในระบบ";
+        studentDetail.textContent = `ไม่พบเลข ${key} ใน Google Sheet`;
+      }
+    }
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        showToast("กรุณาเลือกไฟล์รูปภาพเท่านั้น");
+        fileInput.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        showPreview(reader.result);
+        showToast("เลือกไฟล์รูปภาพสำเร็จ");
+        addLog(`เลือกไฟล์ภาพ: ${file.name}`);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    studentId.addEventListener("input", () => {
+      studentId.value = studentId.value.replace(/[^\d]/g, "");
+      lookupStudent();
+    });
+
+    openCameraBtn.addEventListener("click", () => startCamera(""));
+    closeCameraBtn.addEventListener("click", () => stopCamera(true));
+    switchCameraBtn.addEventListener("click", switchCamera);
+    captureBtn.addEventListener("click", captureImage);
+    saveBtn.addEventListener("click", savePhoto);
+    downloadBtn.addEventListener("click", prepareDownload);
+    clearBtn.addEventListener("click", clearAll);
+    saveSettingBtn.addEventListener("click", () => {
+      saveSettings();
+      loadGoogleSheet();
+    });
+
+    $("reloadSheetBtn").addEventListener("click", loadGoogleSheet);
+    $("testSheetBtn").addEventListener("click", loadGoogleSheet);
+    $("readyBtn").addEventListener("click", () => showToast("ระบบพร้อมใช้งาน"));
+
+    scriptUrl.addEventListener("input", updateStatus);
+
+    window.addEventListener("beforeunload", () => stopCamera(false));
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      loadSettings();
+      lookupStudent();
+      await enumerateCameras();
+      addLog("โหลดระบบ Smart Photo แล้ว");
+      if (!isSecure()) addLog("คำเตือน: ควรเปิดผ่าน HTTPS เพื่อใช้กล้อง");
+      loadGoogleSheet();
+      updateStatus();
+    });
+  </script>
+</body>
+</html>
