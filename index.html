@@ -20,7 +20,7 @@
     .app{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}.sidebar{background:linear-gradient(180deg,#061a35 0%,#082249 58%,#061a35 100%);color:#fff;padding:22px 18px;position:sticky;top:0;height:100vh;overflow:auto;box-shadow:18px 0 40px rgba(15,23,42,.12)}.brand{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:center;margin-bottom:24px}.logo{width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#0f86c7,#173f7a);display:grid;place-items:center;font-size:26px;box-shadow:0 14px 28px rgba(0,120,212,.28);animation:floatLogo 3.2s ease-in-out infinite}.brand-title{font-size:21px;font-weight:1000;line-height:1.1}.brand-sub{font-size:13px;color:#c8d3e3;margin-top:3px}.menu{display:grid;gap:10px}.menu button{height:56px;border-radius:13px;border:1px solid transparent;background:transparent;color:#fff;cursor:pointer;display:grid;grid-template-columns:42px 1fr;align-items:center;text-align:left;padding:0 16px;font-weight:900;font-size:17px}.menu button.active,.menu button:hover{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.16)}
     .main{min-width:0}.top{background:rgba(255,255,255,.86);backdrop-filter:blur(16px);border-bottom:1px solid rgba(217,227,240,.8);padding:22px 30px;display:flex;gap:16px;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5;box-shadow:0 10px 30px rgba(15,23,42,.05)}.title h1{margin:0;font-size:31px;line-height:1.2}.title p{margin:4px 0 0;color:#7b8497}.top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.pill{border:1px solid #cfe0f7;background:#f8fbff;color:#0d2c60;border-radius:999px;padding:10px 16px;font-weight:1000;cursor:pointer}.pill.ready{background:#ecfdf3;border-color:#bbf7d0;color:#166534}.work{padding:24px 30px 36px}.screen{display:none}.screen.active{display:block}
     .capture-grid{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:22px;align-items:start}.card{background:rgba(255,255,255,.96);border:1px solid rgba(217,227,240,.9);border-radius:var(--radius);box-shadow:var(--shadow);animation:riseIn .45s ease both}
-    .camera-card{overflow:hidden;background:linear-gradient(135deg,#f8fbff 0%,#e8f4ff 50%,#f4fff8 100%)}.camera-stage{position:relative;width:100%;aspect-ratio:16/9;min-height:0;background:linear-gradient(135deg,#f8fbff 0%,#e8f4ff 50%,#f4fff8 100%);display:grid;place-items:center;overflow:hidden;transition:aspect-ratio .2s ease}.camera-stage::before{content:"";position:absolute;inset:12px;border:1px solid rgba(15,23,42,.08);border-radius:18px;pointer-events:none;z-index:2}.camera-stage::after{content:"";position:absolute;inset:auto 10% 18px;height:42px;background:radial-gradient(ellipse,rgba(15,23,42,.10),transparent 65%);filter:blur(8px);pointer-events:none}#video{position:absolute;left:50%;top:50%;width:100%;height:100%;max-width:none;max-height:none;object-fit:fill;background:transparent;transform:translate(-50%,-50%);transform-origin:center center;transition:transform .2s ease,width .2s ease,height .2s ease}#canvas{display:none}.camera-empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#fff;padding:28px;font-weight:900;font-size:18px;background:linear-gradient(135deg,#061a35,#0b2b55)}.badge{position:absolute;left:14px;bottom:14px;background:rgba(6,26,53,.76);color:#fff;border-radius:999px;padding:8px 12px;font-weight:1000;font-size:14px;backdrop-filter:blur(10px)}.tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:14px;background:#fff;border-top:1px solid var(--border)}
+    .camera-card{overflow:hidden;background:linear-gradient(135deg,#f8fbff 0%,#e8f4ff 50%,#f4fff8 100%)}.camera-stage{position:relative;width:100%;aspect-ratio:16/9;min-height:320px;background:linear-gradient(135deg,#f8fbff 0%,#e8f4ff 50%,#f4fff8 100%);display:grid;place-items:center;overflow:hidden;transition:height .18s ease,aspect-ratio .18s ease}.camera-stage::before{content:"";position:absolute;inset:12px;border:1px solid rgba(15,23,42,.08);border-radius:18px;pointer-events:none;z-index:2}.camera-stage::after{content:"";position:absolute;inset:auto 10% 18px;height:42px;background:radial-gradient(ellipse,rgba(15,23,42,.10),transparent 65%);filter:blur(8px);pointer-events:none}#video{position:absolute;left:50%;top:50%;width:auto;height:auto;max-width:none;max-height:none;object-fit:contain;background:transparent;transform:translate(-50%,-50%);transform-origin:center center;transition:transform .18s ease,width .18s ease,height .18s ease;will-change:transform,width,height}#canvas{display:none}.camera-empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#fff;padding:28px;font-weight:900;font-size:18px;background:linear-gradient(135deg,#061a35,#0b2b55)}.badge{position:absolute;left:14px;bottom:14px;background:rgba(6,26,53,.76);color:#fff;border-radius:999px;padding:8px 12px;font-weight:1000;font-size:14px;backdrop-filter:blur(10px)}.tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:14px;background:#fff;border-top:1px solid var(--border)}
     .btn{border:0;border-radius:12px;padding:12px 13px;font-weight:1000;cursor:pointer;background:#e7eef7;color:#17315b;transition:.18s;box-shadow:0 8px 18px rgba(15,23,42,.07)}.btn:hover:not(:disabled){transform:translateY(-2px) scale(1.01);filter:brightness(.99);box-shadow:0 12px 24px rgba(15,23,42,.12)}.btn:disabled{opacity:.48;cursor:not-allowed}.btn.blue{background:var(--blue);color:#fff}.btn.primary{background:var(--blue2);color:#fff}.btn.green{background:var(--green);color:#fff}.btn.red{background:var(--red);color:#fff}.btn.orange{background:var(--orange);color:#fff}.full{width:100%;font-size:18px;padding:14px 16px}.big-save{font-size:22px;padding:18px;border-radius:14px}
     .side{display:grid;gap:18px}.side-card{padding:20px}.side-card h2{margin:0 0 12px;font-size:20px}.id-box{display:grid;grid-template-columns:70px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}.id-prefix{display:grid;place-items:center;background:#f3f7fc;font-size:21px;font-weight:1000;color:#183761;border-right:1px solid var(--border)}.id-box input{border:0;outline:0;padding:13px 14px;font-size:24px;font-weight:1000;min-width:0}.hint{color:#7b8497;font-size:14px;line-height:1.55;margin-top:8px}.student-box{margin-top:16px;padding:15px 16px;border-radius:13px;border:1px solid var(--border);background:linear-gradient(180deg,#fbfdff,#f8fbff);min-height:120px;position:relative;overflow:hidden}.student-box::before{content:"";position:absolute;right:-24px;top:-24px;width:88px;height:88px;border-radius:999px;background:rgba(0,120,212,.08)}.label{color:var(--muted);font-weight:900;font-size:13px;margin-bottom:5px}.student-name{font-size:24px;line-height:1.25;font-weight:1000;color:#0f172a}.student-detail{margin-top:8px;color:#475467;font-size:15px;line-height:1.55}.notfound{color:#dc2626}.found{color:#166534}.preview{display:none;width:100%;max-height:255px;object-fit:contain;background:linear-gradient(135deg,#f8fafc,#eef6ff);border:1px solid var(--border);border-radius:14px;margin-top:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}.stack{display:grid;gap:10px;margin-top:14px}.quick-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.checkline{display:flex;align-items:center;gap:10px;font-weight:900;cursor:pointer}.checkline input{width:20px;height:20px}
     .settings{max-width:1200px;padding:26px}.section-title{margin:0 0 4px;font-size:26px}.section-sub{margin:0 0 22px;color:#7b8497}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.form-group{margin-bottom:18px}.form-group.fullrow{grid-column:1/-1}.form-group label{display:block;font-weight:1000;margin-bottom:9px}.input,.select{width:100%;border:1px solid var(--border);border-radius:11px;padding:13px 15px;font-size:17px;outline:0;background:#fff}.save-setting{background:#173f7a;color:#fff;border:0;width:100%;border-radius:12px;padding:14px 18px;font-size:21px;font-weight:1000;cursor:pointer}.note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:13px;padding:13px 15px;margin-top:16px;font-weight:900;line-height:1.65}.debug{background:#0b1220;color:#e5e7eb;border-radius:13px;padding:14px;margin-top:14px;font-size:13px;line-height:1.6;white-space:pre-wrap;max-height:330px;overflow:auto}
@@ -67,13 +67,13 @@
 
     /* Compact one-screen capture layout + missing-student report */
     @media(min-width:1181px){
-      body.capture-lock{overflow:hidden}
+      body.capture-lock{overflow-x:hidden;overflow-y:auto}
       .top{padding:14px 24px}.title h1{font-size:27px}.title p{font-size:13px}.work{padding:14px 20px 18px}
-      #photo.active{height:calc(100vh - 88px);overflow:hidden}
-      #photo.active .capture-grid{height:100%;grid-template-columns:minmax(620px,1fr) 430px;gap:16px;align-items:stretch}
+      #photo.active{min-height:calc(100vh - 88px);overflow:visible}
+      #photo.active .capture-grid{min-height:0;grid-template-columns:minmax(620px,1fr) 430px;gap:16px;align-items:start}
       #photo.active .camera-card{display:flex;flex-direction:column;min-height:0}
       #photo.active .camera-stage{flex:1;min-height:360px;max-height:calc(100vh - 185px)}
-      #photo.active .side{gap:10px;max-height:100%;overflow:auto;padding-right:4px;scrollbar-width:thin}
+      #photo.active .side{gap:10px;max-height:none;overflow:visible;padding-right:0;scrollbar-width:thin}
       #photo.active .side-card{padding:14px}
       #photo.active .side-card h2{font-size:18px;margin-bottom:9px}.id-box input{padding:9px 12px;font-size:22px}.id-prefix{font-size:18px}
       #photo.active .student-box{margin-top:10px;min-height:88px;padding:12px}.student-name{font-size:20px}.student-detail{font-size:13px;line-height:1.42}
@@ -105,9 +105,9 @@
     .missing-panel::before{z-index:0;pointer-events:none}
     .missing-panel > *{position:relative;z-index:1}
     @media(min-width:1181px){
-      #photo.active .side{display:grid;grid-template-rows:auto auto minmax(250px,1fr) auto;align-content:stretch;overflow:hidden;min-height:0}
+      #photo.active .side{display:grid;grid-template-rows:auto auto auto auto;align-content:start;overflow:visible;min-height:0}
       #photo.active .side > .side-card{min-width:0}
-      #photo.active .report-card{min-height:0;max-height:100%;overflow:hidden}
+      #photo.active .report-card{min-height:0;max-height:none;overflow:visible}
       #photo.active .report-card .report-total{grid-template-columns:1fr 1fr;gap:8px}
       #photo.active .report-card .report-progress{margin:9px 0 8px}
       #photo.active .report-card .report-actions{margin-top:9px}
@@ -137,6 +137,21 @@
       .report-total{grid-template-columns:1fr}
       .report-classes-mini,.missing-list{max-height:180px}
     }
+
+  
+
+    /* Final layout/camera fixes: page scrolls normally and preview keeps original ratio */
+    html,body{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;}
+    .main,.work,.screen,#photo.active{height:auto!important;max-height:none!important;overflow:visible!important;}
+    #photo.active .capture-grid{align-items:start!important;}
+    #photo.active .side{overflow:visible!important;max-height:none!important;}
+    .camera-card{position:sticky;top:92px;align-self:start;}
+    .camera-stage{height:min(68vh,720px);min-height:320px;aspect-ratio:auto!important;background:linear-gradient(135deg,#f8fbff 0%,#e8f4ff 50%,#f4fff8 100%)!important;}
+    #video{object-fit:contain!important;background:transparent!important;}
+    .report-classes-mini,.missing-list{max-height:160px;overflow-y:auto;}
+    @media(max-width:1180px){.camera-card{position:relative;top:auto}.camera-stage{height:min(56vh,520px);min-height:280px}.capture-grid{grid-template-columns:1fr!important}.side{overflow:visible!important;max-height:none!important}}
+    @media(max-width:760px){.camera-stage{height:min(48vh,430px);min-height:240px}.tools{position:sticky;bottom:0;z-index:10}.camera-card{position:relative}.work{padding-bottom:90px!important}}
+    @media(max-width:520px){.camera-stage{height:min(44vh,360px);min-height:220px}.top{position:static!important}.capture-grid{gap:14px!important}}
 
   </style>
 </head>
@@ -340,7 +355,7 @@
     document.addEventListener("keydown",e=>{if(e.key==="Escape"){closePreviewModal();closeReportModal();}});
     window.addEventListener("beforeunload",()=>stopCamera(false));window.addEventListener("resize",fitVideoToStage);video.addEventListener("loadedmetadata",fitVideoToStage);document.addEventListener("keydown",handleKeys);
 
-    function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));document.body.classList.toggle("capture-lock",id==="photo");const titles={photo:["ถ่ายภาพนักเรียน","ค้นหาเร็วจากฐานข้อมูลที่โหลดไว้ แล้วส่งรูปลง Drive/Sheet คอลัมน์ H"],setting:["ตั้งค่าระบบ","ตรวจสอบ URL และค่าเริ่มต้น"],status:["สถานะระบบ","ดูสถานะการทำงานและประวัติ"],manual:["คู่มือ","วิธีใช้งานและปุ่มลัด"]};$("pageTitle").textContent=titles[id][0];$("pageSub").textContent=titles[id][1];}
+    function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));const titles={photo:["ถ่ายภาพนักเรียน","ค้นหาเร็วจากฐานข้อมูลที่โหลดไว้ แล้วส่งรูปลง Drive/Sheet คอลัมน์ H"],setting:["ตั้งค่าระบบ","ตรวจสอบ URL และค่าเริ่มต้น"],status:["สถานะระบบ","ดูสถานะการทำงานและประวัติ"],manual:["คู่มือ","วิธีใช้งานและปุ่มลัด"]};$("pageTitle").textContent=titles[id][0];$("pageSub").textContent=titles[id][1];}
     function showToast(msg,ms=4200){toast.textContent=msg;toast.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove("show"),ms);} 
     function addLog(msg){const div=document.createElement("div");div.className="log-item";div.textContent=`[${new Date().toLocaleString("th-TH")}] ${msg}`;logBox.prepend(div);} 
     function setSaveStage(stage,pct=0,msg="พร้อมบันทึก"){
@@ -502,21 +517,29 @@
     async function switchCamera(){if(devices.length>1&&currentDeviceId){const i=devices.findIndex(d=>d.deviceId===currentDeviceId);const next=devices[(i+1)%devices.length];await startCamera(next.deviceId);}else{facingMode=facingMode==="environment"?"user":"environment";await startCamera("");}}
     function fitVideoToStage(){
       const stage=document.querySelector(".camera-stage");
-      const sw=video.videoWidth||16;
-      const sh=video.videoHeight||9;
+      if(!stage)return;
+      const sw=video.videoWidth||1280;
+      const sh=video.videoHeight||720;
       const sideways=rotationDegree===90||rotationDegree===270;
       const displayW=sideways?sh:sw;
       const displayH=sideways?sw:sh;
-      stage.style.aspectRatio=`${displayW} / ${displayH}`;
-      rotationBadge.textContent=`บันทึก ${rotationDegree}°`;
-      if(sideways){
-        video.style.width=`${displayH/displayW*100}%`;
-        video.style.height=`${displayW/displayH*100}%`;
-      }else{
-        video.style.width="100%";
-        video.style.height="100%";
+      const maxStageH=Math.max(300, Math.min(window.innerHeight*0.68, 720));
+      const naturalRatio=displayW/displayH;
+      let stageW=stage.clientWidth||900;
+      let stageH=Math.min(maxStageH, Math.max(300, stageW/naturalRatio));
+      if(window.innerWidth<=860){
+        stageH=Math.min(Math.max(240, window.innerHeight*0.46), stageW/naturalRatio);
       }
+      stage.style.height=Math.round(stageH)+"px";
+      stage.style.aspectRatio="auto";
+      stageW=stage.clientWidth||stageW;
+      const scale=Math.min(stageW/displayW, stageH/displayH);
+      const cssW=Math.max(1, Math.floor(sw*scale));
+      const cssH=Math.max(1, Math.floor(sh*scale));
+      video.style.width=cssW+"px";
+      video.style.height=cssH+"px";
       video.style.transform=`translate(-50%,-50%) rotate(${rotationDegree}deg)`;
+      rotationBadge.textContent=`แสดงต้นฉบับพอดีจอ • บันทึกหมุน ${rotationDegree}°`;
     }
     function rotateCapture(){rotationDegree=(rotationDegree+90)%360;if(rotateBurst){rotateBurst.classList.remove("play");void rotateBurst.offsetWidth;rotateBurst.classList.add("play");}fitVideoToStage();showToast("หมุนภาพเป็น "+rotationDegree+"° แล้ว");}
     function drawVideo(){const sw=video.videoWidth,sh=video.videoHeight;if(!sw||!sh)throw new Error("ยังไม่พบภาพจากกล้อง");if(rotationDegree===90||rotationDegree===270){canvas.width=sh;canvas.height=sw;}else{canvas.width=sw;canvas.height=sh;}const ctx=canvas.getContext("2d");ctx.save();ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);if(rotationDegree===90){ctx.translate(canvas.width,0);ctx.rotate(Math.PI/2);}else if(rotationDegree===180){ctx.translate(canvas.width,canvas.height);ctx.rotate(Math.PI);}else if(rotationDegree===270){ctx.translate(0,canvas.height);ctx.rotate(3*Math.PI/2);}ctx.drawImage(video,0,0,sw,sh);ctx.restore();trimBlackBorderFromCanvas(canvas);}
@@ -562,7 +585,7 @@ verifySaved(key,oldPhoto).then(ok=>{if(ok){setSaveStage(3,100,"บันทึ�
     function downloadImage(){if(!currentImageData){showToast("ยังไม่มีรูปภาพ");return;}const a=document.createElement("a");a.href=currentImageData;a.download=fileName();document.body.appendChild(a);a.click();a.remove();}
     function clearAll(){studentId.value="";currentImageData="";fileInput.value="";preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;lookupStudent();updateStatus();showToast("ล้างข้อมูลแล้ว");}
     function handleKeys(e){if(e.key==="Enter"&&e.target===studentId&&!e.ctrlKey){e.preventDefault();captureImage();}if(e.key==="Enter"&&e.ctrlKey){e.preventDefault();savePhoto();}if(e.key==="ArrowRight"&&e.altKey){e.preventDefault();goToOffset(1);}if(e.key==="ArrowLeft"&&e.altKey){e.preventDefault();goToOffset(-1);}}
-    (async function init(){document.body.classList.add("capture-lock");loadSettings();setSaveStage(0,0,"พร้อมบันทึก");lookupStudent();fitVideoToStage();addLog("เปิดระบบ Songkran Photo School");if(!isSecure())addLog("คำเตือน: ต้องเปิดผ่าน HTTPS เพื่อใช้กล้อง");await enumerateCameras();await testBackend();await loadStudents();updateStatus();})();
+    (async function init(){loadSettings();setSaveStage(0,0,"พร้อมบันทึก");lookupStudent();fitVideoToStage();addLog("เปิดระบบ Songkran Photo School");if(!isSecure())addLog("คำเตือน: ต้องเปิดผ่าน HTTPS เพื่อใช้กล้อง");await enumerateCameras();await testBackend();await loadStudents();updateStatus();})();
   </script>
 </body>
 </html>
