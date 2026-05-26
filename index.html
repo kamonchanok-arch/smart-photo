@@ -6,75 +6,94 @@
   <title>Songkran Photo School</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700;800;900&family=Prompt:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800;900&family=Sarabun:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,500..700,0..1,-25..200" rel="stylesheet">
   <style>
     :root{
       --navy:#061a35;--blue:#0078d4;--blue2:#173f7a;--bg:#eef4fb;--card:#fff;--text:#111827;
       --muted:#667085;--border:#d9e3f0;--green:#16a34a;--red:#dc2626;--orange:#f59e0b;
       --shadow:0 14px 36px rgba(15,23,42,.08);--radius:16px;
     }
-    *{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:"Prompt","Noto Sans Thai",Arial,sans-serif;background:radial-gradient(circle at top left,#dff3ff 0,#eef4fb 28%,#f7fbff 62%,#eef4fb 100%);color:var(--text);overflow-x:hidden}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:"Sarabun","Noto Sans Thai",Arial,sans-serif;background:radial-gradient(circle at top left,#dff3ff 0,#eef4fb 28%,#f7fbff 62%,#eef4fb 100%);color:var(--text);overflow-x:hidden}
     body::before{content:"";position:fixed;inset:-140px auto auto -120px;width:340px;height:340px;border-radius:999px;background:rgba(0,120,212,.16);filter:blur(30px);pointer-events:none}body::after{content:"";position:fixed;right:-160px;bottom:-180px;width:420px;height:420px;border-radius:999px;background:rgba(22,163,74,.10);filter:blur(34px);pointer-events:none}
     button,input,select{font:inherit}.hidden{display:none!important}
+    .material-symbols-rounded{font-family:"Material Symbols Rounded";font-weight:600;font-style:normal;font-size:22px;line-height:1;display:inline-flex;align-items:center;justify-content:center;letter-spacing:normal;text-transform:none;white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-feature-settings:"liga";-webkit-font-smoothing:antialiased;font-feature-settings:"liga"}
+    h1,h2,.brand-title,.btn,.pill,.menu button,.dash-num,.num{font-family:"Kanit","Sarabun","Noto Sans Thai",Arial,sans-serif}
+    .logo .material-symbols-rounded{font-size:30px;color:#fff}.ico.material-symbols-rounded{font-size:24px}.btn,.pill{display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn .material-symbols-rounded,.pill .material-symbols-rounded{font-size:20px}.popup-close .material-symbols-rounded{font-size:24px}.success-pop{display:inline-flex;align-items:center;gap:8px}.success-pop .material-symbols-rounded{font-size:22px}
+
     .app{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}.sidebar{background:linear-gradient(180deg,#061a35 0%,#082249 58%,#061a35 100%);color:#fff;padding:22px 18px;position:sticky;top:0;height:100vh;overflow:auto;box-shadow:18px 0 40px rgba(15,23,42,.12)}.brand{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:center;margin-bottom:24px}.logo{width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#0f86c7,#173f7a);display:grid;place-items:center;font-size:26px;box-shadow:0 14px 28px rgba(0,120,212,.28);animation:floatLogo 3.2s ease-in-out infinite}.brand-title{font-size:21px;font-weight:1000;line-height:1.1}.brand-sub{font-size:13px;color:#c8d3e3;margin-top:3px}.menu{display:grid;gap:10px}.menu button{height:56px;border-radius:13px;border:1px solid transparent;background:transparent;color:#fff;cursor:pointer;display:grid;grid-template-columns:42px 1fr;align-items:center;text-align:left;padding:0 16px;font-weight:900;font-size:17px}.menu button.active,.menu button:hover{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.16)}
     .main{min-width:0}.top{background:rgba(255,255,255,.86);backdrop-filter:blur(16px);border-bottom:1px solid rgba(217,227,240,.8);padding:22px 30px;display:flex;gap:16px;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5;box-shadow:0 10px 30px rgba(15,23,42,.05)}.title h1{margin:0;font-size:31px;line-height:1.2}.title p{margin:4px 0 0;color:#7b8497}.top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.pill{border:1px solid #cfe0f7;background:#f8fbff;color:#0d2c60;border-radius:999px;padding:10px 16px;font-weight:1000;cursor:pointer}.pill.ready{background:#ecfdf3;border-color:#bbf7d0;color:#166534}.work{padding:24px 30px 36px}.screen{display:none}.screen.active{display:block}
-    .capture-grid{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:22px;align-items:start}.card{background:rgba(255,255,255,.96);border:1px solid rgba(217,227,240,.9);border-radius:var(--radius);box-shadow:var(--shadow);animation:riseIn .45s ease both}
-    .camera-card{overflow:hidden;background:linear-gradient(135deg,#f8fbff 0%,#e8f4ff 50%,#f4fff8 100%)}.camera-stage{position:relative;width:100%;height:clamp(340px,70vh,720px);min-height:340px;background:linear-gradient(135deg,#071426 0%,#102a4d 55%,#0b1f39 100%);display:grid;place-items:center;overflow:hidden;transition:height .2s ease;border-radius:0}.camera-stage::before{content:"";position:absolute;inset:12px;border:1px solid rgba(15,23,42,.08);border-radius:18px;pointer-events:none;z-index:2}.camera-stage::after{content:"";position:absolute;inset:auto 10% 18px;height:42px;background:radial-gradient(ellipse,rgba(15,23,42,.10),transparent 65%);filter:blur(8px);pointer-events:none}#video{position:absolute;left:50%;top:50%;width:auto;height:auto;max-width:none;max-height:none;object-fit:contain;background:transparent;transform:translate(-50%,-50%);transform-origin:center center;transition:transform .2s ease,width .2s ease,height .2s ease;filter:drop-shadow(0 16px 30px rgba(0,0,0,.18))}#canvas{display:none}.camera-empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#fff;padding:28px;font-weight:900;font-size:18px;background:linear-gradient(135deg,#061a35,#0b2b55)}.badge{position:absolute;left:14px;bottom:14px;background:rgba(6,26,53,.76);color:#fff;border-radius:999px;padding:8px 12px;font-weight:1000;font-size:14px;backdrop-filter:blur(10px)}.tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:14px;background:#fff;border-top:1px solid var(--border)}
+    .capture-grid{display:grid;grid-template-columns:minmax(560px,1fr) 420px;gap:16px;align-items:start}.capture-main{display:grid;gap:12px}.right-workbench{display:grid;gap:12px;max-height:calc(100vh - 132px);overflow:auto;padding-right:2px}.right-workbench::-webkit-scrollbar{width:8px}.right-workbench::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:999px}.card{background:rgba(255,255,255,.96);border:1px solid rgba(217,227,240,.9);border-radius:var(--radius);box-shadow:var(--shadow);animation:riseIn .45s ease both}
+    .camera-card{overflow:hidden;background:linear-gradient(135deg,#ffffff 0%,#eef7ff 55%,#f4fff8 100%);display:flex;flex-direction:column;min-height:0}.camera-stage{position:relative;width:100%;height:min(62vh,calc(100vh - 205px));min-height:360px;background:linear-gradient(135deg,#f8fafc 0%,#edf6ff 52%,#f6fff9 100%);display:grid;place-items:center;overflow:hidden;transition:height .2s ease;border-radius:0}.camera-stage::before{content:"";position:absolute;inset:12px;border:1px solid rgba(15,23,42,.08);border-radius:18px;pointer-events:none;z-index:2}.camera-stage::after{content:"";position:absolute;inset:auto 18% 16px;height:30px;background:radial-gradient(ellipse,rgba(15,23,42,.08),transparent 68%);filter:blur(10px);pointer-events:none}#video{position:absolute;left:50%;top:50%;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;background:#fff;transform:translate(-50%,-50%);transform-origin:center center;transition:transform .2s ease,width .2s ease,height .2s ease;border-radius:12px;box-shadow:0 10px 28px rgba(15,23,42,.12)}#canvas{display:none}.camera-empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#fff;padding:28px;font-weight:900;font-size:18px;background:linear-gradient(135deg,#061a35,#0b2b55)}.badge{position:absolute;left:14px;bottom:14px;background:rgba(6,26,53,.76);color:#fff;border-radius:999px;padding:8px 12px;font-weight:1000;font-size:14px;backdrop-filter:blur(10px)}.tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:14px;background:#fff;border-top:1px solid var(--border)}
     .btn{border:0;border-radius:12px;padding:12px 13px;font-weight:1000;cursor:pointer;background:#e7eef7;color:#17315b;transition:.18s;box-shadow:0 8px 18px rgba(15,23,42,.07)}.btn:hover:not(:disabled){transform:translateY(-2px) scale(1.01);filter:brightness(.99);box-shadow:0 12px 24px rgba(15,23,42,.12)}.btn:disabled{opacity:.48;cursor:not-allowed}.btn.blue{background:var(--blue);color:#fff}.btn.primary{background:var(--blue2);color:#fff}.btn.green{background:var(--green);color:#fff}.btn.red{background:var(--red);color:#fff}.btn.orange{background:var(--orange);color:#fff}.full{width:100%;font-size:18px;padding:14px 16px}.big-save{font-size:22px;padding:18px;border-radius:14px}
-    .side{display:grid;gap:18px}.side-card{padding:20px}.side-card h2{margin:0 0 12px;font-size:20px}.id-box{display:grid;grid-template-columns:70px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}.id-prefix{display:grid;place-items:center;background:#f3f7fc;font-size:21px;font-weight:1000;color:#183761;border-right:1px solid var(--border)}.id-box input{border:0;outline:0;padding:13px 14px;font-size:24px;font-weight:1000;min-width:0}.hint{color:#7b8497;font-size:14px;line-height:1.55;margin-top:8px}.student-box{margin-top:16px;padding:15px 16px;border-radius:13px;border:1px solid var(--border);background:linear-gradient(180deg,#fbfdff,#f8fbff);min-height:120px;position:relative;overflow:hidden}.student-box::before{content:"";position:absolute;right:-24px;top:-24px;width:88px;height:88px;border-radius:999px;background:rgba(0,120,212,.08)}.label{color:var(--muted);font-weight:900;font-size:13px;margin-bottom:5px}.student-name{font-size:24px;line-height:1.25;font-weight:1000;color:#0f172a}.student-detail{margin-top:8px;color:#475467;font-size:15px;line-height:1.55}.notfound{color:#dc2626}.found{color:#166534}.preview{display:none;width:100%;max-height:255px;object-fit:contain;background:linear-gradient(135deg,#f8fafc,#eef6ff);border:1px solid var(--border);border-radius:14px;margin-top:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}.stack{display:grid;gap:10px;margin-top:14px}.quick-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.checkline{display:flex;align-items:center;gap:10px;font-weight:900;cursor:pointer}.checkline input{width:20px;height:20px}
-    .settings{max-width:1200px;padding:26px}.section-title{margin:0 0 4px;font-size:26px}.section-sub{margin:0 0 22px;color:#7b8497}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.form-group{margin-bottom:18px}.form-group.fullrow{grid-column:1/-1}.form-group label{display:block;font-weight:1000;margin-bottom:9px}.input,.select{width:100%;border:1px solid var(--border);border-radius:11px;padding:13px 15px;font-size:17px;outline:0;background:#fff}.save-setting{background:#173f7a;color:#fff;border:0;width:100%;border-radius:12px;padding:14px 18px;font-size:21px;font-weight:1000;cursor:pointer}.note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:13px;padding:13px 15px;margin-top:16px;font-weight:900;line-height:1.65}.debug{background:#0b1220;color:#e5e7eb;border-radius:13px;padding:14px;margin-top:14px;font-size:13px;line-height:1.6;white-space:pre-wrap;max-height:330px;overflow:auto}
+    .side{display:grid;gap:18px}.side-card{padding:20px}.side-card h2{margin:0 0 12px;font-size:20px;display:flex;align-items:center;gap:8px}.id-box{display:grid;grid-template-columns:70px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}.id-prefix{display:grid;place-items:center;background:#f3f7fc;font-size:21px;font-weight:1000;color:#183761;border-right:1px solid var(--border)}.id-box input{border:0;outline:0;padding:13px 14px;font-size:24px;font-weight:1000;min-width:0}.hint{color:#7b8497;font-size:14px;line-height:1.55;margin-top:8px}.student-box{margin-top:16px;padding:15px 16px;border-radius:13px;border:1px solid var(--border);background:linear-gradient(180deg,#fbfdff,#f8fbff);min-height:120px;position:relative;overflow:hidden}.student-box::before{content:"";position:absolute;right:-24px;top:-24px;width:88px;height:88px;border-radius:999px;background:rgba(0,120,212,.08)}.label{color:var(--muted);font-weight:900;font-size:13px;margin-bottom:5px}.student-name{font-size:24px;line-height:1.25;font-weight:1000;color:#0f172a}.student-detail{margin-top:8px;color:#475467;font-size:15px;line-height:1.55}.notfound{color:#dc2626}.found{color:#166534}.preview{display:none;width:100%;max-height:255px;object-fit:contain;background:linear-gradient(135deg,#f8fafc,#eef6ff);border:1px solid var(--border);border-radius:14px;margin-top:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}.stack{display:grid;gap:10px;margin-top:14px}.quick-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.checkline{display:flex;align-items:center;gap:10px;font-weight:900;cursor:pointer}.checkline input{width:20px;height:20px}
+    .settings{max-width:1200px;padding:26px}.section-title{margin:0 0 4px;font-size:26px;display:flex;align-items:center;gap:8px}.section-sub{margin:0 0 22px;color:#7b8497}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.form-group{margin-bottom:18px}.form-group.fullrow{grid-column:1/-1}.form-group label{display:block;font-weight:1000;margin-bottom:9px}.input,.select{width:100%;border:1px solid var(--border);border-radius:11px;padding:13px 15px;font-size:17px;outline:0;background:#fff}.save-setting{background:#173f7a;color:#fff;border:0;width:100%;border-radius:12px;padding:14px 18px;font-size:21px;font-weight:1000;cursor:pointer}.note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:13px;padding:13px 15px;margin-top:16px;font-weight:900;line-height:1.65}.debug{background:#0b1220;color:#e5e7eb;border-radius:13px;padding:14px;margin-top:14px;font-size:13px;line-height:1.6;white-space:pre-wrap;max-height:330px;overflow:auto}
     .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:18px}.stat{padding:20px}.num{font-size:27px;font-weight:1000;color:#173f7a;word-break:break-word}.cap{color:#667085;font-weight:800;margin-top:5px}.log{padding:16px;min-height:380px;max-height:620px;overflow:auto}.log-item{border-bottom:1px solid var(--border);padding:10px 4px;color:#344054;line-height:1.55;white-space:pre-wrap}.manual{padding:26px;line-height:1.85;font-size:17px}.manual kbd{background:#f2f4f7;border:1px solid #d0d5dd;border-radius:6px;padding:2px 7px;font-weight:900}
 
     .photo-report{margin-top:22px;padding:20px}.photo-report .report-head{margin-bottom:12px}.photo-report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.live-badge{display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:#ecfdf3;color:#166534;border:1px solid #bbf7d0;padding:7px 12px;font-weight:1000}.live-dot{width:9px;height:9px;border-radius:999px;background:#16a34a;animation:softPulse 1.8s infinite}.mini-report{display:grid;gap:10px}.mini-line{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;background:#f8fbff;border:1px solid var(--border);border-radius:12px;font-weight:900}.mini-line b{color:#173f7a}.progress-wrap{height:13px;border-radius:999px;background:#edf2f7;overflow:hidden;border:1px solid #d9e3f0}.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#16a34a,#0ea5e9);border-radius:999px;transition:width .35s ease}
-    .report-wrap{padding:20px;margin-top:18px}.report-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}.report-head h2{margin:0;font-size:24px}.report-head p{margin:4px 0 0;color:#667085}.report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px}.class-card{border:1px solid var(--border);border-radius:15px;background:linear-gradient(180deg,#ffffff,#f8fbff);padding:15px;box-shadow:0 8px 18px rgba(15,23,42,.04)}.class-title{display:flex;justify-content:space-between;gap:10px;align-items:center;font-weight:1000;font-size:18px;color:#0f172a}.class-pill{font-size:13px;border-radius:999px;padding:5px 9px;background:#ecfdf3;color:#166534;border:1px solid #bbf7d0;white-space:nowrap}.class-meta{margin-top:8px;color:#667085;font-weight:800}.class-progress{margin-top:11px;height:10px;background:#eef2f7;border-radius:999px;overflow:hidden}.class-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#173f7a,#0ea5e9);border-radius:999px}.empty-report{padding:18px;border-radius:14px;border:1px dashed #cbd5e1;color:#667085;text-align:center;font-weight:900;background:#f8fafc}
+    .report-wrap{padding:20px;margin-top:18px}.report-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}.report-head h2{margin:0;font-size:24px;display:flex;align-items:center;gap:8px}.report-head p{margin:4px 0 0;color:#667085}.report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px}.class-card{border:1px solid var(--border);border-radius:15px;background:linear-gradient(180deg,#ffffff,#f8fbff);padding:15px;box-shadow:0 8px 18px rgba(15,23,42,.04)}.class-title{display:flex;justify-content:space-between;gap:10px;align-items:center;font-weight:1000;font-size:18px;color:#0f172a}.class-pill{font-size:13px;border-radius:999px;padding:5px 9px;background:#ecfdf3;color:#166534;border:1px solid #bbf7d0;white-space:nowrap}.class-meta{margin-top:8px;color:#667085;font-weight:800}.class-progress{margin-top:11px;height:10px;background:#eef2f7;border-radius:999px;overflow:hidden}.class-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#173f7a,#0ea5e9);border-radius:999px}.empty-report{padding:18px;border-radius:14px;border:1px dashed #cbd5e1;color:#667085;text-align:center;font-weight:900;background:#f8fafc}
 
+
+    .quick-dashboard{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:12px;background:linear-gradient(135deg,#061a35,#0b3a6d);border-radius:18px;color:#fff;box-shadow:0 18px 35px rgba(6,26,53,.18)}.dash-stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:11px 12px;min-height:76px}.dash-stat .dash-num{font-size:25px;font-weight:1000;line-height:1;color:#fff}.dash-stat .dash-cap{font-size:12px;color:#d8e8ff;font-weight:900;margin-top:7px}.dash-progress{grid-column:1/-1;height:12px;border-radius:999px;background:rgba(255,255,255,.18);overflow:hidden}.dash-progress span{display:block;height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#38bdf8);transition:width .35s ease}.compact-card{padding:14px}.compact-card h2{font-size:18px;margin:0 0 9px}.action-row{display:grid;grid-template-columns:1.1fr .9fr;gap:10px}.report-chip-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:164px;overflow:auto;padding-right:2px}.report-chip{border:1px solid #dbe7f5;background:#f8fbff;border-radius:14px;padding:9px 10px}.report-chip-top{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:1000}.report-chip small{display:block;color:#667085;font-weight:900;margin-top:4px}.report-mini-bar{height:7px;border-radius:999px;background:#edf2f7;margin-top:7px;overflow:hidden}.report-mini-bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#173f7a,#16a34a)}.popup-backdrop{position:fixed;inset:0;z-index:80;background:rgba(15,23,42,.44);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:22px;opacity:0;transition:opacity .22s ease}.popup-backdrop.show{display:flex;opacity:1}.popup-panel{width:min(1050px,96vw);max-height:88vh;overflow:auto;background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.8);border-radius:24px;box-shadow:0 30px 90px rgba(15,23,42,.32);transform:translateY(18px) scale(.96);opacity:0;transition:transform .24s ease,opacity .24s ease}.popup-backdrop.show .popup-panel{transform:translateY(0) scale(1);opacity:1}.popup-header{position:sticky;top:0;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:20px 22px;border-bottom:1px solid var(--border);z-index:2}.popup-header h2{margin:0;font-size:25px;display:flex;align-items:center;gap:8px}.popup-body{padding:18px 22px 22px}.popup-close{width:42px;height:42px;border:0;border-radius:999px;background:#eef2f7;color:#0f172a;font-size:24px;font-weight:1000;cursor:pointer}.success-pop{position:fixed;left:50%;top:22px;z-index:120;transform:translate(-50%,-18px) scale(.92);opacity:0;pointer-events:none;background:linear-gradient(135deg,#16a34a,#0ea5e9);color:#fff;border-radius:999px;padding:12px 20px;box-shadow:0 20px 55px rgba(22,163,74,.28);font-weight:1000;transition:.28s ease}.success-pop.show{opacity:1;transform:translate(-50%,0) scale(1)}.preview{cursor:pointer;background:#fff!important}.preview-hint{font-size:12px;color:#667085;font-weight:800;margin-top:6px}
     .toast{position:fixed;right:24px;bottom:24px;z-index:100;background:#101828;color:#fff;padding:14px 18px;border-radius:14px;box-shadow:0 16px 44px rgba(0,0,0,.24);transform:translateY(20px);opacity:0;pointer-events:none;transition:.2s;max-width:680px;line-height:1.55;font-weight:900;white-space:pre-wrap}.toast.show{transform:translateY(0);opacity:1}
     @keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}@keyframes floatLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes softPulse{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.35)}50%{box-shadow:0 0 0 8px rgba(22,163,74,0)}}.pill.ready{animation:softPulse 2.2s ease-in-out infinite}
-    @media(max-width:1180px){.app{grid-template-columns:235px minmax(0,1fr)}.capture-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.top{align-items:flex-start;flex-direction:column}}
-    @media(max-width:760px){.app{display:block}.sidebar{position:static;height:auto}.menu{grid-template-columns:repeat(3,1fr)}.menu button{height:auto;min-height:48px;grid-template-columns:1fr;text-align:center;font-size:15px}.menu .ico{display:none}.top,.work{padding-left:16px;padding-right:16px}.tools{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.quick-row{grid-template-columns:1fr}}
+    @media(max-width:1180px){.app{grid-template-columns:235px minmax(0,1fr)}.capture-grid{grid-template-columns:1fr}.right-workbench{max-height:none;overflow:visible}.stats{grid-template-columns:1fr 1fr}.top{align-items:flex-start;flex-direction:column}.quick-dashboard{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:760px){.app{display:block}.sidebar{position:static;height:auto}.menu{grid-template-columns:repeat(3,1fr)}.menu button{height:auto;min-height:48px;grid-template-columns:1fr;text-align:center;font-size:15px}.menu .ico{display:none}.top,.work{padding-left:16px;padding-right:16px}.tools{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.quick-row{grid-template-columns:1fr}.quick-dashboard{grid-template-columns:1fr 1fr}.report-chip-grid{grid-template-columns:1fr}.action-row{grid-template-columns:1fr}.camera-stage{height:420px}}
   </style>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
-      <div class="brand"><div class="logo">📷</div><div><div class="brand-title">Songkran Photo School</div><div class="brand-sub">Student Capture System</div></div></div>
+      <div class="brand"><div class="logo"><span class="material-symbols-rounded">photo_camera</span></div><div><div class="brand-title">Songkran Photo School</div><div class="brand-sub">Student Capture System</div></div></div>
       <nav class="menu">
-        <button class="nav active" data-screen="photo"><span class="ico">📷</span><span>ถ่ายภาพ</span></button>
-        <button class="nav" data-screen="setting"><span class="ico">⚙️</span><span>ตั้งค่า</span></button>
-        <button class="nav" data-screen="status"><span class="ico">ℹ️</span><span>สถานะ</span></button>
+        <button class="nav active" data-screen="photo"><span class="ico material-symbols-rounded">photo_camera</span><span>ถ่ายภาพ</span></button>
+        <button class="nav" data-screen="setting"><span class="ico material-symbols-rounded">settings</span><span>ตั้งค่า</span></button>
+        <button class="nav" data-screen="status"><span class="ico material-symbols-rounded">monitoring</span><span>สถานะ</span></button>
       </nav>
     </aside>
     <main class="main">
       <header class="top">
         <div class="title"><h1 id="pageTitle">ถ่ายภาพนักเรียน</h1><p id="pageSub">ค้นหาเร็วจากฐานข้อมูลที่โหลดไว้ แล้วส่งรูปลง Drive/Sheet คอลัมน์ H</p></div>
-        <div class="top-actions"><button class="pill" id="reloadBtn">โหลดฐานข้อมูลใหม่</button><button class="pill" id="backendBtn">ทดสอบ Backend</button><button class="pill ready" id="readyBtn">พร้อมใช้งาน</button></div>
+        <div class="top-actions"><button class="pill" id="reloadBtn"><span class="material-symbols-rounded">sync</span>โหลดฐานข้อมูลใหม่</button><button class="pill" id="backendBtn"><span class="material-symbols-rounded">dns</span>ทดสอบ Backend</button><button class="pill ready" id="readyBtn"><span class="material-symbols-rounded">verified</span>พร้อมใช้งาน</button></div>
       </header>
       <div class="work">
         <section id="photo" class="screen active">
           <div class="capture-grid">
+            <div class="capture-main">
             <section class="camera-card card">
               <div class="camera-stage">
                 <video id="video" autoplay playsinline muted></video><canvas id="canvas"></canvas>
                 <div id="cameraEmpty" class="camera-empty">กด “เปิดกล้อง” เพื่อถ่ายภาพนักเรียน<br>หรือเลือกไฟล์รูปภาพสำรองด้านขวา</div>
                 <div id="rotationBadge" class="badge">บันทึกหมุน 0°</div>
               </div>
-              <div class="tools"><button id="openCameraBtn" class="btn blue">เปิดกล้อง</button><button id="switchCameraBtn" class="btn" disabled>สลับกล้อง</button><button id="rotateBtn" class="btn orange">หมุนรูป</button><button id="captureBtn" class="btn green" disabled>ถ่ายภาพ</button><button id="closeCameraBtn" class="btn red" disabled>ปิดกล้อง</button></div>
+              <div class="tools"><button id="openCameraBtn" class="btn blue"><span class="material-symbols-rounded">videocam</span>เปิดกล้อง</button><button id="switchCameraBtn" class="btn" disabled><span class="material-symbols-rounded">cameraswitch</span>สลับกล้อง</button><button id="rotateBtn" class="btn orange"><span class="material-symbols-rounded">rotate_right</span>หมุนรูป</button><button id="captureBtn" class="btn green" disabled><span class="material-symbols-rounded">camera</span>ถ่ายภาพ</button><button id="closeCameraBtn" class="btn red" disabled><span class="material-symbols-rounded">videocam_off</span>ปิดกล้อง</button></div>
             </section>
-            <aside class="side">
-              <div class="side-card card">
-                <h2>เลขประจำตัวนักเรียน</h2>
+            <div class="quick-dashboard card">
+              <div class="dash-stat"><div id="dashTotal" class="dash-num">0</div><div class="dash-cap">ทั้งหมด</div></div>
+              <div class="dash-stat"><div id="dashCaptured" class="dash-num">0</div><div class="dash-cap">ถ่ายแล้ว</div></div>
+              <div class="dash-stat"><div id="dashRemain" class="dash-num">0</div><div class="dash-cap">ยังไม่ถ่าย</div></div>
+              <div class="dash-stat"><div id="dashPercent" class="dash-num">0%</div><div class="dash-cap">ความคืบหน้า</div></div>
+              <div class="dash-progress"><span id="dashProgress"></span></div>
+            </div>
+            </div>
+            <aside class="side right-workbench">
+              <div class="side-card card compact-card">
+                <h2><span class="material-symbols-rounded">badge</span> เลขประจำตัวนักเรียน</h2>
                 <div class="id-box"><div class="id-prefix">ID</div><input id="studentId" type="text" inputmode="numeric" maxlength="20" placeholder="เช่น 18533" autocomplete="off" /></div>
                 <div class="hint">ค้นหาในเครื่องทันทีจากข้อมูลที่โหลดจาก Apps Script คอลัมน์ A, B, I</div>
                 <div class="student-box"><div class="label">ข้อมูลนักเรียน</div><div id="studentName" class="student-name">กำลังโหลดฐานข้อมูล...</div><div id="studentDetail" class="student-detail">-</div></div>
               </div>
-              <div class="side-card card">
-                <h2>ไฟล์รูปภาพสำรอง</h2>
+              <div class="side-card card compact-card">
+                <h2><span class="material-symbols-rounded">image</span> ไฟล์รูปภาพสำรอง</h2>
                 <input id="fileInput" type="file" accept="image/*" style="width:100%;border:1px solid #d9e3f0;border-radius:12px;padding:11px;background:#fff" />
                 <div class="hint">ใช้กรณีกล้องมีปัญหา หรือมีรูปอยู่แล้วในเครื่อง</div>
-                <img id="preview" class="preview" alt="ตัวอย่างภาพ" />
+                <img id="preview" class="preview" alt="ตัวอย่างภาพ" title="คลิกเพื่อดูรูปใหญ่" /><div class="preview-hint">คลิกรูปเพื่อเปิดพรีวิวแบบ popup</div>
               </div>
-              <div class="side-card card">
-                <h2>รายงานภาพรวม</h2>
+              <div class="side-card card compact-card">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px">
+                  <h2 style="margin:0"><span class="material-symbols-rounded">bar_chart</span> รายงานเรียลไทม์</h2>
+                  <button id="openReportPopupBtn" class="btn primary" style="padding:9px 12px"><span class="material-symbols-rounded">analytics</span>เปิดรายงาน</button>
+                </div>
                 <div class="mini-report">
                   <div class="mini-line"><span>ทั้งหมด</span><b id="miniTotal">0 คน</b></div>
                   <div class="mini-line"><span>ถ่ายแล้ว</span><b id="miniCaptured">0 คน</b></div>
@@ -82,31 +101,25 @@
                   <div class="mini-line"><span>ความคืบหน้า</span><b id="miniPercent">0%</b></div>
                   <div class="progress-wrap"><div id="miniProgress" class="progress-bar"></div></div>
                   <div class="hint" id="miniClassSummary">ยังไม่มีข้อมูลรายชั้น</div>
+                  <div id="inlineClassChips" class="report-chip-grid"></div>
                 </div>
               </div>
-              <div class="side-card card">
-                <h2>บันทึกแบบเร็ว</h2>
+              <div class="side-card card compact-card">
+                <h2><span class="material-symbols-rounded">bolt</span> บันทึกแบบเร็ว</h2>
                 <label class="checkline"><input id="quickMode" type="checkbox" checked /> โหมดถ่ายต่อเนื่องเร็ว</label>
                 <div class="hint">หลังพบลิงก์ใน H ระบบจะล้างรูปและเลื่อนไปคนถัดไปทันที</div>
                 <div class="stack">
-                  <button id="saveBtn" class="btn primary full big-save">บันทึกเข้า Drive/Sheet</button>
-                  <div class="quick-row"><button id="prevBtn" class="btn full">คนก่อนหน้า</button><button id="nextBtn" class="btn full">คนถัดไป</button></div>
-                  <div class="quick-row"><button id="downloadBtn" class="btn full" disabled>ดาวน์โหลดรูป</button><button id="clearBtn" class="btn full">ล้างข้อมูล</button></div>
+                  <button id="saveBtn" class="btn primary full big-save"><span class="material-symbols-rounded">cloud_upload</span>บันทึกเข้า Drive/Sheet</button>
+                  <div class="quick-row"><button id="prevBtn" class="btn full"><span class="material-symbols-rounded">arrow_back</span>คนก่อนหน้า</button><button id="nextBtn" class="btn full">คนถัดไป<span class="material-symbols-rounded">arrow_forward</span></button></div>
+                  <div class="quick-row"><button id="downloadBtn" class="btn full" disabled><span class="material-symbols-rounded">download</span>ดาวน์โหลดรูป</button><button id="clearBtn" class="btn full"><span class="material-symbols-rounded">backspace</span>ล้างข้อมูล</button></div>
                 </div>
               </div>
             </aside>
           </div>
-          <div class="photo-report card">
-            <div class="report-head">
-              <div><h2>รายงานระหว่างถ่ายภาพ</h2><p id="photoReportSummary">อัปเดตแบบเรียลไทม์จากข้อมูลคอลัมน์ H และการบันทึกล่าสุด</p></div>
-              <span class="live-badge"><span class="live-dot"></span> LIVE</span>
-            </div>
-            <div id="photoClassReport" class="photo-report-grid"></div>
-          </div>
         </section>
         <section id="setting" class="screen">
           <div class="settings card">
-            <h2 class="section-title">ตั้งค่าระบบ</h2><p class="section-sub">ใส่ URL ตัวล่าสุดที่ทดสอบผ่านแล้วให้เรียบร้อย</p>
+            <h2 class="section-title"><span class="material-symbols-rounded">tune</span> ตั้งค่าระบบ</h2><p class="section-sub">ใส่ URL ตัวล่าสุดที่ทดสอบผ่านแล้วให้เรียบร้อย</p>
             <div class="form-grid">
               <div class="form-group"><label>Google Sheet ID</label><input id="sheetId" class="input" type="text" /></div>
               <div class="form-group"><label>gid ของชีต</label><input id="sheetGid" class="input" type="text" /></div>
@@ -116,7 +129,7 @@
               <div class="form-group"><label>ขนาดรูปก่อนส่ง</label><select id="imageSize" class="select"><option value="720" selected>เร็วมาก 720px - แนะนำถ่ายจำนวนมาก</option><option value="900">สมดุล 900px</option><option value="1200">คมชัด 1200px</option></select></div>
               <div class="form-group fullrow"><label class="checkline"><input id="replaceFile" type="checkbox" checked /> แทนที่ไฟล์เดิมเมื่อชื่อซ้ำ</label></div>
             </div>
-            <button id="saveSettingBtn" class="save-setting">บันทึกการตั้งค่า</button>
+            <button id="saveSettingBtn" class="save-setting btn"><span class="material-symbols-rounded">save</span>บันทึกการตั้งค่า</button>
             <div class="note">หน้าเว็บนี้ส่งรูปด้วย fetch แบบ no-cors เป็น JSON ตรงเข้า doPost แล้วตรวจผลจากคอลัมน์ H ด้วย action=student จึงเหมาะกับการถ่ายนักเรียนจำนวนมาก</div>
             <div id="debug" class="debug">Debug พร้อมใช้งาน</div>
           </div>
@@ -132,19 +145,36 @@
           </div>
           <div class="report-wrap card">
             <div class="report-head">
-              <div><h2>รายงานการถ่ายภาพรายชั้น</h2><p id="reportSummary">สรุปจำนวนถ่ายแล้ว แยกตามระดับชั้น</p></div>
-              <button class="btn primary" id="refreshReportBtn">อัปเดตรายงาน</button>
+              <div><h2><span class="material-symbols-rounded">leaderboard</span> รายงานการถ่ายภาพรายชั้น</h2><p id="reportSummary">สรุปจำนวนถ่ายแล้ว แยกตามระดับชั้น</p></div>
+              <button class="btn primary" id="refreshReportBtn"><span class="material-symbols-rounded">refresh</span>อัปเดตรายงาน</button>
             </div>
             <div id="classReport" class="report-grid"></div>
           </div>
           <div id="logBox" class="log card" style="margin-top:18px"></div>
         </section>
         <section id="manual" class="screen">
-          <div class="manual card"><h2>คู่มือใช้งานเร็ว</h2><ol><li>เปิดเว็บผ่าน HTTPS เช่น GitHub Pages</li><li>กด <b>ทดสอบ Backend</b> ต้องขึ้นว่าใช้งานได้</li><li>กด <b>โหลดฐานข้อมูลใหม่</b></li><li>กรอกเลขนักเรียน แล้วกดเปิดกล้อง</li><li>กด <b>ถ่ายภาพ</b> แล้วกด <b>บันทึกเข้า Drive/Sheet</b></li></ol><p>ปุ่มลัด: <kbd>Enter</kbd> ถ่ายภาพ, <kbd>Ctrl</kbd> + <kbd>Enter</kbd> บันทึก, <kbd>Alt</kbd> + <kbd>→</kbd> คนถัดไป, <kbd>Alt</kbd> + <kbd>←</kbd> คนก่อนหน้า</p></div>
+          <div class="manual card"><h2><span class="material-symbols-rounded">menu_book</span> คู่มือใช้งานเร็ว</h2><ol><li>เปิดเว็บผ่าน HTTPS เช่น GitHub Pages</li><li>กด <b>ทดสอบ Backend</b> ต้องขึ้นว่าใช้งานได้</li><li>กด <b>โหลดฐานข้อมูลใหม่</b></li><li>กรอกเลขนักเรียน แล้วกดเปิดกล้อง</li><li>กด <b>ถ่ายภาพ</b> แล้วกด <b>บันทึกเข้า Drive/Sheet</b></li></ol><p>ปุ่มลัด: <kbd>Enter</kbd> ถ่ายภาพ, <kbd>Ctrl</kbd> + <kbd>Enter</kbd> บันทึก, <kbd>Alt</kbd> + <kbd>→</kbd> คนถัดไป, <kbd>Alt</kbd> + <kbd>←</kbd> คนก่อนหน้า</p></div>
         </section>
       </div>
     </main>
   </div>
+
+  <div id="reportPopup" class="popup-backdrop" aria-hidden="true">
+    <div class="popup-panel" role="dialog" aria-modal="true" aria-labelledby="reportPopupTitle">
+      <div class="popup-header">
+        <div><h2 id="reportPopupTitle"><span class="material-symbols-rounded">analytics</span> รายงานการถ่ายภาพแบบเรียลไทม์</h2><p id="popupReportSummary" style="margin:4px 0 0;color:#667085;font-weight:800">สรุปจำนวนถ่ายแล้วแยกตามระดับชั้น</p></div>
+        <button id="closeReportPopupBtn" class="popup-close" type="button" aria-label="ปิด"><span class="material-symbols-rounded">close</span></button>
+      </div>
+      <div class="popup-body"><div id="popupClassReport" class="report-grid"></div></div>
+    </div>
+  </div>
+  <div id="previewPopup" class="popup-backdrop" aria-hidden="true">
+    <div class="popup-panel" role="dialog" aria-modal="true" style="width:min(760px,94vw)">
+      <div class="popup-header"><div><h2><span class="material-symbols-rounded">image_search</span> พรีวิวรูปภาพ</h2><p style="margin:4px 0 0;color:#667085;font-weight:800">แสดงภาพเต็มตามสัดส่วนต้นฉบับ</p></div><button id="closePreviewPopupBtn" class="popup-close" type="button" aria-label="ปิด"><span class="material-symbols-rounded">close</span></button></div>
+      <div class="popup-body" style="display:grid;place-items:center;background:#f8fafc"><img id="popupPreviewImg" alt="พรีวิวรูปภาพ" style="max-width:100%;max-height:70vh;object-fit:contain;border-radius:18px;background:#fff;box-shadow:0 16px 45px rgba(15,23,42,.14)" /></div>
+    </div>
+  </div>
+  <div id="successPop" class="success-pop"><span class="material-symbols-rounded">check_circle</span><span>บันทึกสำเร็จแล้ว</span></div>
   <div id="toast" class="toast"></div>
   <script>
     const DEFAULTS={
@@ -159,8 +189,8 @@
     const studentId=$("studentId"),studentName=$("studentName"),studentDetail=$("studentDetail"),preview=$("preview"),fileInput=$("fileInput");
     const openCameraBtn=$("openCameraBtn"),switchCameraBtn=$("switchCameraBtn"),rotateBtn=$("rotateBtn"),captureBtn=$("captureBtn"),closeCameraBtn=$("closeCameraBtn"),saveBtn=$("saveBtn"),downloadBtn=$("downloadBtn"),clearBtn=$("clearBtn"),prevBtn=$("prevBtn"),nextBtn=$("nextBtn");
     const sheetId=$("sheetId"),sheetGid=$("sheetGid"),folderId=$("folderId"),scriptUrl=$("scriptUrl"),fileExt=$("fileExt"),imageSize=$("imageSize"),replaceFile=$("replaceFile"),quickMode=$("quickMode");
-    const cameraStatus=$("cameraStatus"),studentStatus=$("studentStatus"),capturedStatus=$("capturedStatus"),remainStatus=$("remainStatus"),imageStatus=$("imageStatus"),backendStatus=$("backendStatus"),miniTotal=$("miniTotal"),miniCaptured=$("miniCaptured"),miniRemain=$("miniRemain"),miniPercent=$("miniPercent"),miniProgress=$("miniProgress"),miniClassSummary=$("miniClassSummary"),classReport=$("classReport"),photoClassReport=$("photoClassReport"),reportSummary=$("reportSummary"),photoReportSummary=$("photoReportSummary");
-    let stream=null,devices=[],currentDeviceId="",facingMode="environment",currentImageData="",rotationDegree=90,students=[],studentMap=new Map(),lastFoundStudent=null,isSaving=false;
+    const cameraStatus=$("cameraStatus"),studentStatus=$("studentStatus"),capturedStatus=$("capturedStatus"),remainStatus=$("remainStatus"),imageStatus=$("imageStatus"),backendStatus=$("backendStatus"),miniTotal=$("miniTotal"),miniCaptured=$("miniCaptured"),miniRemain=$("miniRemain"),miniPercent=$("miniPercent"),miniProgress=$("miniProgress"),miniClassSummary=$("miniClassSummary"),classReport=$("classReport"),photoClassReport=$("photoClassReport"),reportSummary=$("reportSummary"),photoReportSummary=$("photoReportSummary"),dashTotal=$("dashTotal"),dashCaptured=$("dashCaptured"),dashRemain=$("dashRemain"),dashPercent=$("dashPercent"),dashProgress=$("dashProgress"),inlineClassChips=$("inlineClassChips"),reportPopup=$("reportPopup"),previewPopup=$("previewPopup"),popupClassReport=$("popupClassReport"),popupReportSummary=$("popupReportSummary"),popupPreviewImg=$("popupPreviewImg"),successPop=$("successPop");
+    let stream=null,devices=[],currentDeviceId="",facingMode="environment",currentImageData="",rotationDegree=0,students=[],studentMap=new Map(),lastFoundStudent=null,isSaving=false;
 
     document.querySelectorAll(".nav").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.screen)));
     $("reloadBtn").addEventListener("click",loadStudents);$("backendBtn").addEventListener("click",testBackend);$("readyBtn").addEventListener("click",()=>showToast("ระบบพร้อมใช้งาน"));$("refreshReportBtn").addEventListener("click",()=>{renderReport();showToast("อัปเดตรายงานแล้ว");});
@@ -168,13 +198,18 @@
     openCameraBtn.addEventListener("click",()=>startCamera(""));closeCameraBtn.addEventListener("click",()=>stopCamera(true));switchCameraBtn.addEventListener("click",switchCamera);rotateBtn.addEventListener("click",rotateCapture);captureBtn.addEventListener("click",captureImage);saveBtn.addEventListener("click",savePhoto);downloadBtn.addEventListener("click",downloadImage);clearBtn.addEventListener("click",clearAll);nextBtn.addEventListener("click",()=>goToOffset(1));prevBtn.addEventListener("click",()=>goToOffset(-1));
     studentId.addEventListener("input",()=>{studentId.value=studentId.value.replace(/[^\d]/g,"");lookupStudent();});
     fileInput.addEventListener("change",handleFile);window.addEventListener("beforeunload",()=>stopCamera(false));window.addEventListener("resize",fitVideoToStage);video.addEventListener("loadedmetadata",fitVideoToStage);document.addEventListener("keydown",handleKeys);
+    $("openReportPopupBtn").addEventListener("click",()=>openPopup(reportPopup));$("closeReportPopupBtn").addEventListener("click",()=>closePopup(reportPopup));$("closePreviewPopupBtn").addEventListener("click",()=>closePopup(previewPopup));reportPopup.addEventListener("click",e=>{if(e.target===reportPopup)closePopup(reportPopup);});previewPopup.addEventListener("click",e=>{if(e.target===previewPopup)closePopup(previewPopup);});preview.addEventListener("click",()=>{if(currentImageData){popupPreviewImg.src=currentImageData;openPopup(previewPopup);}});
 
     function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));const titles={photo:["ถ่ายภาพนักเรียน","ค้นหาเร็วจากฐานข้อมูลที่โหลดไว้ แล้วส่งรูปลง Drive/Sheet คอลัมน์ H"],setting:["ตั้งค่าระบบ","ตรวจสอบ URL และค่าเริ่มต้น"],status:["สถานะระบบ","ดูสถานะการทำงานและประวัติ"],manual:["คู่มือ","วิธีใช้งานและปุ่มลัด"]};$("pageTitle").textContent=titles[id][0];$("pageSub").textContent=titles[id][1];}
-    function showToast(msg,ms=4200){toast.textContent=msg;toast.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove("show"),ms);} 
+    function showToast(msg,ms=4200){toast.textContent=msg;toast.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove("show"),ms);}
+    function openPopup(el){if(!el)return;el.classList.add("show");el.setAttribute("aria-hidden","false");}
+    function closePopup(el){if(!el)return;el.classList.remove("show");el.setAttribute("aria-hidden","true");}
+    function playSuccessSound(){try{const AudioCtx=window.AudioContext||window.webkitAudioContext;const ctx=new AudioCtx();const now=ctx.currentTime;[660,880,1175].forEach((freq,i)=>{const osc=ctx.createOscillator();const gain=ctx.createGain();osc.type="sine";osc.frequency.setValueAtTime(freq,now+i*.09);gain.gain.setValueAtTime(0.0001,now+i*.09);gain.gain.exponentialRampToValueAtTime(.15,now+i*.09+.015);gain.gain.exponentialRampToValueAtTime(0.0001,now+i*.09+.13);osc.connect(gain);gain.connect(ctx.destination);osc.start(now+i*.09);osc.stop(now+i*.09+.15);});setTimeout(()=>ctx.close&&ctx.close(),700);}catch(e){}}
+    function showSuccessPop(text="บันทึกลง Drive/Sheet สำเร็จ"){successPop.innerHTML=`<span class="material-symbols-rounded">check_circle</span><span>${escapeHtml(text)}</span>`;successPop.classList.add("show");clearTimeout(showSuccessPop.t);showSuccessPop.t=setTimeout(()=>successPop.classList.remove("show"),1800);} 
     function addLog(msg){const div=document.createElement("div");div.className="log-item";div.textContent=`[${new Date().toLocaleString("th-TH")}] ${msg}`;logBox.prepend(div);} 
     function setDebug(obj){debug.textContent=typeof obj==="string"?obj:JSON.stringify(obj,null,2);} function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
     function normalize(v){return String(v||"").trim().replace(/\s+/g,"");}
-    function hasPhoto(stu){return String(stu&&stu.photo||"").trim().length>0;}
+    function hasPhoto(stu){const v=String(stu&&stu.photo||"").trim();return !!v && v!=="กำลังบันทึกรูป" && !v.startsWith("pending:");}
     function getClassName(stu){return String(stu&&stu.classLevel||"ไม่ระบุชั้น").trim()||"ไม่ระบุชั้น";}
     function calcReport(){
       const total=students.length;
@@ -209,6 +244,11 @@
       if(miniRemain)miniRemain.textContent=`${r.remain} คน`;
       if(miniPercent)miniPercent.textContent=`${r.percent}%`;
       if(miniProgress)miniProgress.style.width=`${r.percent}%`;
+      if(dashTotal)dashTotal.textContent=r.total;
+      if(dashCaptured)dashCaptured.textContent=r.captured;
+      if(dashRemain)dashRemain.textContent=r.remain;
+      if(dashPercent)dashPercent.textContent=`${r.percent}%`;
+      if(dashProgress)dashProgress.style.width=`${r.percent}%`;
       const doneClasses=r.classes.filter(c=>c.captured>0).map(c=>c.className);
       if(miniClassSummary){
         miniClassSummary.textContent=doneClasses.length?`ถ่ายแล้วในชั้น: ${doneClasses.join(", ")}`:"ยังไม่มีชั้นที่เริ่มถ่ายภาพ";
@@ -220,6 +260,8 @@
       if(!r.classes.length){
         if(classReport)classReport.innerHTML=empty;
         if(photoClassReport)photoClassReport.innerHTML=empty;
+        if(inlineClassChips)inlineClassChips.innerHTML=empty;
+        if(popupClassReport)popupClassReport.innerHTML=empty;
         return;
       }
       const html=r.classes.map(c=>{
@@ -233,6 +275,11 @@
       }).join("");
       if(classReport)classReport.innerHTML=html;
       if(photoClassReport)photoClassReport.innerHTML=html;
+      if(popupClassReport)popupClassReport.innerHTML=html;
+      if(popupReportSummary)popupReportSummary.textContent=summaryText;
+      if(inlineClassChips){
+        inlineClassChips.innerHTML=r.classes.map(c=>{const pct=c.total?Math.round(c.captured*100/c.total):0;return `<div class="report-chip"><div class="report-chip-top"><span>${escapeHtml(c.className)}</span><b>${pct}%</b></div><small>${c.captured}/${c.total} คน • เหลือ ${c.remain}</small><div class="report-mini-bar"><span style="width:${pct}%"></span></div></div>`;}).join("");
+      }
     }
     function loadSettings(){let saved={};try{saved=JSON.parse(localStorage.getItem("smartPhotoSettings")||"{}");}catch(e){}const data={...DEFAULTS,...saved};if(!data.scriptUrl||data.scriptUrl!==DEFAULTS.scriptUrl){data.scriptUrl=DEFAULTS.scriptUrl;}if(!data.folderId||data.folderId!==DEFAULTS.folderId){data.folderId=DEFAULTS.folderId;}sheetId.value=data.sheetId;sheetGid.value=data.sheetGid;folderId.value=data.folderId;scriptUrl.value=data.scriptUrl;fileExt.value=data.fileExt;imageSize.value=data.imageSize||"720";replaceFile.checked=data.replaceFile!==false;saveSettings(false);}
     function saveSettings(notify=true){const data={sheetId:sheetId.value.trim(),sheetGid:sheetGid.value.trim(),folderId:folderId.value.trim(),scriptUrl:scriptUrl.value.trim(),fileExt:fileExt.value,imageSize:imageSize.value,replaceFile:replaceFile.checked};localStorage.setItem("smartPhotoSettings",JSON.stringify(data));if(notify)showToast("บันทึกการตั้งค่าแล้ว");updateStatus();}
@@ -247,18 +294,19 @@
     async function switchCamera(){if(devices.length>1&&currentDeviceId){const i=devices.findIndex(d=>d.deviceId===currentDeviceId);const next=devices[(i+1)%devices.length];await startCamera(next.deviceId);}else{facingMode=facingMode==="environment"?"user":"environment";await startCamera("");}}
     function fitVideoToStage(){
       const stage=document.querySelector(".camera-stage");
+      if(!stage)return;
       const sw=video.videoWidth||1280;
       const sh=video.videoHeight||720;
-      const stageW=stage.clientWidth||900;
-      const stageH=stage.clientHeight||520;
+      const stageW=Math.max(1,(stage.clientWidth||900)-28);
+      const stageH=Math.max(1,(stage.clientHeight||520)-28);
       const sideways=rotationDegree===90||rotationDegree===270;
       const displayW=sideways?sh:sw;
       const displayH=sideways?sw:sh;
-      const scale=Math.min(stageW/displayW,stageH/displayH,1);
+      const scale=Math.min(stageW/displayW,stageH/displayH);
       video.style.width=Math.max(1,Math.floor(sw*scale))+"px";
       video.style.height=Math.max(1,Math.floor(sh*scale))+"px";
       video.style.transform=`translate(-50%,-50%) rotate(${rotationDegree}deg)`;
-      rotationBadge.textContent=`แสดงพอดีจอ • บันทึกหมุน ${rotationDegree}°`;
+      rotationBadge.textContent=`แสดงต้นฉบับพอดีจอ • บันทึกหมุน ${rotationDegree}°`;
     }
     function rotateCapture(){rotationDegree=(rotationDegree+90)%360;fitVideoToStage();showToast("หมุนภาพเป็น "+rotationDegree+"° แล้ว");}
     function drawVideo(){const sw=video.videoWidth,sh=video.videoHeight;if(!sw||!sh)throw new Error("ยังไม่พบภาพจากกล้อง");if(rotationDegree===90||rotationDegree===270){canvas.width=sh;canvas.height=sw;}else{canvas.width=sw;canvas.height=sh;}const ctx=canvas.getContext("2d");ctx.save();ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);if(rotationDegree===90){ctx.translate(canvas.width,0);ctx.rotate(Math.PI/2);}else if(rotationDegree===180){ctx.translate(canvas.width,canvas.height);ctx.rotate(Math.PI);}else if(rotationDegree===270){ctx.translate(0,canvas.height);ctx.rotate(3*Math.PI/2);}ctx.drawImage(video,0,0,sw,sh);ctx.restore();trimBlackBorderFromCanvas(canvas);}
@@ -268,10 +316,10 @@
       if(!w||!h)return;
       const img=ctx.getImageData(0,0,w,h);
       const d=img.data;
-      const threshold=38;
+      const threshold=55;
       let top=0,bottom=h-1,left=0,right=w-1;
-      function isDarkRow(y){let dark=0,total=0;const step=Math.max(1,Math.floor(w/320));for(let x=0;x<w;x+=step){const i=(y*w+x)*4;const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];if(a>10){total++;if(r<threshold&&g<threshold&&b<threshold)dark++;}}return total>0&&dark/total>.90;}
-      function isDarkCol(x){let dark=0,total=0;const step=Math.max(1,Math.floor(h/320));for(let y=0;y<h;y+=step){const i=(y*w+x)*4;const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];if(a>10){total++;if(r<threshold&&g<threshold&&b<threshold)dark++;}}return total>0&&dark/total>.90;}
+      function isDarkRow(y){let dark=0,total=0;const step=Math.max(1,Math.floor(w/320));for(let x=0;x<w;x+=step){const i=(y*w+x)*4;const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];if(a>10){total++;if(r<threshold&&g<threshold&&b<threshold)dark++;}}return total>0&&dark/total>.72;}
+      function isDarkCol(x){let dark=0,total=0;const step=Math.max(1,Math.floor(h/320));for(let y=0;y<h;y+=step){const i=(y*w+x)*4;const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];if(a>10){total++;if(r<threshold&&g<threshold&&b<threshold)dark++;}}return total>0&&dark/total>.72;}
       while(top<h-2&&isDarkRow(top))top++;
       while(bottom>top+2&&isDarkRow(bottom))bottom--;
       while(left<w-2&&isDarkCol(left))left++;
@@ -291,8 +339,8 @@
     async function captureImage(){if(!stream||!video.videoWidth){showToast("กรุณาเปิดกล้องก่อนถ่ายภาพ");return;}drawVideo();const mime=fileExt.value==="png"?"image/png":"image/jpeg";currentImageData=await compressDataUrl(canvas.toDataURL(mime,.86));showPreview(currentImageData);showToast("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");addLog("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");updateStatus();}
     async function handleFile(){const f=fileInput.files&&fileInput.files[0];if(!f)return;if(!f.type.startsWith("image/")){showToast("กรุณาเลือกไฟล์รูปภาพเท่านั้น");fileInput.value="";return;}const r=new FileReader();r.onload=async()=>{currentImageData=await compressDataUrl(r.result);showPreview(currentImageData);showToast("เลือกไฟล์รูปภาพสำเร็จ");addLog("เลือกไฟล์: "+f.name);};r.readAsDataURL(f);}function showPreview(src){preview.src=src;preview.style.display="block";downloadBtn.disabled=false;updateStatus();}
     function fileName(){return (normalize(studentId.value)||"student-photo")+"."+(fileExt.value||"jpg");}
-    async function savePhoto(){if(isSaving)return;const key=normalize(studentId.value);if(!key){showToast("กรุณากรอกเลขประจำตัวนักเรียนก่อนบันทึก");studentId.focus();return;}const stu=studentMap.get(key);if(!stu){showToast("ไม่พบนักเรียนในฐานข้อมูล กรุณาตรวจเลขหรือโหลดฐานข้อมูลใหม่",7000);return;}if(!currentImageData&&stream&&video.videoWidth){await captureImage();}if(!currentImageData){showToast("กรุณาถ่ายภาพหรือเลือกไฟล์ก่อนบันทึก");return;}isSaving=true;saveBtn.disabled=true;saveBtn.textContent="กำลังส่งรูป...";try{const imageToSend=currentImageData;const oldPhoto=String(stu.photo||"").trim();const payload={searchKey:key,studentId:stu.id||"",citizenId:stu.citizenId||"",studentNo:stu.studentNo||key,fullName:stu.fullName||"",classLevel:stu.classLevel||"",school:stu.school||"",fileName:fileName(),folderId:folderId.value.trim(),replaceFile:replaceFile.checked,imageData:imageToSend};setDebug({step:"send-fast-no-black-border",payload:{...payload,imageData:"[base64 length "+imageToSend.length+"]"}});addLog("ส่งรูปแบบเร็ว ไม่มีขอบดำ: "+fileName()+" | "+(stu.fullName||key));await fetch(scriptUrl.value.trim(),{method:"POST",mode:"no-cors",cache:"no-store",body:JSON.stringify(payload)});stu.photo=oldPhoto||"กำลังบันทึกรูป";updateStatus();showToast("ส่งรูปแล้ว รายงานอัปเดตทันที ไปคนถัดไปได้เลย");if(quickMode.checked){nextAfterSave();}verifySaved(key,oldPhoto).then(ok=>{if(ok)addLog("ตรวจย้อนหลังสำเร็จ: "+key);});}catch(err){showToast("บันทึกไม่สำเร็จ: "+(err.message||err.name),9000);addLog("บันทึกไม่สำเร็จ: "+(err.message||err.name));}finally{isSaving=false;saveBtn.disabled=false;saveBtn.textContent="บันทึกเข้า Drive/Sheet";}}
-    async function verifySaved(key,oldPhoto){await sleep(650);let last=null;for(let i=1;i<=7;i++){try{addLog(`ตรวจคอลัมน์ H รอบ ${i}/7`);const data=await jsonp("student",{key},12000);last=data;setDebug({verifyRound:i,data});if(!data.ok||!data.found)throw new Error(data.message||"ตรวจไม่พบข้อมูลนักเรียน");const photo=String(data.student.photo||"").trim();if(photo&&photo!==oldPhoto){addLog("สำเร็จ: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();return true;}if(photo){addLog("พบลิงก์รูปใน H: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();return true;}await sleep(750);}catch(err){addLog(`ตรวจรอบ ${i} ไม่สำเร็จ: ${err.message||err.name}`);await sleep(750);}}
+    async function savePhoto(){if(isSaving)return;const key=normalize(studentId.value);if(!key){showToast("กรุณากรอกเลขประจำตัวนักเรียนก่อนบันทึก");studentId.focus();return;}const stu=studentMap.get(key);if(!stu){showToast("ไม่พบนักเรียนในฐานข้อมูล กรุณาตรวจเลขหรือโหลดฐานข้อมูลใหม่",7000);return;}if(!currentImageData&&stream&&video.videoWidth){await captureImage();}if(!currentImageData){showToast("กรุณาถ่ายภาพหรือเลือกไฟล์ก่อนบันทึก");return;}isSaving=true;saveBtn.disabled=true;saveBtn.innerHTML=`<span class="material-symbols-rounded">progress_activity</span>กำลังส่งรูป...`;try{const imageToSend=currentImageData;const oldPhoto=String(stu.photo||"").trim();const payload={searchKey:key,studentId:stu.id||"",citizenId:stu.citizenId||"",studentNo:stu.studentNo||key,fullName:stu.fullName||"",classLevel:stu.classLevel||"",school:stu.school||"",fileName:fileName(),folderId:folderId.value.trim(),replaceFile:replaceFile.checked,imageData:imageToSend};setDebug({step:"send-fast-no-black-border",payload:{...payload,imageData:"[base64 length "+imageToSend.length+"]"}});addLog("ส่งรูปแบบเร็ว ไม่มีขอบดำ: "+fileName()+" | "+(stu.fullName||key));await fetch(scriptUrl.value.trim(),{method:"POST",mode:"no-cors",cache:"no-store",body:JSON.stringify(payload)});stu.photo=oldPhoto||"กำลังบันทึกรูป";updateStatus();showToast("ส่งรูปแล้ว กำลังตรวจคอลัมน์ H เพื่อยืนยันผลสำเร็จ");if(quickMode.checked){nextAfterSave();}verifySaved(key,oldPhoto).then(ok=>{if(ok)addLog("ตรวจย้อนหลังสำเร็จ: "+key);});}catch(err){showToast("บันทึกไม่สำเร็จ: "+(err.message||err.name),9000);addLog("บันทึกไม่สำเร็จ: "+(err.message||err.name));}finally{isSaving=false;saveBtn.disabled=false;saveBtn.innerHTML=`<span class="material-symbols-rounded">cloud_upload</span>บันทึกเข้า Drive/Sheet`;}}
+    async function verifySaved(key,oldPhoto){await sleep(650);let last=null;for(let i=1;i<=7;i++){try{addLog(`ตรวจคอลัมน์ H รอบ ${i}/7`);const data=await jsonp("student",{key},12000);last=data;setDebug({verifyRound:i,data});if(!data.ok||!data.found)throw new Error(data.message||"ตรวจไม่พบข้อมูลนักเรียน");const photo=String(data.student.photo||"").trim();if(photo&&photo!==oldPhoto){addLog("สำเร็จ: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();playSuccessSound();showSuccessPop();return true;}if(photo){addLog("พบลิงก์รูปใน H: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();playSuccessSound();showSuccessPop();return true;}await sleep(750);}catch(err){addLog(`ตรวจรอบ ${i} ไม่สำเร็จ: ${err.message||err.name}`);await sleep(750);}}
       addLog("ยังไม่พบลิงก์ใน H หลังตรวจแบบเร็ว: "+key);setDebug({message:"verify timeout",last});return false;}
     function nextAfterSave(){currentImageData="";fileInput.value="";preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;goToOffset(1);showToast("พร้อมถ่ายนักเรียนคนถัดไป");updateStatus();}
     function currentIndex(){const key=normalize(studentId.value);if(!key)return-1;return students.findIndex(s=>[s.id,s.citizenId,s.studentNo].some(k=>normalize(k)===key));}
