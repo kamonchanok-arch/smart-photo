@@ -288,6 +288,95 @@
     .camera-stage::before{z-index:4;pointer-events:none}
     .camera-stage .badge,.camera-stage .rotate-burst{z-index:5}
 
+    /* Drag & drop backup image uploader */
+    .backup-dropzone{
+      margin-top:10px;
+      border:2px dashed #b9cbe3;
+      border-radius:16px;
+      background:linear-gradient(135deg,#f8fbff,#eef7ff);
+      padding:16px 14px;
+      min-height:112px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      cursor:pointer;
+      transition:border-color .18s ease, background .18s ease, transform .18s ease, box-shadow .18s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .backup-dropzone::before{
+      content:"";
+      position:absolute;
+      inset:auto -40px -50px auto;
+      width:120px;
+      height:120px;
+      border-radius:999px;
+      background:rgba(14,165,233,.10);
+      pointer-events:none;
+    }
+    .backup-dropzone:hover{
+      border-color:#0ea5e9;
+      background:linear-gradient(135deg,#ffffff,#eaf7ff);
+      transform:translateY(-1px);
+      box-shadow:0 12px 26px rgba(14,165,233,.12);
+    }
+    .backup-dropzone.dragover{
+      border-color:#16a34a;
+      background:linear-gradient(135deg,#ecfdf3,#eff6ff);
+      box-shadow:0 0 0 5px rgba(22,163,74,.12),0 16px 32px rgba(15,23,42,.10);
+      transform:scale(1.01);
+    }
+    .backup-dropzone .dz-icon{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      background:#173f7a;
+      color:#fff;
+      margin:0 auto 8px;
+      box-shadow:0 10px 22px rgba(23,63,122,.20);
+    }
+    .backup-dropzone .dz-icon .material-symbols-rounded{
+      font-size:27px;
+      color:#fff;
+      margin:0;
+      vertical-align:0;
+    }
+    .backup-dropzone .dz-title{
+      font-weight:1000;
+      color:#0f172a;
+      font-size:15px;
+      line-height:1.35;
+      position:relative;
+      z-index:1;
+    }
+    .backup-dropzone .dz-sub{
+      margin-top:4px;
+      color:#667085;
+      font-size:12.5px;
+      font-weight:800;
+      line-height:1.45;
+      position:relative;
+      z-index:1;
+    }
+    .file-input-hidden{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important}
+    .backup-file-name{
+      margin-top:8px;
+      padding:8px 10px;
+      border-radius:12px;
+      background:#f8fafc;
+      border:1px solid #e2e8f0;
+      color:#475467;
+      font-size:12.5px;
+      font-weight:900;
+      display:none;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .backup-file-name.show{display:block;animation:fadePop .2s ease both}
+
   </style>
 </head>
 <body>
@@ -348,7 +437,15 @@
               </div>
               <div class="side-card card">
                 <h2>ไฟล์รูปภาพสำรอง</h2>
-                <input id="fileInput" type="file" accept="image/*" style="width:100%;border:1px solid #d9e3f0;border-radius:12px;padding:11px;background:#fff" />
+                <input id="fileInput" class="file-input-hidden" type="file" accept="image/*" />
+                <div id="backupDropzone" class="backup-dropzone" role="button" tabindex="0" aria-label="ลากไฟล์รูปภาพมาวาง หรือคลิกเพื่อเลือกไฟล์">
+                  <div>
+                    <div class="dz-icon"><span class="material-symbols-rounded">upload_file</span></div>
+                    <div class="dz-title">ลากรูปภาพมาวางตรงนี้</div>
+                    <div class="dz-sub">หรือคลิกเพื่อเลือกไฟล์จากเครื่อง<br>รองรับ JPG, PNG, WEBP</div>
+                  </div>
+                </div>
+                <div id="backupFileName" class="backup-file-name"></div>
                 <div class="hint">ใช้กรณีกล้องมีปัญหา หรือมีรูปอยู่แล้วในเครื่อง</div>
                 <img id="preview" class="preview" alt="ตัวอย่างภาพ" />
               </div>
@@ -464,7 +561,7 @@
     };
     const $=id=>document.getElementById(id);
     const video=$("video"),canvas=$("canvas"),cameraEmpty=$("cameraEmpty"),rotationBadge=$("rotationBadge"),toast=$("toast"),logBox=$("logBox"),debug=$("debug");
-    const studentId=$("studentId"),studentName=$("studentName"),studentDetail=$("studentDetail"),preview=$("preview"),fileInput=$("fileInput");
+    const studentId=$("studentId"),studentName=$("studentName"),studentDetail=$("studentDetail"),preview=$("preview"),fileInput=$("fileInput"),backupDropzone=$("backupDropzone"),backupFileName=$("backupFileName");
     const openCameraBtn=$("openCameraBtn"),switchCameraBtn=$("switchCameraBtn"),rotateBtn=$("rotateBtn"),captureBtn=$("captureBtn"),closeCameraBtn=$("closeCameraBtn"),saveBtn=$("saveBtn"),downloadBtn=$("downloadBtn"),clearBtn=$("clearBtn"),prevBtn=$("prevBtn"),nextBtn=$("nextBtn");
     const sheetId=$("sheetId"),sheetGid=$("sheetGid"),folderId=$("folderId"),scriptUrl=$("scriptUrl"),fileExt=$("fileExt"),imageSize=$("imageSize"),replaceFile=$("replaceFile"),quickMode=$("quickMode");
     const cameraStatus=$("cameraStatus"),studentStatus=$("studentStatus"),imageStatus=$("imageStatus"),backendStatus=$("backendStatus");
@@ -479,6 +576,7 @@
     openCameraBtn.addEventListener("click",()=>startCamera(""));closeCameraBtn.addEventListener("click",()=>stopCamera(true));switchCameraBtn.addEventListener("click",switchCamera);rotateBtn.addEventListener("click",rotateCapture);captureBtn.addEventListener("click",captureImage);saveBtn.addEventListener("click",savePhoto);downloadBtn.addEventListener("click",downloadImage);clearBtn.addEventListener("click",clearAll);nextBtn.addEventListener("click",()=>goToOffset(1));prevBtn.addEventListener("click",()=>goToOffset(-1));
     studentId.addEventListener("input",()=>{studentId.value=studentId.value.replace(/[^\d]/g,"");triggerSearchFx();lookupStudent();});
     fileInput.addEventListener("change",handleFile);
+    initBackupDropzone();
     if(soundToggle){soundToggle.checked=localStorage.getItem("smartPhotoSound")!=="off";soundToggle.addEventListener("change",()=>localStorage.setItem("smartPhotoSound",soundToggle.checked?"on":"off"));}
     if(preview){preview.addEventListener("click",openPreviewModal);}
     if(previewModalClose){previewModalClose.addEventListener("click",closePreviewModal);}
@@ -718,16 +816,80 @@
     }
     async function compressDataUrl(dataUrl){const maxSize=Number(imageSize.value||1200),quality=.90;return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>h&&w>maxSize){h=Math.round(h*maxSize/w);w=maxSize;}else if(h>=w&&h>maxSize){w=Math.round(w*maxSize/h);h=maxSize;}const c=document.createElement("canvas");c.width=w;c.height=h;const cx=c.getContext("2d");cx.fillStyle="#ffffff";cx.fillRect(0,0,w,h);cx.drawImage(img,0,0,w,h);const mime=fileExt.value==="png"?"image/png":"image/jpeg";resolve(c.toDataURL(mime,mime==="image/jpeg"?quality:undefined));};img.onerror=()=>reject(new Error("ย่อรูปไม่สำเร็จ"));img.src=dataUrl;});}
     async function captureImage(){if(!stream||!video.videoWidth){showToast("กรุณาเปิดกล้องก่อนถ่ายภาพ");return;}try{showLoading("กำลังเตรียมรูป","กำลังจับภาพจากกล้อง...",35);drawVideo();updateLoading(65,"กำลังย่อขนาดรูปให้ส่งเร็ว...");const mime=fileExt.value==="png"?"image/png":"image/jpeg";currentImageData=await compressDataUrl(canvas.toDataURL(mime,.78));updateLoading(92,"เตรียมรูปสำเร็จ");showPreview(currentImageData);showToast("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");addLog("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");updateStatus();hideLoading(120);}catch(err){hideLoading(0);showToast("ถ่ายภาพไม่สำเร็จ: "+(err.message||err.name),7000);}}
-    async function handleFile(){const f=fileInput.files&&fileInput.files[0];if(!f)return;if(!f.type.startsWith("image/")){showToast("กรุณาเลือกไฟล์รูปภาพเท่านั้น");fileInput.value="";return;}const r=new FileReader();r.onload=async()=>{currentImageData=await compressDataUrl(r.result);showPreview(currentImageData);showToast("เลือกไฟล์รูปภาพสำเร็จ");addLog("เลือกไฟล์: "+f.name);};r.readAsDataURL(f);}function showPreview(src){preview.src=src;preview.style.display="block";downloadBtn.disabled=false;updateStatus();}
+    async function handleFile(){const f=fileInput.files&&fileInput.files[0];await processBackupFile(f);}
+    function initBackupDropzone(){
+      if(!backupDropzone)return;
+      backupDropzone.addEventListener("click",()=>fileInput.click());
+      backupDropzone.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();fileInput.click();}});
+      ["dragenter","dragover"].forEach(evt=>backupDropzone.addEventListener(evt,e=>{
+        e.preventDefault();e.stopPropagation();backupDropzone.classList.add("dragover");
+      }));
+      ["dragleave","dragend","drop"].forEach(evt=>backupDropzone.addEventListener(evt,e=>{
+        e.preventDefault();e.stopPropagation();backupDropzone.classList.remove("dragover");
+      }));
+      backupDropzone.addEventListener("drop",async e=>{
+        const files=e.dataTransfer&&e.dataTransfer.files;
+        const f=files&&files[0];
+        await processBackupFile(f);
+      });
+      document.addEventListener("paste",async e=>{
+        if(!document.getElementById("photo").classList.contains("active"))return;
+        const items=e.clipboardData&&e.clipboardData.items;
+        if(!items)return;
+        for(const item of items){
+          if(item.type&&item.type.startsWith("image/")){
+            const f=item.getAsFile();
+            await processBackupFile(f);
+            break;
+          }
+        }
+      });
+    }
+    async function processBackupFile(f){
+      if(!f)return;
+      if(!f.type||!f.type.startsWith("image/")){
+        showToast("กรุณาเลือกหรือลากไฟล์รูปภาพเท่านั้น");
+        if(fileInput)fileInput.value="";
+        return;
+      }
+      showLoading("กำลังเตรียมรูปภาพ","กำลังอ่านไฟล์รูปภาพสำรอง...",15);
+      const r=new FileReader();
+      r.onload=async()=>{
+        try{
+          updateLoading(45,"กำลังย่อและปรับคุณภาพรูปภาพ...");
+          currentImageData=await compressDataUrl(r.result);
+          updateLoading(90,"เตรียมรูปภาพสำเร็จ");
+          showPreview(currentImageData);
+          if(backupFileName){
+            const kb=Math.max(1,Math.round(f.size/1024));
+            backupFileName.textContent=`ไฟล์ที่เลือก: ${f.name} (${kb.toLocaleString("th-TH")} KB)`;
+            backupFileName.classList.add("show");
+          }
+          showToast("เพิ่มไฟล์รูปภาพสำรองสำเร็จ");
+          addLog("เพิ่มไฟล์รูปภาพสำรอง: "+f.name);
+          hideLoading(120);
+        }catch(err){
+          hideLoading(0);
+          showToast("เตรียมรูปไม่สำเร็จ: "+(err.message||err.name),7000);
+          addLog("เตรียมรูปไม่สำเร็จ: "+(err.message||err.name));
+        }
+      };
+      r.onerror=()=>{
+        hideLoading(0);
+        showToast("อ่านไฟล์รูปภาพไม่สำเร็จ");
+      };
+      r.readAsDataURL(f);
+    }
+    function showPreview(src){preview.src=src;preview.style.display="block";downloadBtn.disabled=false;updateStatus();}
     function fileName(){return (normalize(studentId.value)||"student-photo")+"."+(fileExt.value||"jpg");}
     async function savePhoto(){if(isSaving)return;const key=normalize(studentId.value);if(!key){showToast("กรุณากรอกเลขประจำตัวนักเรียนก่อนบันทึก");studentId.focus();return;}const stu=studentMap.get(key);if(!stu){showToast("ไม่พบนักเรียนในฐานข้อมูล กรุณาตรวจเลขหรือโหลดฐานข้อมูลใหม่",7000);return;}if(!currentImageData&&stream&&video.videoWidth){await captureImage();}if(!currentImageData){showToast("กรุณาถ่ายภาพหรือเลือกไฟล์ก่อนบันทึก");return;}isSaving=true;saveBtn.disabled=true;saveBtn.textContent="กำลังส่งรูป...";setSaveStage(0,10,"กำลังส่งรูปคุณภาพสูง...");showLoading("บันทึกรูป","กำลังส่งรูปคุณภาพสูงไป Drive/Sheet",10);try{const imageToSend=currentImageData;const oldPhoto=String(stu.photo||"").trim();const pendingToken="__pending__"+Date.now();const shouldQuick=quickMode&&quickMode.checked;const payload={searchKey:key,studentId:stu.id||"",citizenId:stu.citizenId||"",studentNo:stu.studentNo||key,fullName:stu.fullName||"",classLevel:stu.classLevel||"",school:stu.school||"",fileName:fileName(),folderId:folderId.value.trim(),replaceFile:replaceFile.checked,imageData:imageToSend};setDebug({step:"send-high-quality-background-verify",payload:{...payload,imageData:"[base64 length "+imageToSend.length+"]"}});addLog("ส่งรูปคุณภาพสูง: "+fileName()+" | "+(stu.fullName||key)+" | ขนาดข้อมูล "+Math.round(imageToSend.length/1024)+" KB");await fetch(scriptUrl.value.trim(),{method:"POST",mode:"no-cors",cache:"no-store",body:JSON.stringify(payload)});if(!oldPhoto){stu.photo=pendingToken;updateStatus();}setSaveStage(1,52,"ส่งแล้ว • ตรวจ Sheet เบื้องหลัง");updateLoading(100,"ส่งข้อมูลแล้ว ตรวจ Sheet ต่อเบื้องหลัง");hideLoading(90);showToast(shouldQuick?"ส่งรูปแล้ว ไปคนถัดไปได้ทันที":"ส่งรูปแล้ว กำลังตรวจ Sheet...",4200);if(shouldQuick){nextAfterSave();}verifySaved(key,oldPhoto).then(ok=>{if(ok){setSaveStage(3,100,"บันทึกสำเร็จ");playSuccessSound();showToast("บันทึกลง Drive/Sheet สำเร็จ",4200);addLog("ตรวจย้อนหลังสำเร็จ: "+key);renderLiveReport&&renderLiveReport();}else{const local=studentMap.get(key);if(local&&local.photo===pendingToken){local.photo="";updateStatus();}setSaveStage(1,70,"ส่งแล้ว แต่ยังไม่พบลิงก์ H");showToast("ส่งรูปแล้ว แต่ยังไม่พบลิงก์ใน Sheet กรุณาตรวจอีกครั้ง",6500);}});}catch(err){setSaveStage(0,0,"บันทึกไม่สำเร็จ");hideLoading(0);showToast("บันทึกไม่สำเร็จ: "+(err.message||err.name),9000);addLog("บันทึกไม่สำเร็จ: "+(err.message||err.name));}finally{isSaving=false;saveBtn.disabled=false;saveBtn.textContent="บันทึกเข้า Drive/Sheet";}}
         async function verifySaved(key,oldPhoto){await sleep(380);let last=null;const totalRounds=5;for(let i=1;i<=totalRounds;i++){try{addLog(`ตรวจคอลัมน์ H รอบ ${i}/${totalRounds}`);setSaveStage(1,50+Math.round(i*8),"ตรวจ Sheet รอบ "+i+"/"+totalRounds);const data=await jsonp("student",{key},8000);last=data;setDebug({verifyRound:i,data});if(!data.ok||!data.found)throw new Error(data.message||"ตรวจไม่พบข้อมูลนักเรียน");const photo=String(data.student.photo||"").trim();if(photo&&photo!==oldPhoto){addLog("สำเร็จ: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();return true;}if(photo){addLog("พบลิงก์รูปใน H: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();return true;}await sleep(520);}catch(err){addLog(`ตรวจรอบ ${i} ไม่สำเร็จ: ${err.message||err.name}`);await sleep(520);}}
       addLog("ยังไม่พบลิงก์ใน H หลังตรวจแบบเร็ว: "+key);setDebug({message:"verify timeout",last});return false;}
-    function nextAfterSave(){currentImageData="";fileInput.value="";preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;goToOffset(1);showToast("พร้อมถ่ายนักเรียนคนถัดไป");updateStatus();}
+    function nextAfterSave(){currentImageData="";fileInput.value="";if(backupFileName){backupFileName.textContent="";backupFileName.classList.remove("show");}preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;goToOffset(1);showToast("พร้อมถ่ายนักเรียนคนถัดไป");updateStatus();}
     function currentIndex(){const key=normalize(studentId.value);if(!key)return-1;return students.findIndex(s=>[s.id,s.citizenId,s.studentNo].some(k=>normalize(k)===key));}
-    function goToOffset(offset){if(!students.length){showToast("ยังไม่ได้โหลดฐานข้อมูล");return;}let i=currentIndex();if(i<0)i=offset>0?-1:0;const next=Math.max(0,Math.min(students.length-1,i+offset));const stu=students[next];studentId.value=stu.studentNo||stu.citizenId||stu.id||"";lookupStudent();currentImageData="";fileInput.value="";preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;studentId.focus();studentId.select();addLog(`ไปนักเรียนลำดับ ${next+1}: ${stu.fullName||studentId.value}`);updateStatus();}
+    function goToOffset(offset){if(!students.length){showToast("ยังไม่ได้โหลดฐานข้อมูล");return;}let i=currentIndex();if(i<0)i=offset>0?-1:0;const next=Math.max(0,Math.min(students.length-1,i+offset));const stu=students[next];studentId.value=stu.studentNo||stu.citizenId||stu.id||"";lookupStudent();currentImageData="";fileInput.value="";if(backupFileName){backupFileName.textContent="";backupFileName.classList.remove("show");}preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;studentId.focus();studentId.select();addLog(`ไปนักเรียนลำดับ ${next+1}: ${stu.fullName||studentId.value}`);updateStatus();}
     function downloadImage(){if(!currentImageData){showToast("ยังไม่มีรูปภาพ");return;}const a=document.createElement("a");a.href=currentImageData;a.download=fileName();document.body.appendChild(a);a.click();a.remove();}
-    function clearAll(){studentId.value="";currentImageData="";fileInput.value="";preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;lookupStudent();updateStatus();showToast("ล้างข้อมูลแล้ว");}
+    function clearAll(){studentId.value="";currentImageData="";fileInput.value="";if(backupFileName){backupFileName.textContent="";backupFileName.classList.remove("show");}preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;lookupStudent();updateStatus();showToast("ล้างข้อมูลแล้ว");}
     function handleKeys(e){if(e.key==="Enter"&&e.target===studentId&&!e.ctrlKey){e.preventDefault();captureImage();}if(e.key==="Enter"&&e.ctrlKey){e.preventDefault();savePhoto();}if(e.key==="ArrowRight"&&e.altKey){e.preventDefault();goToOffset(1);}if(e.key==="ArrowLeft"&&e.altKey){e.preventDefault();goToOffset(-1);}}
     (async function init(){loadSettings();setSaveStage(0,0,"พร้อมบันทึก");lookupStudent();fitVideoToStage();addLog("เปิดระบบ Songkran Photo School");if(!isSecure())addLog("คำเตือน: ต้องเปิดผ่าน HTTPS เพื่อใช้กล้อง");await enumerateCameras();await testBackend();await loadStudents();updateStatus();})();
   </script>
