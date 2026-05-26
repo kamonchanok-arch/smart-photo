@@ -263,6 +263,31 @@
       .camera-save-card .save-steps{grid-template-columns:repeat(3,1fr)!important}
     }
 
+
+    /* Full-original camera preview: rotate without cropping or stretching */
+    .camera-stage{
+      overflow:hidden!important;
+      display:grid!important;
+      place-items:center!important;
+      padding:0!important;
+      contain:layout paint;
+    }
+    #video{
+      position:absolute!important;
+      left:50%!important;
+      top:50%!important;
+      width:auto;
+      height:auto;
+      max-width:none!important;
+      max-height:none!important;
+      object-fit:contain!important;
+      object-position:center center!important;
+      transform-origin:center center!important;
+      backface-visibility:hidden;
+    }
+    .camera-stage::before{z-index:4;pointer-events:none}
+    .camera-stage .badge,.camera-stage .rotate-burst{z-index:5}
+
   </style>
 </head>
 <body>
@@ -465,7 +490,7 @@
     if(missingClassFilter){missingClassFilter.addEventListener("change",()=>{syncMissingFilters("mini");renderMissingStudents();});}
     if(modalMissingClassFilter){modalMissingClassFilter.addEventListener("change",()=>{syncMissingFilters("modal");renderMissingStudents();});}
     document.addEventListener("keydown",e=>{if(e.key==="Escape"){closePreviewModal();closeReportModal();}});
-    window.addEventListener("beforeunload",()=>stopCamera(false));window.addEventListener("resize",fitVideoToStage);video.addEventListener("loadedmetadata",fitVideoToStage);document.addEventListener("keydown",handleKeys);
+    window.addEventListener("beforeunload",()=>stopCamera(false));window.addEventListener("resize",fitVideoToStage);video.addEventListener("loadedmetadata",()=>requestAnimationFrame(fitVideoToStage));document.addEventListener("keydown",handleKeys);
 
     function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));const titles={photo:["ถ่ายภาพนักเรียน","ค้นหาเร็วจากฐานข้อมูลที่โหลดไว้ แล้วส่งรูปลง Drive/Sheet คอลัมน์ H"],setting:["ตั้งค่าระบบ","ตรวจสอบ URL และค่าเริ่มต้น"],status:["สถานะระบบ","ดูสถานะการทำงานและประวัติ"],manual:["คู่มือ","วิธีใช้งานและปุ่มลัด"]};$("pageTitle").textContent=titles[id][0];$("pageSub").textContent=titles[id][1];}
     function showToast(msg,ms=4200){toast.textContent=msg;toast.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove("show"),ms);} 
@@ -629,29 +654,43 @@
     async function switchCamera(){if(devices.length>1&&currentDeviceId){const i=devices.findIndex(d=>d.deviceId===currentDeviceId);const next=devices[(i+1)%devices.length];await startCamera(next.deviceId);}else{facingMode=facingMode==="environment"?"user":"environment";await startCamera("");}}
     function fitVideoToStage(){
       const stage=document.querySelector(".camera-stage");
-      if(!stage)return;
+      if(!stage || !video)return;
       const sw=video.videoWidth||1280;
       const sh=video.videoHeight||720;
       const sideways=rotationDegree===90||rotationDegree===270;
-      const displayW=sideways?sh:sw;
-      const displayH=sideways?sw:sh;
-      const naturalRatio=displayW/displayH;
-      const stageW=stage.clientWidth||900;
+
+      // ขนาดกรอบภาพหลังหมุนจริง: ใช้เพื่อคำนวณแบบ contain ไม่ให้โดนตัด
+      const rotatedW=sideways?sh:sw;
+      const rotatedH=sideways?sw:sh;
+      const frameW=stage.parentElement ? stage.parentElement.clientWidth : (stage.clientWidth||900);
+      const viewportH=window.innerHeight||760;
       const desktop=window.innerWidth>1180;
-      const minH=desktop?360:(window.innerWidth<=520?220:260);
-      const maxH=desktop?650:(window.innerWidth<=860?430:520);
-      let stageH=Math.min(maxH, Math.max(minH, Math.round(stageW/naturalRatio)));
-      stage.style.height=stageH+"px";
+      const minH=desktop?340:(window.innerWidth<=520?220:250);
+      const maxH=desktop?Math.min(640, Math.max(420, viewportH-210)):(window.innerWidth<=860?430:520);
+
+      // ให้กรอบกล้องปรับตามสัดส่วนภาพหลังหมุน แต่ไม่สูงจนเกินจอ
+      const idealH=Math.round(frameW*(rotatedH/rotatedW));
+      const frameH=Math.max(minH, Math.min(maxH, idealH));
+      stage.style.height=frameH+"px";
       stage.style.aspectRatio="auto";
-      const safeW=stage.clientWidth||stageW;
-      const scale=Math.min(safeW/displayW, stageH/displayH);
-      video.style.width=Math.max(1,Math.floor(sw*scale))+"px";
-      video.style.height=Math.max(1,Math.floor(sh*scale))+"px";
-      video.style.transform=`translate(-50%,-50%) rotate(${rotationDegree}deg)`;
-      rotationBadge.textContent=`แสดงต้นฉบับพอดีจอ • บันทึกหมุน ${rotationDegree}°`;
+
+      // คำนวณขนาด video แบบ contain จาก bounding box หลังหมุน
+      const safeW=stage.clientWidth||frameW;
+      const safeH=stage.clientHeight||frameH;
+      const scale=Math.min(safeW/rotatedW, safeH/rotatedH);
+      const vw=Math.max(1,Math.floor(sw*scale));
+      const vh=Math.max(1,Math.floor(sh*scale));
+
+      video.style.width=vw+"px";
+      video.style.height=vh+"px";
+      video.style.maxWidth="none";
+      video.style.maxHeight="none";
+      video.style.objectFit="contain";
+      video.style.transform=`translate(-50%,-50%) rotate(${rotationDegree}deg) translateZ(0)`;
+      rotationBadge.textContent=`แสดงเต็มภาพต้นฉบับ • ไม่ตัดภาพ • บันทึกหมุน ${rotationDegree}°`;
     }
-    function rotateCapture(){rotationDegree=(rotationDegree+90)%360;if(rotateBurst){rotateBurst.classList.remove("play");void rotateBurst.offsetWidth;rotateBurst.classList.add("play");}fitVideoToStage();showToast("หมุนภาพเป็น "+rotationDegree+"° แล้ว");}
-    function drawVideo(){const sw=video.videoWidth,sh=video.videoHeight;if(!sw||!sh)throw new Error("ยังไม่พบภาพจากกล้อง");if(rotationDegree===90||rotationDegree===270){canvas.width=sh;canvas.height=sw;}else{canvas.width=sw;canvas.height=sh;}const ctx=canvas.getContext("2d");ctx.save();ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);if(rotationDegree===90){ctx.translate(canvas.width,0);ctx.rotate(Math.PI/2);}else if(rotationDegree===180){ctx.translate(canvas.width,canvas.height);ctx.rotate(Math.PI);}else if(rotationDegree===270){ctx.translate(0,canvas.height);ctx.rotate(3*Math.PI/2);}ctx.drawImage(video,0,0,sw,sh);ctx.restore();trimBlackBorderFromCanvas(canvas);}
+    function rotateCapture(){rotationDegree=(rotationDegree+90)%360;if(rotateBurst){rotateBurst.classList.remove("play");void rotateBurst.offsetWidth;rotateBurst.classList.add("play");}requestAnimationFrame(fitVideoToStage);showToast("หมุนภาพเป็น "+rotationDegree+"° แล้ว");}
+    function drawVideo(){const sw=video.videoWidth,sh=video.videoHeight;if(!sw||!sh)throw new Error("ยังไม่พบภาพจากกล้อง");if(rotationDegree===90||rotationDegree===270){canvas.width=sh;canvas.height=sw;}else{canvas.width=sw;canvas.height=sh;}const ctx=canvas.getContext("2d");ctx.save();ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);if(rotationDegree===90){ctx.translate(canvas.width,0);ctx.rotate(Math.PI/2);}else if(rotationDegree===180){ctx.translate(canvas.width,canvas.height);ctx.rotate(Math.PI);}else if(rotationDegree===270){ctx.translate(0,canvas.height);ctx.rotate(3*Math.PI/2);}ctx.drawImage(video,0,0,sw,sh);ctx.restore();}
     function trimBlackBorderFromCanvas(c){
       const ctx=c.getContext("2d");
       const w=c.width,h=c.height;
@@ -677,7 +716,7 @@
         ctx.drawImage(copy,0,0);
       }
     }
-    async function compressDataUrl(dataUrl){const maxSize=Number(imageSize.value||1200),quality=.90;return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>h&&w>maxSize){h=Math.round(h*maxSize/w);w=maxSize;}else if(h>=w&&h>maxSize){w=Math.round(w*maxSize/h);h=maxSize;}const c=document.createElement("canvas");c.width=w;c.height=h;const cx=c.getContext("2d");cx.fillStyle="#ffffff";cx.fillRect(0,0,w,h);cx.drawImage(img,0,0,w,h);trimBlackBorderFromCanvas(c);const mime=fileExt.value==="png"?"image/png":"image/jpeg";resolve(c.toDataURL(mime,mime==="image/jpeg"?quality:undefined));};img.onerror=()=>reject(new Error("ย่อรูปไม่สำเร็จ"));img.src=dataUrl;});}
+    async function compressDataUrl(dataUrl){const maxSize=Number(imageSize.value||1200),quality=.90;return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>h&&w>maxSize){h=Math.round(h*maxSize/w);w=maxSize;}else if(h>=w&&h>maxSize){w=Math.round(w*maxSize/h);h=maxSize;}const c=document.createElement("canvas");c.width=w;c.height=h;const cx=c.getContext("2d");cx.fillStyle="#ffffff";cx.fillRect(0,0,w,h);cx.drawImage(img,0,0,w,h);const mime=fileExt.value==="png"?"image/png":"image/jpeg";resolve(c.toDataURL(mime,mime==="image/jpeg"?quality:undefined));};img.onerror=()=>reject(new Error("ย่อรูปไม่สำเร็จ"));img.src=dataUrl;});}
     async function captureImage(){if(!stream||!video.videoWidth){showToast("กรุณาเปิดกล้องก่อนถ่ายภาพ");return;}try{showLoading("กำลังเตรียมรูป","กำลังจับภาพจากกล้อง...",35);drawVideo();updateLoading(65,"กำลังย่อขนาดรูปให้ส่งเร็ว...");const mime=fileExt.value==="png"?"image/png":"image/jpeg";currentImageData=await compressDataUrl(canvas.toDataURL(mime,.78));updateLoading(92,"เตรียมรูปสำเร็จ");showPreview(currentImageData);showToast("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");addLog("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");updateStatus();hideLoading(120);}catch(err){hideLoading(0);showToast("ถ่ายภาพไม่สำเร็จ: "+(err.message||err.name),7000);}}
     async function handleFile(){const f=fileInput.files&&fileInput.files[0];if(!f)return;if(!f.type.startsWith("image/")){showToast("กรุณาเลือกไฟล์รูปภาพเท่านั้น");fileInput.value="";return;}const r=new FileReader();r.onload=async()=>{currentImageData=await compressDataUrl(r.result);showPreview(currentImageData);showToast("เลือกไฟล์รูปภาพสำเร็จ");addLog("เลือกไฟล์: "+f.name);};r.readAsDataURL(f);}function showPreview(src){preview.src=src;preview.style.display="block";downloadBtn.disabled=false;updateStatus();}
     function fileName(){return (normalize(studentId.value)||"student-photo")+"."+(fileExt.value||"jpg");}
