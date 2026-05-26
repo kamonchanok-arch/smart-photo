@@ -6,14 +6,15 @@
   <title>Songkran Photo School</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700;800;900&family=Prompt:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800;900&family=Sarabun:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0" rel="stylesheet">
   <style>
     :root{
       --navy:#061a35;--blue:#0078d4;--blue2:#173f7a;--bg:#eef4fb;--card:#fff;--text:#111827;
       --muted:#667085;--border:#d9e3f0;--green:#16a34a;--red:#dc2626;--orange:#f59e0b;
       --shadow:0 14px 36px rgba(15,23,42,.08);--radius:16px;
     }
-    *{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:"Prompt","Noto Sans Thai",Arial,sans-serif;background:radial-gradient(circle at top left,#dff3ff 0,#eef4fb 28%,#f7fbff 62%,#eef4fb 100%);color:var(--text);overflow-x:hidden}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:"Kanit","Sarabun","Noto Sans Thai",Arial,sans-serif;background:radial-gradient(circle at top left,#dff3ff 0,#eef4fb 28%,#f7fbff 62%,#eef4fb 100%);color:var(--text);overflow-x:hidden}
     body::before{content:"";position:fixed;inset:-140px auto auto -120px;width:340px;height:340px;border-radius:999px;background:rgba(0,120,212,.16);filter:blur(30px);pointer-events:none}body::after{content:"";position:fixed;right:-160px;bottom:-180px;width:420px;height:420px;border-radius:999px;background:rgba(22,163,74,.10);filter:blur(34px);pointer-events:none}
     button,input,select{font:inherit}.hidden{display:none!important}
     .app{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}.sidebar{background:linear-gradient(180deg,#061a35 0%,#082249 58%,#061a35 100%);color:#fff;padding:22px 18px;position:sticky;top:0;height:100vh;overflow:auto;box-shadow:18px 0 40px rgba(15,23,42,.12)}.brand{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:center;margin-bottom:24px}.logo{width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#0f86c7,#173f7a);display:grid;place-items:center;font-size:26px;box-shadow:0 14px 28px rgba(0,120,212,.28);animation:floatLogo 3.2s ease-in-out infinite}.brand-title{font-size:21px;font-weight:1000;line-height:1.1}.brand-sub{font-size:13px;color:#c8d3e3;margin-top:3px}.menu{display:grid;gap:10px}.menu button{height:56px;border-radius:13px;border:1px solid transparent;background:transparent;color:#fff;cursor:pointer;display:grid;grid-template-columns:42px 1fr;align-items:center;text-align:left;padding:0 16px;font-weight:900;font-size:17px}.menu button.active,.menu button:hover{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.16)}
@@ -24,6 +25,44 @@
     .side{display:grid;gap:18px}.side-card{padding:20px}.side-card h2{margin:0 0 12px;font-size:20px}.id-box{display:grid;grid-template-columns:70px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}.id-prefix{display:grid;place-items:center;background:#f3f7fc;font-size:21px;font-weight:1000;color:#183761;border-right:1px solid var(--border)}.id-box input{border:0;outline:0;padding:13px 14px;font-size:24px;font-weight:1000;min-width:0}.hint{color:#7b8497;font-size:14px;line-height:1.55;margin-top:8px}.student-box{margin-top:16px;padding:15px 16px;border-radius:13px;border:1px solid var(--border);background:linear-gradient(180deg,#fbfdff,#f8fbff);min-height:120px;position:relative;overflow:hidden}.student-box::before{content:"";position:absolute;right:-24px;top:-24px;width:88px;height:88px;border-radius:999px;background:rgba(0,120,212,.08)}.label{color:var(--muted);font-weight:900;font-size:13px;margin-bottom:5px}.student-name{font-size:24px;line-height:1.25;font-weight:1000;color:#0f172a}.student-detail{margin-top:8px;color:#475467;font-size:15px;line-height:1.55}.notfound{color:#dc2626}.found{color:#166534}.preview{display:none;width:100%;max-height:255px;object-fit:contain;background:linear-gradient(135deg,#f8fafc,#eef6ff);border:1px solid var(--border);border-radius:14px;margin-top:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}.stack{display:grid;gap:10px;margin-top:14px}.quick-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.checkline{display:flex;align-items:center;gap:10px;font-weight:900;cursor:pointer}.checkline input{width:20px;height:20px}
     .settings{max-width:1200px;padding:26px}.section-title{margin:0 0 4px;font-size:26px}.section-sub{margin:0 0 22px;color:#7b8497}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.form-group{margin-bottom:18px}.form-group.fullrow{grid-column:1/-1}.form-group label{display:block;font-weight:1000;margin-bottom:9px}.input,.select{width:100%;border:1px solid var(--border);border-radius:11px;padding:13px 15px;font-size:17px;outline:0;background:#fff}.save-setting{background:#173f7a;color:#fff;border:0;width:100%;border-radius:12px;padding:14px 18px;font-size:21px;font-weight:1000;cursor:pointer}.note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:13px;padding:13px 15px;margin-top:16px;font-weight:900;line-height:1.65}.debug{background:#0b1220;color:#e5e7eb;border-radius:13px;padding:14px;margin-top:14px;font-size:13px;line-height:1.6;white-space:pre-wrap;max-height:330px;overflow:auto}
     .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:18px}.stat{padding:20px}.num{font-size:27px;font-weight:1000;color:#173f7a;word-break:break-word}.cap{color:#667085;font-weight:800;margin-top:5px}.log{padding:16px;min-height:380px;max-height:620px;overflow:auto}.log-item{border-bottom:1px solid var(--border);padding:10px 4px;color:#344054;line-height:1.55;white-space:pre-wrap}.manual{padding:26px;line-height:1.85;font-size:17px}.manual kbd{background:#f2f4f7;border:1px solid #d0d5dd;border-radius:6px;padding:2px 7px;font-weight:900}
+
+    .save-flow{margin-top:14px;padding:14px;border-radius:15px;border:1px solid #dbeafe;background:linear-gradient(135deg,#f8fbff,#eff6ff);box-shadow:inset 0 0 0 1px rgba(255,255,255,.65)}
+    .save-flow-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;font-weight:1000;color:#173f7a}
+    .save-flow-text{font-size:13px;color:#667085;font-weight:900}
+    .save-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .save-step{position:relative;display:grid;place-items:center;text-align:center;gap:4px;min-height:64px;padding:8px 6px;border-radius:13px;border:1px solid #d9e3f0;background:#fff;color:#667085;font-size:12px;font-weight:1000;overflow:hidden;transition:.22s ease}
+    .save-step .step-icon{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;background:#eef2f7;color:#64748b;font-size:14px;transition:.22s ease}
+    .save-step.active{border-color:#93c5fd;background:linear-gradient(180deg,#eff6ff,#fff);color:#173f7a;transform:translateY(-1px);box-shadow:0 10px 20px rgba(37,99,235,.10)}
+    .save-step.active .step-icon{background:#173f7a;color:#fff;animation:spinMini 1s linear infinite}
+    .save-step.done{border-color:#bbf7d0;background:linear-gradient(180deg,#ecfdf3,#fff);color:#166534}
+    .save-step.done .step-icon{background:#16a34a;color:#fff;animation:none}
+    .save-progress-shell{height:10px;margin-top:11px;border-radius:999px;background:#e5edf7;border:1px solid #d9e3f0;overflow:hidden}
+    .save-progress-bar{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#173f7a,#0ea5e9,#16a34a);transition:width .22s ease}
+    .sound-row{margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:13px;background:#f8fbff;border:1px solid var(--border);font-weight:1000;color:#17315b}
+    .switch{position:relative;display:inline-block;width:54px;height:30px;flex:0 0 auto}.switch input{display:none}.slider{position:absolute;cursor:pointer;inset:0;background:#cbd5e1;border-radius:999px;transition:.2s}.slider:before{content:"";position:absolute;height:24px;width:24px;left:3px;top:3px;background:white;border-radius:999px;transition:.2s;box-shadow:0 4px 10px rgba(15,23,42,.22)}.switch input:checked + .slider{background:#16a34a}.switch input:checked + .slider:before{transform:translateX(24px)}
+    .search-anim{display:none;align-items:center;gap:8px;margin-top:10px;padding:9px 11px;border-radius:999px;background:#eff6ff;border:1px solid #bfdbfe;color:#173f7a;font-weight:1000;font-size:13px;width:max-content;max-width:100%}
+    .search-anim.show{display:inline-flex;animation:fadePop .28s ease both}.spin-icon{width:16px;height:16px;border:3px solid #bfdbfe;border-top-color:#173f7a;border-radius:999px;animation:spinMini .8s linear infinite}
+    .student-box.searching{border-color:#93c5fd;box-shadow:0 0 0 4px rgba(59,130,246,.10);animation:softGlow 1s ease-in-out infinite}
+    .rotate-burst{position:absolute;right:14px;top:14px;width:48px;height:48px;border-radius:999px;background:rgba(255,255,255,.92);border:1px solid rgba(217,227,240,.9);display:grid;place-items:center;color:#173f7a;font-weight:1000;opacity:0;transform:scale(.6) rotate(0deg);pointer-events:none;z-index:3;box-shadow:0 12px 28px rgba(15,23,42,.14)}
+    .rotate-burst.play{animation:rotateBurst .55s ease both}
+    .preview{cursor:pointer}
+    .loading-overlay,.modal-overlay{position:fixed;inset:0;z-index:120;background:rgba(6,26,53,.36);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:20px}
+    .loading-overlay.show,.modal-overlay.show{display:flex;animation:overlayIn .18s ease both}
+    .loading-card,.modal-card{width:min(520px,96vw);border-radius:24px;background:rgba(255,255,255,.98);border:1px solid rgba(255,255,255,.8);box-shadow:0 26px 80px rgba(15,23,42,.28);padding:24px;transform-origin:center;animation:modalIn .24s cubic-bezier(.2,.9,.2,1) both}
+    .loading-overlay.closing,.modal-overlay.closing{animation:overlayOut .18s ease both}.loading-overlay.closing .loading-card,.modal-overlay.closing .modal-card{animation:modalOut .18s ease both}
+    .loader-ring{width:74px;height:74px;margin:0 auto 14px;border:7px solid #e5edf7;border-top-color:#173f7a;border-right-color:#0ea5e9;border-radius:999px;animation:spinMini .82s linear infinite}
+    .loading-title{font-size:22px;font-weight:1000;text-align:center;color:#0f172a}.loading-text{text-align:center;color:#667085;font-weight:900;margin:6px 0 14px}.loading-percent{text-align:center;font-size:28px;font-weight:1000;color:#173f7a;margin-top:8px}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.modal-head h2{margin:0;font-size:22px}.modal-close{border:0;background:#eef2f7;color:#17315b;border-radius:999px;width:38px;height:38px;cursor:pointer;font-weight:1000}
+    .modal-body img{display:block;max-width:100%;max-height:70vh;object-fit:contain;margin:auto;border-radius:16px;background:#f8fafc;border:1px solid var(--border)}
+    @keyframes spinMini{to{transform:rotate(360deg)}}@keyframes fadePop{from{opacity:0;transform:translateY(-4px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes softGlow{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.16)}50%{box-shadow:0 0 0 6px rgba(59,130,246,.08)}}@keyframes rotateBurst{0%{opacity:0;transform:scale(.55) rotate(0)}22%{opacity:1;transform:scale(1.08) rotate(110deg)}100%{opacity:0;transform:scale(.8) rotate(360deg)}}@keyframes overlayIn{from{opacity:0}to{opacity:1}}@keyframes overlayOut{from{opacity:1}to{opacity:0}}@keyframes modalIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes modalOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(10px) scale(.97)}}
+    @media(max-width:1360px){.app{grid-template-columns:250px minmax(0,1fr)}.capture-grid{grid-template-columns:minmax(0,1fr) 360px}.side-card{padding:16px}.big-save{font-size:20px}.camera-stage{max-height:calc(100vh - 190px)}}
+    @media(max-width:1180px){.camera-stage{aspect-ratio:16/9!important}.capture-grid{grid-template-columns:1fr}.side{grid-template-columns:repeat(2,minmax(0,1fr))}.side-card:last-child{grid-column:1/-1}}
+    @media(max-width:860px){.top{position:static}.side{grid-template-columns:1fr}.save-steps{grid-template-columns:1fr 1fr 1fr}.camera-stage{min-height:260px}.tools{position:sticky;bottom:0;z-index:4;box-shadow:0 -10px 24px rgba(15,23,42,.08)}}
+    @media(max-width:520px){.title h1{font-size:24px}.top-actions{width:100%}.pill{flex:1 1 auto;padding:9px 10px}.camera-stage{min-height:220px}.save-step{min-height:56px;font-size:11px}.student-name{font-size:21px}.id-box{grid-template-columns:58px 1fr}.id-box input{font-size:22px}.loading-card,.modal-card{padding:18px;border-radius:20px}}
+
+
+    .material-symbols-rounded{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;font-size:22px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-feature-settings:'liga';-webkit-font-smoothing:antialiased;font-variation-settings:'FILL' 0,'wght' 600,'GRAD' 0,'opsz' 24;vertical-align:-5px}.brand .material-symbols-rounded{font-size:30px}.btn .material-symbols-rounded,.pill .material-symbols-rounded{font-size:20px;margin-right:6px}.report-card{padding:16px;background:linear-gradient(135deg,#ffffff 0%,#f6fbff 100%);border:1px solid rgba(203,213,225,.9);position:relative;overflow:hidden}.report-card::before{content:"";position:absolute;right:-34px;top:-36px;width:110px;height:110px;border-radius:999px;background:rgba(14,165,233,.10)}.report-head-mini{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.report-head-mini h2{margin:0;font-size:20px;display:flex;align-items:center;gap:8px}.live-chip{display:inline-flex;align-items:center;gap:7px;border-radius:999px;background:#ecfdf3;color:#166534;border:1px solid #bbf7d0;padding:6px 10px;font-size:12px;font-weight:1000}.live-dot{width:8px;height:8px;border-radius:999px;background:#16a34a;animation:blinkLive 1.3s ease-in-out infinite}.report-total{display:grid;grid-template-columns:1.15fr .85fr;gap:10px;align-items:stretch}.report-hero{border-radius:16px;padding:14px;background:linear-gradient(135deg,#173f7a,#0ea5e9);color:#fff;box-shadow:0 14px 28px rgba(14,165,233,.18)}.report-hero .big{font-size:38px;line-height:1;font-weight:1000}.report-hero .sub{font-size:13px;opacity:.92;margin-top:5px;font-weight:800}.report-metrics{display:grid;gap:8px}.report-metric{border-radius:13px;background:#fff;border:1px solid var(--border);padding:10px 11px;display:flex;justify-content:space-between;align-items:center;font-weight:1000;color:#17315b}.report-metric span:first-child{color:#667085;font-size:13px}.report-progress{height:12px;border-radius:999px;background:#e8eef7;border:1px solid #d9e3f0;overflow:hidden;margin:12px 0 11px}.report-progress span{display:block;height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#16a34a,#0ea5e9,#173f7a);transition:width .28s ease}.report-classes-mini{display:grid;gap:8px;max-height:178px;overflow:auto;padding-right:2px}.class-mini{display:grid;grid-template-columns:72px 1fr 54px;align-items:center;gap:8px;border:1px solid #e2e8f0;background:rgba(255,255,255,.86);border-radius:12px;padding:8px 9px;font-size:13px;font-weight:900;animation:fadePop .22s ease both}.class-mini-name{color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.class-mini-bar{height:8px;border-radius:999px;background:#e8eef7;overflow:hidden}.class-mini-bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#173f7a,#0ea5e9);border-radius:999px}.class-mini-num{color:#166534;text-align:right}.report-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.report-actions .btn{padding:10px 9px}.modal-card.report-modal-card{width:min(980px,96vw);max-height:90vh;overflow:auto}.report-modal-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}.report-summary-box{border:1px solid var(--border);background:linear-gradient(180deg,#fff,#f8fbff);border-radius:16px;padding:14px;text-align:center}.report-summary-box .n{font-size:28px;font-weight:1000;color:#173f7a}.report-summary-box .t{font-size:13px;color:#667085;font-weight:900}.report-grid-popup{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.class-report-card{border:1px solid var(--border);background:linear-gradient(180deg,#fff,#f8fbff);border-radius:16px;padding:14px;box-shadow:0 8px 18px rgba(15,23,42,.04);animation:riseIn .28s ease both}.class-report-title{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:18px;font-weight:1000;color:#0f172a}.class-report-pill{font-size:12px;border-radius:999px;padding:5px 9px;background:#ecfdf3;color:#166534;border:1px solid #bbf7d0;white-space:nowrap}.class-report-meta{margin-top:8px;color:#667085;font-weight:900;font-size:13px}.class-report-progress{height:10px;border-radius:999px;background:#e8eef7;overflow:hidden;margin-top:10px}.class-report-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#173f7a,#0ea5e9,#16a34a);border-radius:999px;transition:width .28s ease}.empty-report{border:1px dashed #cbd5e1;background:#f8fafc;color:#667085;border-radius:14px;padding:18px;text-align:center;font-weight:900}.report-flash{animation:reportFlash .45s ease both}@keyframes blinkLive{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.72)}}@keyframes reportFlash{0%{box-shadow:0 0 0 0 rgba(22,163,74,.0)}35%{box-shadow:0 0 0 8px rgba(22,163,74,.12)}100%{box-shadow:0 0 0 0 rgba(22,163,74,0)}}@media(max-width:860px){.report-total{grid-template-columns:1fr}.report-modal-summary{grid-template-columns:1fr 1fr}.report-actions{grid-template-columns:1fr}.report-classes-mini{max-height:220px}}@media(max-width:520px){.report-modal-summary{grid-template-columns:1fr}.report-grid-popup{grid-template-columns:1fr}.class-mini{grid-template-columns:64px 1fr 48px}.report-hero .big{font-size:34px}}
+
     .toast{position:fixed;right:24px;bottom:24px;z-index:100;background:#101828;color:#fff;padding:14px 18px;border-radius:14px;box-shadow:0 16px 44px rgba(0,0,0,.24);transform:translateY(20px);opacity:0;pointer-events:none;transition:.2s;max-width:680px;line-height:1.55;font-weight:900;white-space:pre-wrap}.toast.show{transform:translateY(0);opacity:1}
     @keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}@keyframes floatLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes softPulse{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.35)}50%{box-shadow:0 0 0 8px rgba(22,163,74,0)}}.pill.ready{animation:softPulse 2.2s ease-in-out infinite}
     @media(max-width:1180px){.app{grid-template-columns:235px minmax(0,1fr)}.capture-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.top{align-items:flex-start;flex-direction:column}}
@@ -33,17 +72,17 @@
 <body>
   <div class="app">
     <aside class="sidebar">
-      <div class="brand"><div class="logo">📷</div><div><div class="brand-title">Songkran Photo School</div><div class="brand-sub">Student Capture System</div></div></div>
+      <div class="brand"><div class="logo"><span class="material-symbols-rounded">photo_camera</span></div><div><div class="brand-title">Songkran Photo School</div><div class="brand-sub">Student Capture System</div></div></div>
       <nav class="menu">
-        <button class="nav active" data-screen="photo"><span class="ico">📷</span><span>ถ่ายภาพ</span></button>
-        <button class="nav" data-screen="setting"><span class="ico">⚙️</span><span>ตั้งค่า</span></button>
-        <button class="nav" data-screen="status"><span class="ico">ℹ️</span><span>สถานะ</span></button>
+        <button class="nav active" data-screen="photo"><span class="ico material-symbols-rounded">photo_camera</span><span>ถ่ายภาพ</span></button>
+        <button class="nav" data-screen="setting"><span class="ico material-symbols-rounded">settings</span><span>ตั้งค่า</span></button>
+        <button class="nav" data-screen="status"><span class="ico material-symbols-rounded">monitoring</span><span>สถานะ</span></button>
       </nav>
     </aside>
     <main class="main">
       <header class="top">
         <div class="title"><h1 id="pageTitle">ถ่ายภาพนักเรียน</h1><p id="pageSub">ค้นหาเร็วจากฐานข้อมูลที่โหลดไว้ แล้วส่งรูปลง Drive/Sheet คอลัมน์ H</p></div>
-        <div class="top-actions"><button class="pill" id="reloadBtn">โหลดฐานข้อมูลใหม่</button><button class="pill" id="backendBtn">ทดสอบ Backend</button><button class="pill ready" id="readyBtn">พร้อมใช้งาน</button></div>
+        <div class="top-actions"><button class="pill" id="reloadBtn"><span class="material-symbols-rounded">sync</span>โหลดฐานข้อมูลใหม่</button><button class="pill" id="backendBtn"><span class="material-symbols-rounded">cloud_done</span>ทดสอบ Backend</button><button class="pill ready" id="readyBtn"><span class="material-symbols-rounded">verified</span>พร้อมใช้งาน</button></div>
       </header>
       <div class="work">
         <section id="photo" class="screen active">
@@ -52,7 +91,7 @@
               <div class="camera-stage">
                 <video id="video" autoplay playsinline muted></video><canvas id="canvas"></canvas>
                 <div id="cameraEmpty" class="camera-empty">กด “เปิดกล้อง” เพื่อถ่ายภาพนักเรียน<br>หรือเลือกไฟล์รูปภาพสำรองด้านขวา</div>
-                <div id="rotationBadge" class="badge">บันทึกหมุน 0°</div>
+                <div id="rotationBadge" class="badge">บันทึกหมุน 0°</div><div id="rotateBurst" class="rotate-burst">↻</div>
               </div>
               <div class="tools"><button id="openCameraBtn" class="btn blue">เปิดกล้อง</button><button id="switchCameraBtn" class="btn" disabled>สลับกล้อง</button><button id="rotateBtn" class="btn orange">หมุนรูป</button><button id="captureBtn" class="btn green" disabled>ถ่ายภาพ</button><button id="closeCameraBtn" class="btn red" disabled>ปิดกล้อง</button></div>
             </section>
@@ -61,6 +100,7 @@
                 <h2>เลขประจำตัวนักเรียน</h2>
                 <div class="id-box"><div class="id-prefix">ID</div><input id="studentId" type="text" inputmode="numeric" maxlength="20" placeholder="เช่น 18533" autocomplete="off" /></div>
                 <div class="hint">ค้นหาในเครื่องทันทีจากข้อมูลที่โหลดจาก Apps Script คอลัมน์ A, B, I</div>
+                <div id="searchAnim" class="search-anim"><span class="spin-icon"></span><span>กำลังค้นหา...</span></div>
                 <div class="student-box"><div class="label">ข้อมูลนักเรียน</div><div id="studentName" class="student-name">กำลังโหลดฐานข้อมูล...</div><div id="studentDetail" class="student-detail">-</div></div>
               </div>
               <div class="side-card card">
@@ -69,10 +109,44 @@
                 <div class="hint">ใช้กรณีกล้องมีปัญหา หรือมีรูปอยู่แล้วในเครื่อง</div>
                 <img id="preview" class="preview" alt="ตัวอย่างภาพ" />
               </div>
+
+              <div class="side-card card report-card" id="liveReportCard">
+                <div class="report-head-mini">
+                  <h2><span class="material-symbols-rounded">monitoring</span> รายงานเรียลไทม์</h2>
+                  <span class="live-chip"><span class="live-dot"></span>LIVE</span>
+                </div>
+                <div class="report-total">
+                  <div class="report-hero">
+                    <div id="liveReportPercent" class="big">0%</div>
+                    <div id="liveReportText" class="sub">ถ่ายแล้ว 0 จาก 0 คน</div>
+                  </div>
+                  <div class="report-metrics">
+                    <div class="report-metric"><span>ทั้งหมด</span><b id="liveTotal">0</b></div>
+                    <div class="report-metric"><span>ถ่ายแล้ว</span><b id="liveCaptured">0</b></div>
+                    <div class="report-metric"><span>คงเหลือ</span><b id="liveRemain">0</b></div>
+                  </div>
+                </div>
+                <div class="report-progress"><span id="liveProgress"></span></div>
+                <div id="liveClassMini" class="report-classes-mini"><div class="empty-report">รอโหลดฐานข้อมูลนักเรียน</div></div>
+                <div class="report-actions">
+                  <button id="openReportBtn" class="btn primary full"><span class="material-symbols-rounded">analytics</span> เปิดรายงาน</button>
+                  <button id="refreshLiveReportBtn" class="btn full"><span class="material-symbols-rounded">refresh</span> อัปเดต</button>
+                </div>
+              </div>
               <div class="side-card card">
                 <h2>บันทึกแบบเร็ว</h2>
                 <label class="checkline"><input id="quickMode" type="checkbox" checked /> โหมดถ่ายต่อเนื่องเร็ว</label>
                 <div class="hint">หลังพบลิงก์ใน H ระบบจะล้างรูปและเลื่อนไปคนถัดไปทันที</div>
+                <div class="sound-row"><span>เสียงแจ้งเตือนสำเร็จ</span><label class="switch"><input id="soundToggle" type="checkbox" checked><span class="slider"></span></label></div>
+                <div id="saveFlow" class="save-flow">
+                  <div class="save-flow-head"><span>สถานะการบันทึก</span><span id="saveFlowText" class="save-flow-text">พร้อมบันทึก</span></div>
+                  <div class="save-steps">
+                    <div id="saveStepSend" class="save-step"><span class="step-icon">1</span><span>กำลังส่ง</span></div>
+                    <div id="saveStepCheck" class="save-step"><span class="step-icon">2</span><span>รอตรวจ Sheet</span></div>
+                    <div id="saveStepDone" class="save-step"><span class="step-icon">3</span><span>สำเร็จ</span></div>
+                  </div>
+                  <div class="save-progress-shell"><div id="saveProgress" class="save-progress-bar"></div></div>
+                </div>
                 <div class="stack">
                   <button id="saveBtn" class="btn primary full big-save">บันทึกเข้า Drive/Sheet</button>
                   <div class="quick-row"><button id="prevBtn" class="btn full">คนก่อนหน้า</button><button id="nextBtn" class="btn full">คนถัดไป</button></div>
@@ -109,7 +183,38 @@
       </div>
     </main>
   </div>
+
+  <div id="reportModal" class="modal-overlay">
+    <div class="modal-card report-modal-card">
+      <div class="modal-head"><h2><span class="material-symbols-rounded">analytics</span> รายงานการถ่ายภาพแบบเรียลไทม์</h2><button id="reportModalClose" class="modal-close">×</button></div>
+      <div class="modal-body">
+        <div class="report-modal-summary">
+          <div class="report-summary-box"><div id="modalTotal" class="n">0</div><div class="t">นักเรียนทั้งหมด</div></div>
+          <div class="report-summary-box"><div id="modalCaptured" class="n">0</div><div class="t">ถ่ายแล้ว</div></div>
+          <div class="report-summary-box"><div id="modalRemain" class="n">0</div><div class="t">ยังไม่ถ่าย</div></div>
+          <div class="report-summary-box"><div id="modalPercent" class="n">0%</div><div class="t">ความคืบหน้า</div></div>
+        </div>
+        <div id="modalClassReport" class="report-grid-popup"><div class="empty-report">รอโหลดฐานข้อมูลนักเรียน</div></div>
+      </div>
+    </div>
+  </div>
   <div id="toast" class="toast"></div>
+
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-card">
+      <div class="loader-ring"></div>
+      <div id="loadingTitle" class="loading-title">กำลังโหลด</div>
+      <div id="loadingText" class="loading-text">กำลังเตรียมข้อมูล...</div>
+      <div class="save-progress-shell"><div id="loadingProgress" class="save-progress-bar"></div></div>
+      <div id="loadingPercent" class="loading-percent">0%</div>
+    </div>
+  </div>
+  <div id="previewModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-head"><h2>พรีวิวรูปภาพ</h2><button id="previewModalClose" class="modal-close">×</button></div>
+      <div class="modal-body"><img id="previewModalImg" alt="พรีวิวรูปภาพขนาดใหญ่"></div>
+    </div>
+  </div>
   <script>
     const DEFAULTS={
       sheetId:"1_oIKk2Sgxo4S4EqiTeaOKm3c3xzn6EriBeY1mDrAW3Q",
@@ -124,25 +229,146 @@
     const openCameraBtn=$("openCameraBtn"),switchCameraBtn=$("switchCameraBtn"),rotateBtn=$("rotateBtn"),captureBtn=$("captureBtn"),closeCameraBtn=$("closeCameraBtn"),saveBtn=$("saveBtn"),downloadBtn=$("downloadBtn"),clearBtn=$("clearBtn"),prevBtn=$("prevBtn"),nextBtn=$("nextBtn");
     const sheetId=$("sheetId"),sheetGid=$("sheetGid"),folderId=$("folderId"),scriptUrl=$("scriptUrl"),fileExt=$("fileExt"),imageSize=$("imageSize"),replaceFile=$("replaceFile"),quickMode=$("quickMode");
     const cameraStatus=$("cameraStatus"),studentStatus=$("studentStatus"),imageStatus=$("imageStatus"),backendStatus=$("backendStatus");
-    let stream=null,devices=[],currentDeviceId="",facingMode="environment",currentImageData="",rotationDegree=90,students=[],studentMap=new Map(),lastFoundStudent=null,isSaving=false;
+    const soundToggle=$("soundToggle"),saveFlowText=$("saveFlowText"),saveProgress=$("saveProgress"),saveStepSend=$("saveStepSend"),saveStepCheck=$("saveStepCheck"),saveStepDone=$("saveStepDone");
+    const loadingOverlay=$("loadingOverlay"),loadingTitle=$("loadingTitle"),loadingText=$("loadingText"),loadingProgress=$("loadingProgress"),loadingPercent=$("loadingPercent"),searchAnim=$("searchAnim"),rotateBurst=$("rotateBurst"),previewModal=$("previewModal"),previewModalImg=$("previewModalImg"),previewModalClose=$("previewModalClose");
+    const liveReportCard=$("liveReportCard"),liveReportPercent=$("liveReportPercent"),liveReportText=$("liveReportText"),liveTotal=$("liveTotal"),liveCaptured=$("liveCaptured"),liveRemain=$("liveRemain"),liveProgress=$("liveProgress"),liveClassMini=$("liveClassMini"),openReportBtn=$("openReportBtn"),refreshLiveReportBtn=$("refreshLiveReportBtn"),reportModal=$("reportModal"),reportModalClose=$("reportModalClose"),modalTotal=$("modalTotal"),modalCaptured=$("modalCaptured"),modalRemain=$("modalRemain"),modalPercent=$("modalPercent"),modalClassReport=$("modalClassReport");
+    let stream=null,devices=[],currentDeviceId="",facingMode="environment",currentImageData="",rotationDegree=0,students=[],studentMap=new Map(),lastFoundStudent=null,isSaving=false;
 
     document.querySelectorAll(".nav").forEach(btn=>btn.addEventListener("click",()=>showScreen(btn.dataset.screen)));
     $("reloadBtn").addEventListener("click",loadStudents);$("backendBtn").addEventListener("click",testBackend);$("readyBtn").addEventListener("click",()=>showToast("ระบบพร้อมใช้งาน"));
     $("saveSettingBtn").addEventListener("click",()=>{saveSettings();loadStudents();});
     openCameraBtn.addEventListener("click",()=>startCamera(""));closeCameraBtn.addEventListener("click",()=>stopCamera(true));switchCameraBtn.addEventListener("click",switchCamera);rotateBtn.addEventListener("click",rotateCapture);captureBtn.addEventListener("click",captureImage);saveBtn.addEventListener("click",savePhoto);downloadBtn.addEventListener("click",downloadImage);clearBtn.addEventListener("click",clearAll);nextBtn.addEventListener("click",()=>goToOffset(1));prevBtn.addEventListener("click",()=>goToOffset(-1));
-    studentId.addEventListener("input",()=>{studentId.value=studentId.value.replace(/[^\d]/g,"");lookupStudent();});
-    fileInput.addEventListener("change",handleFile);window.addEventListener("beforeunload",()=>stopCamera(false));window.addEventListener("resize",fitVideoToStage);video.addEventListener("loadedmetadata",fitVideoToStage);document.addEventListener("keydown",handleKeys);
+    studentId.addEventListener("input",()=>{studentId.value=studentId.value.replace(/[^\d]/g,"");triggerSearchFx();lookupStudent();});
+    fileInput.addEventListener("change",handleFile);
+    if(soundToggle){soundToggle.checked=localStorage.getItem("smartPhotoSound")!=="off";soundToggle.addEventListener("change",()=>localStorage.setItem("smartPhotoSound",soundToggle.checked?"on":"off"));}
+    if(preview){preview.addEventListener("click",openPreviewModal);}
+    if(previewModalClose){previewModalClose.addEventListener("click",closePreviewModal);}
+    if(previewModal){previewModal.addEventListener("click",e=>{if(e.target===previewModal)closePreviewModal();});}
+    if(openReportBtn){openReportBtn.addEventListener("click",openReportModal);}
+    if(refreshLiveReportBtn){refreshLiveReportBtn.addEventListener("click",()=>{renderLiveReport();showToast("อัปเดตรายงานเรียลไทม์แล้ว");});}
+    if(reportModalClose){reportModalClose.addEventListener("click",closeReportModal);}
+    if(reportModal){reportModal.addEventListener("click",e=>{if(e.target===reportModal)closeReportModal();});}
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"){closePreviewModal();closeReportModal();}});
+    window.addEventListener("beforeunload",()=>stopCamera(false));window.addEventListener("resize",fitVideoToStage);video.addEventListener("loadedmetadata",fitVideoToStage);document.addEventListener("keydown",handleKeys);
 
     function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));const titles={photo:["ถ่ายภาพนักเรียน","ค้นหาเร็วจากฐานข้อมูลที่โหลดไว้ แล้วส่งรูปลง Drive/Sheet คอลัมน์ H"],setting:["ตั้งค่าระบบ","ตรวจสอบ URL และค่าเริ่มต้น"],status:["สถานะระบบ","ดูสถานะการทำงานและประวัติ"],manual:["คู่มือ","วิธีใช้งานและปุ่มลัด"]};$("pageTitle").textContent=titles[id][0];$("pageSub").textContent=titles[id][1];}
     function showToast(msg,ms=4200){toast.textContent=msg;toast.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove("show"),ms);} 
     function addLog(msg){const div=document.createElement("div");div.className="log-item";div.textContent=`[${new Date().toLocaleString("th-TH")}] ${msg}`;logBox.prepend(div);} 
+    function setSaveStage(stage,pct=0,msg="พร้อมบันทึก"){
+      if(saveProgress)saveProgress.style.width=Math.max(0,Math.min(100,pct))+"%";
+      if(saveFlowText)saveFlowText.textContent=msg;
+      const steps=[saveStepSend,saveStepCheck,saveStepDone];
+      steps.forEach((el,i)=>{if(!el)return;el.classList.remove("active","done");if(i<stage)el.classList.add("done");if(i===stage)el.classList.add("active");});
+      if(stage>=3){steps.forEach(el=>el&&el.classList.add("done"));if(saveFlowText)saveFlowText.textContent=msg||"สำเร็จ";}
+    }
+    function showLoading(title="กำลังโหลด",text="กำลังดำเนินการ...",pct=0){
+      if(!loadingOverlay)return;
+      loadingTitle.textContent=title;loadingText.textContent=text;updateLoading(pct,text);
+      loadingOverlay.classList.remove("closing");loadingOverlay.classList.add("show");
+    }
+    function updateLoading(pct=0,text){
+      const p=Math.max(0,Math.min(100,Math.round(pct)));
+      if(loadingProgress)loadingProgress.style.width=p+"%";
+      if(loadingPercent)loadingPercent.textContent=p+"%";
+      if(text&&loadingText)loadingText.textContent=text;
+    }
+    function hideLoading(delay=220){
+      if(!loadingOverlay)return;
+      updateLoading(100,"เสร็จสิ้น");
+      setTimeout(()=>{loadingOverlay.classList.add("closing");setTimeout(()=>{loadingOverlay.classList.remove("show","closing");},190);},delay);
+    }
+    function triggerSearchFx(){
+      const box=document.querySelector(".student-box");
+      if(searchAnim){searchAnim.classList.add("show");clearTimeout(triggerSearchFx.t);triggerSearchFx.t=setTimeout(()=>searchAnim.classList.remove("show"),420);}
+      if(box){box.classList.add("searching");clearTimeout(triggerSearchFx.b);triggerSearchFx.b=setTimeout(()=>box.classList.remove("searching"),520);}
+    }
+    function playSuccessSound(){
+      if(soundToggle&&!soundToggle.checked)return;
+      try{
+        const AudioCtx=window.AudioContext||window.webkitAudioContext;
+        if(!AudioCtx)return;
+        const ctx=new AudioCtx();
+        const now=ctx.currentTime;
+        [660,880,1175].forEach((freq,i)=>{
+          const osc=ctx.createOscillator();
+          const gain=ctx.createGain();
+          osc.type="sine";osc.frequency.setValueAtTime(freq,now+i*.08);
+          gain.gain.setValueAtTime(.0001,now+i*.08);
+          gain.gain.exponentialRampToValueAtTime(.10,now+i*.08+.015);
+          gain.gain.exponentialRampToValueAtTime(.0001,now+i*.08+.12);
+          osc.connect(gain);gain.connect(ctx.destination);
+          osc.start(now+i*.08);osc.stop(now+i*.08+.14);
+        });
+        setTimeout(()=>ctx.close&&ctx.close(),650);
+      }catch(e){}
+    }
+    function openPreviewModal(){
+      if(!currentImageData||!previewModal||!previewModalImg)return;
+      previewModalImg.src=currentImageData;
+      previewModal.classList.remove("closing");previewModal.classList.add("show");
+    }
+    function closePreviewModal(){
+      if(!previewModal||!previewModal.classList.contains("show"))return;
+      previewModal.classList.add("closing");
+      setTimeout(()=>previewModal.classList.remove("show","closing"),190);
+    }
+
+
+    function hasPhoto(stu){return String(stu&&stu.photo||"").trim().length>0;}
+    function getClassName(stu){return String(stu&&stu.classLevel||"ไม่ระบุชั้น").trim()||"ไม่ระบุชั้น";}
+    function calcReport(){
+      const total=students.length;
+      const captured=students.filter(hasPhoto).length;
+      const remain=Math.max(0,total-captured);
+      const percent=total?Math.round(captured*100/total):0;
+      const map=new Map();
+      students.forEach(stu=>{
+        const cls=getClassName(stu);
+        if(!map.has(cls))map.set(cls,{className:cls,total:0,captured:0,remain:0,percent:0});
+        const item=map.get(cls);item.total++;if(hasPhoto(stu))item.captured++;
+      });
+      const classes=[...map.values()].map(c=>({...c,remain:c.total-c.captured,percent:c.total?Math.round(c.captured*100/c.total):0})).sort((a,b)=>String(a.className).localeCompare(String(b.className),"th"));
+      return {total,captured,remain,percent,classes};
+    }
+    function renderLiveReport(){
+      const r=calcReport();
+      if(liveReportPercent)liveReportPercent.textContent=r.percent+"%";
+      if(liveReportText)liveReportText.textContent=`ถ่ายแล้ว ${r.captured} จาก ${r.total} คน`;
+      if(liveTotal)liveTotal.textContent=r.total;
+      if(liveCaptured)liveCaptured.textContent=r.captured;
+      if(liveRemain)liveRemain.textContent=r.remain;
+      if(liveProgress)liveProgress.style.width=r.percent+"%";
+      if(modalTotal)modalTotal.textContent=r.total;
+      if(modalCaptured)modalCaptured.textContent=r.captured;
+      if(modalRemain)modalRemain.textContent=r.remain;
+      if(modalPercent)modalPercent.textContent=r.percent+"%";
+      const empty='<div class="empty-report">รอโหลดฐานข้อมูลนักเรียน</div>';
+      if(liveClassMini){
+        liveClassMini.innerHTML=r.classes.length?r.classes.map(c=>`<div class="class-mini"><div class="class-mini-name" title="${escapeHtml(c.className)}">${escapeHtml(c.className)}</div><div class="class-mini-bar"><span style="width:${c.percent}%"></span></div><div class="class-mini-num">${c.captured}/${c.total}</div></div>`).join(""):empty;
+      }
+      if(modalClassReport){
+        modalClassReport.innerHTML=r.classes.length?r.classes.map(c=>`<div class="class-report-card"><div class="class-report-title"><span>${escapeHtml(c.className)}</span><span class="class-report-pill">${c.percent}%</span></div><div class="class-report-meta">ทั้งหมด ${c.total} คน | ถ่ายแล้ว ${c.captured} คน | ยังไม่ถ่าย ${c.remain} คน</div><div class="class-report-progress"><span style="width:${c.percent}%"></span></div></div>`).join(""):empty;
+      }
+      if(liveReportCard){liveReportCard.classList.remove("report-flash");void liveReportCard.offsetWidth;liveReportCard.classList.add("report-flash");}
+    }
+    function openReportModal(){
+      renderLiveReport();
+      if(!reportModal)return;
+      reportModal.classList.remove("closing");reportModal.classList.add("show");
+    }
+    function closeReportModal(){
+      if(!reportModal||!reportModal.classList.contains("show"))return;
+      reportModal.classList.add("closing");
+      setTimeout(()=>reportModal.classList.remove("show","closing"),190);
+    }
+
     function setDebug(obj){debug.textContent=typeof obj==="string"?obj:JSON.stringify(obj,null,2);} function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
-    function normalize(v){return String(v||"").trim().replace(/\s+/g,"");} function updateStatus(){cameraStatus.textContent=stream?"เปิด":"ปิด";studentStatus.textContent=String(students.length);imageStatus.textContent=currentImageData?"1":"0";backendStatus.textContent=scriptUrl.value.trim()?"พร้อม":"-";}
+    function normalize(v){return String(v||"").trim().replace(/\s+/g,"");} function updateStatus(){cameraStatus.textContent=stream?"เปิด":"ปิด";studentStatus.textContent=String(students.length);imageStatus.textContent=currentImageData?"1":"0";backendStatus.textContent=scriptUrl.value.trim()?"พร้อม":"-";renderLiveReport();}
     function loadSettings(){let saved={};try{saved=JSON.parse(localStorage.getItem("smartPhotoSettings")||"{}");}catch(e){}const data={...DEFAULTS,...saved};if(!data.scriptUrl||data.scriptUrl!==DEFAULTS.scriptUrl){data.scriptUrl=DEFAULTS.scriptUrl;}if(!data.folderId||data.folderId!==DEFAULTS.folderId){data.folderId=DEFAULTS.folderId;}sheetId.value=data.sheetId;sheetGid.value=data.sheetGid;folderId.value=data.folderId;scriptUrl.value=data.scriptUrl;fileExt.value=data.fileExt;imageSize.value=data.imageSize||"720";replaceFile.checked=data.replaceFile!==false;saveSettings(false);}
     function saveSettings(notify=true){const data={sheetId:sheetId.value.trim(),sheetGid:sheetGid.value.trim(),folderId:folderId.value.trim(),scriptUrl:scriptUrl.value.trim(),fileExt:fileExt.value,imageSize:imageSize.value,replaceFile:replaceFile.checked};localStorage.setItem("smartPhotoSettings",JSON.stringify(data));if(notify)showToast("บันทึกการตั้งค่าแล้ว");updateStatus();}
     function jsonp(action,params={},timeoutMs=25000){return new Promise((resolve,reject)=>{const url=scriptUrl.value.trim();if(!url.includes("/exec")){reject(new Error("Apps Script URL ไม่ถูกต้อง"));return;}const cb="__spcb_"+Date.now()+"_"+Math.floor(Math.random()*99999);const qs=new URLSearchParams({action,callback:cb,t:Date.now(),...params});const s=document.createElement("script");let done=false;const timer=setTimeout(()=>{if(done)return;done=true;cleanup();reject(new Error("หมดเวลารอ Apps Script: "+action));},timeoutMs);function cleanup(){clearTimeout(timer);delete window[cb];s.remove();}window[cb]=data=>{if(done)return;done=true;cleanup();resolve(data);};s.onerror=()=>{if(done)return;done=true;cleanup();reject(new Error("เรียก Apps Script ไม่สำเร็จ: "+action));};s.src=url+(url.includes("?")?"&":"?")+qs.toString();document.body.appendChild(s);});}
-    async function testBackend(){try{showToast("กำลังทดสอบ Backend...");addLog("ทดสอบ Backend");const data=await jsonp("test",{},30000);setDebug(data);if(!data.ok)throw new Error(data.message||"Backend error");showToast(`Backend พร้อมใช้งาน\nSheet: ${data.sheetName}\nFolder: ${data.folderName}\nRows: ${data.lastRow}`,6500);addLog("Backend พร้อมใช้งานจริง");}catch(err){showToast("ทดสอบ Backend ไม่สำเร็จ: "+err.message,9000);addLog("Backend error: "+err.message);setDebug(err.message);}}
-    async function loadStudents(){try{showToast("กำลังโหลดฐานข้อมูลนักเรียน...");addLog("โหลดนักเรียนจาก Apps Script");const data=await jsonp("students",{},35000);setDebug({action:"students",ok:data.ok,count:data.count});if(!data.ok)throw new Error(data.message||"โหลดข้อมูลไม่สำเร็จ");students=(data.students||[]).filter(s=>s.fullName||s.id||s.citizenId||s.studentNo);studentMap=new Map();students.forEach(stu=>[stu.id,stu.citizenId,stu.studentNo].forEach(k=>{k=normalize(k);if(k&&!studentMap.has(k))studentMap.set(k,stu);}));showToast("โหลดฐานข้อมูลสำเร็จ "+students.length+" รายการ");addLog("โหลดฐานข้อมูลสำเร็จ "+students.length+" รายการ");lookupStudent();updateStatus();}catch(err){showToast("โหลดฐานข้อมูลไม่สำเร็จ: "+err.message,9000);addLog("โหลดฐานข้อมูลไม่สำเร็จ: "+err.message);studentName.textContent="โหลดฐานข้อมูลไม่สำเร็จ";studentDetail.textContent=err.message;}}
+    async function testBackend(){try{showLoading("ทดสอบ Backend","กำลังเชื่อมต่อ Apps Script...",20);showToast("กำลังทดสอบ Backend...");addLog("ทดสอบ Backend");const data=await jsonp("test",{},30000);updateLoading(80,"ได้รับข้อมูลจาก Backend แล้ว");setDebug(data);if(!data.ok)throw new Error(data.message||"Backend error");showToast(`Backend พร้อมใช้งาน\nSheet: ${data.sheetName}\nFolder: ${data.folderName}\nRows: ${data.lastRow}`,6500);addLog("Backend พร้อมใช้งานจริง");hideLoading();}catch(err){showToast("ทดสอบ Backend ไม่สำเร็จ: "+err.message,9000);addLog("Backend error: "+err.message);setDebug(err.message);hideLoading(0);}}
+    async function loadStudents(){try{showLoading("โหลดฐานข้อมูล","กำลังดึงรายชื่อนักเรียนจาก Sheet...",15);showToast("กำลังโหลดฐานข้อมูลนักเรียน...");addLog("โหลดนักเรียนจาก Apps Script");const data=await jsonp("students",{},35000);updateLoading(72,"กำลังจัดทำดัชนีค้นหา...");setDebug({action:"students",ok:data.ok,count:data.count});if(!data.ok)throw new Error(data.message||"โหลดข้อมูลไม่สำเร็จ");students=(data.students||[]).filter(s=>s.fullName||s.id||s.citizenId||s.studentNo);studentMap=new Map();students.forEach(stu=>[stu.id,stu.citizenId,stu.studentNo].forEach(k=>{k=normalize(k);if(k&&!studentMap.has(k))studentMap.set(k,stu);}));showToast("โหลดฐานข้อมูลสำเร็จ "+students.length+" รายการ");addLog("โหลดฐานข้อมูลสำเร็จ "+students.length+" รายการ");updateLoading(95,"โหลดสำเร็จ "+students.length+" รายการ");lookupStudent();updateStatus();hideLoading();}catch(err){showToast("โหลดฐานข้อมูลไม่สำเร็จ: "+err.message,9000);addLog("โหลดฐานข้อมูลไม่สำเร็จ: "+err.message);studentName.textContent="โหลดฐานข้อมูลไม่สำเร็จ";studentDetail.textContent=err.message;}}
     function lookupStudent(){const key=normalize(studentId.value);lastFoundStudent=null;if(!students.length){studentName.textContent="ยังไม่ได้โหลดฐานข้อมูล";studentDetail.textContent="กดโหลดฐานข้อมูลใหม่";return;}if(!key){studentName.textContent="ยังไม่ได้ระบุเลขประจำตัว";studentDetail.textContent="-";return;}const stu=studentMap.get(key);if(!stu){studentName.innerHTML='<span class="notfound">ไม่พบข้อมูลในระบบ</span>';studentDetail.textContent="ไม่พบเลข "+key+" ในฐานข้อมูล";return;}lastFoundStudent=stu;studentName.innerHTML='<span class="found">'+escapeHtml(stu.fullName||"พบข้อมูลนักเรียน")+'</span>';studentDetail.innerHTML=`แถว: ${stu.rowNumber||"-"}<br>ID: ${stu.id||"-"}<br>เลขประจำตัว: ${stu.studentNo||"-"}<br>ระดับชั้น: ${stu.classLevel||"-"} | สถานะ: ${stu.status||"-"}<br>ลิงก์รูป H: ${stu.photo?"มีแล้ว":"ยังว่าง"}`;}
     function escapeHtml(s){return String(s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m]));}
     function isSecure(){return location.protocol==="https:"||location.hostname==="localhost"||location.hostname==="127.0.0.1";}async function enumerateCameras(){try{const all=await navigator.mediaDevices.enumerateDevices();devices=all.filter(d=>d.kind==="videoinput");}catch(e){devices=[];}}
@@ -167,7 +393,7 @@
       }
       video.style.transform=`translate(-50%,-50%) rotate(${rotationDegree}deg)`;
     }
-    function rotateCapture(){rotationDegree=(rotationDegree+90)%360;fitVideoToStage();showToast("หมุนภาพเป็น "+rotationDegree+"° แล้ว");}
+    function rotateCapture(){rotationDegree=(rotationDegree+90)%360;if(rotateBurst){rotateBurst.classList.remove("play");void rotateBurst.offsetWidth;rotateBurst.classList.add("play");}fitVideoToStage();showToast("หมุนภาพเป็น "+rotationDegree+"° แล้ว");}
     function drawVideo(){const sw=video.videoWidth,sh=video.videoHeight;if(!sw||!sh)throw new Error("ยังไม่พบภาพจากกล้อง");if(rotationDegree===90||rotationDegree===270){canvas.width=sh;canvas.height=sw;}else{canvas.width=sw;canvas.height=sh;}const ctx=canvas.getContext("2d");ctx.save();ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);if(rotationDegree===90){ctx.translate(canvas.width,0);ctx.rotate(Math.PI/2);}else if(rotationDegree===180){ctx.translate(canvas.width,canvas.height);ctx.rotate(Math.PI);}else if(rotationDegree===270){ctx.translate(0,canvas.height);ctx.rotate(3*Math.PI/2);}ctx.drawImage(video,0,0,sw,sh);ctx.restore();trimBlackBorderFromCanvas(canvas);}
     function trimBlackBorderFromCanvas(c){
       const ctx=c.getContext("2d");
@@ -195,11 +421,15 @@
       }
     }
     async function compressDataUrl(dataUrl){const maxSize=Number(imageSize.value||720),quality=.78;return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>h&&w>maxSize){h=Math.round(h*maxSize/w);w=maxSize;}else if(h>=w&&h>maxSize){w=Math.round(w*maxSize/h);h=maxSize;}const c=document.createElement("canvas");c.width=w;c.height=h;const cx=c.getContext("2d");cx.fillStyle="#ffffff";cx.fillRect(0,0,w,h);cx.drawImage(img,0,0,w,h);trimBlackBorderFromCanvas(c);const mime=fileExt.value==="png"?"image/png":"image/jpeg";resolve(c.toDataURL(mime,mime==="image/jpeg"?quality:undefined));};img.onerror=()=>reject(new Error("ย่อรูปไม่สำเร็จ"));img.src=dataUrl;});}
-    async function captureImage(){if(!stream||!video.videoWidth){showToast("กรุณาเปิดกล้องก่อนถ่ายภาพ");return;}drawVideo();const mime=fileExt.value==="png"?"image/png":"image/jpeg";currentImageData=await compressDataUrl(canvas.toDataURL(mime,.86));showPreview(currentImageData);showToast("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");addLog("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");updateStatus();}
+    async function captureImage(){if(!stream||!video.videoWidth){showToast("กรุณาเปิดกล้องก่อนถ่ายภาพ");return;}try{showLoading("กำลังเตรียมรูป","กำลังจับภาพจากกล้อง...",35);drawVideo();updateLoading(65,"กำลังย่อขนาดรูปให้ส่งเร็ว...");const mime=fileExt.value==="png"?"image/png":"image/jpeg";currentImageData=await compressDataUrl(canvas.toDataURL(mime,.86));updateLoading(92,"เตรียมรูปสำเร็จ");showPreview(currentImageData);showToast("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");addLog("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");updateStatus();hideLoading(120);}catch(err){hideLoading(0);showToast("ถ่ายภาพไม่สำเร็จ: "+(err.message||err.name),7000);}}
     async function handleFile(){const f=fileInput.files&&fileInput.files[0];if(!f)return;if(!f.type.startsWith("image/")){showToast("กรุณาเลือกไฟล์รูปภาพเท่านั้น");fileInput.value="";return;}const r=new FileReader();r.onload=async()=>{currentImageData=await compressDataUrl(r.result);showPreview(currentImageData);showToast("เลือกไฟล์รูปภาพสำเร็จ");addLog("เลือกไฟล์: "+f.name);};r.readAsDataURL(f);}function showPreview(src){preview.src=src;preview.style.display="block";downloadBtn.disabled=false;updateStatus();}
     function fileName(){return (normalize(studentId.value)||"student-photo")+"."+(fileExt.value||"jpg");}
-    async function savePhoto(){if(isSaving)return;const key=normalize(studentId.value);if(!key){showToast("กรุณากรอกเลขประจำตัวนักเรียนก่อนบันทึก");studentId.focus();return;}const stu=studentMap.get(key);if(!stu){showToast("ไม่พบนักเรียนในฐานข้อมูล กรุณาตรวจเลขหรือโหลดฐานข้อมูลใหม่",7000);return;}if(!currentImageData&&stream&&video.videoWidth){await captureImage();}if(!currentImageData){showToast("กรุณาถ่ายภาพหรือเลือกไฟล์ก่อนบันทึก");return;}isSaving=true;saveBtn.disabled=true;saveBtn.textContent="กำลังส่งรูป...";try{const imageToSend=currentImageData;const oldPhoto=String(stu.photo||"").trim();const payload={searchKey:key,studentId:stu.id||"",citizenId:stu.citizenId||"",studentNo:stu.studentNo||key,fullName:stu.fullName||"",classLevel:stu.classLevel||"",school:stu.school||"",fileName:fileName(),folderId:folderId.value.trim(),replaceFile:replaceFile.checked,imageData:imageToSend};setDebug({step:"send-fast-no-black-border",payload:{...payload,imageData:"[base64 length "+imageToSend.length+"]"}});addLog("ส่งรูปแบบเร็ว ไม่มีขอบดำ: "+fileName()+" | "+(stu.fullName||key));await fetch(scriptUrl.value.trim(),{method:"POST",mode:"no-cors",cache:"no-store",body:JSON.stringify(payload)});showToast("ส่งรูปแล้ว ไปคนถัดไปได้ทันที");if(quickMode.checked){nextAfterSave();}verifySaved(key,oldPhoto).then(ok=>{if(ok)addLog("ตรวจย้อนหลังสำเร็จ: "+key);});}catch(err){showToast("บันทึกไม่สำเร็จ: "+(err.message||err.name),9000);addLog("บันทึกไม่สำเร็จ: "+(err.message||err.name));}finally{isSaving=false;saveBtn.disabled=false;saveBtn.textContent="บันทึกเข้า Drive/Sheet";}}
-    async function verifySaved(key,oldPhoto){await sleep(650);let last=null;for(let i=1;i<=7;i++){try{addLog(`ตรวจคอลัมน์ H รอบ ${i}/7`);const data=await jsonp("student",{key},12000);last=data;setDebug({verifyRound:i,data});if(!data.ok||!data.found)throw new Error(data.message||"ตรวจไม่พบข้อมูลนักเรียน");const photo=String(data.student.photo||"").trim();if(photo&&photo!==oldPhoto){addLog("สำเร็จ: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;return true;}if(photo){addLog("พบลิงก์รูปใน H: "+photo);return true;}await sleep(750);}catch(err){addLog(`ตรวจรอบ ${i} ไม่สำเร็จ: ${err.message||err.name}`);await sleep(750);}}
+    async function savePhoto(){if(isSaving)return;const key=normalize(studentId.value);if(!key){showToast("กรุณากรอกเลขประจำตัวนักเรียนก่อนบันทึก");studentId.focus();return;}const stu=studentMap.get(key);if(!stu){showToast("ไม่พบนักเรียนในฐานข้อมูล กรุณาตรวจเลขหรือโหลดฐานข้อมูลใหม่",7000);return;}if(!currentImageData&&stream&&video.videoWidth){await captureImage();}if(!currentImageData){showToast("กรุณาถ่ายภาพหรือเลือกไฟล์ก่อนบันทึก");return;}isSaving=true;saveBtn.disabled=true;saveBtn.textContent="กำลังส่งรูป...";setSaveStage(0,8,"กำลังส่งรูป...");showLoading("บันทึกรูป","ขั้นที่ 1/3 กำลังส่งรูปไป Drive/Sheet",8);try{const imageToSend=currentImageData;const oldPhoto=String(stu.photo||"").trim();const payload={searchKey:key,studentId:stu.id||"",citizenId:stu.citizenId||"",studentNo:stu.studentNo||key,fullName:stu.fullName||"",classLevel:stu.classLevel||"",school:stu.school||"",fileName:fileName(),folderId:folderId.value.trim(),replaceFile:replaceFile.checked,imageData:imageToSend};setDebug({step:"send-fast-no-black-border",payload:{...payload,imageData:"[base64 length "+imageToSend.length+"]"}});addLog("ส่งรูปแบบเร็ว ไม่มีขอบดำ: "+fileName()+" | "+(stu.fullName||key));await fetch(scriptUrl.value.trim(),{method:"POST",mode:"no-cors",cache:"no-store",body:JSON.stringify(payload)});
+setSaveStage(1,42,"ส่งแล้ว • รอตรวจ Sheet");
+updateLoading(42,"ขั้นที่ 2/3 ส่งแล้ว กำลังรอตรวจคอลัมน์ H");
+showToast("ส่งรูปแล้ว กำลังตรวจ Sheet...");
+verifySaved(key,oldPhoto).then(ok=>{if(ok){setSaveStage(3,100,"บันทึกสำเร็จ");updateLoading(100,"ขั้นที่ 3/3 บันทึกสำเร็จ");playSuccessSound();showToast("บันทึกลง Drive/Sheet สำเร็จ",5200);addLog("ตรวจย้อนหลังสำเร็จ: "+key);if(quickMode.checked){nextAfterSave();}hideLoading(260);}else{setSaveStage(1,68,"ส่งแล้ว แต่ยังไม่พบลิงก์ H");hideLoading(0);showToast("ส่งรูปแล้ว แต่ยังไม่พบลิงก์ใน Sheet กรุณาตรวจอีกครั้ง",8000);}});}catch(err){setSaveStage(0,0,"บันทึกไม่สำเร็จ");hideLoading(0);showToast("บันทึกไม่สำเร็จ: "+(err.message||err.name),9000);addLog("บันทึกไม่สำเร็จ: "+(err.message||err.name));}finally{isSaving=false;saveBtn.disabled=false;saveBtn.textContent="บันทึกเข้า Drive/Sheet";}}
+    async function verifySaved(key,oldPhoto){await sleep(650);let last=null;for(let i=1;i<=7;i++){try{addLog(`ตรวจคอลัมน์ H รอบ ${i}/7`);setSaveStage(1,42+Math.round(i*7),"ตรวจ Sheet รอบ "+i+"/7");updateLoading(42+Math.round(i*7),"ขั้นที่ 2/3 ตรวจ Sheet รอบ "+i+"/7");const data=await jsonp("student",{key},12000);last=data;setDebug({verifyRound:i,data});if(!data.ok||!data.found)throw new Error(data.message||"ตรวจไม่พบข้อมูลนักเรียน");const photo=String(data.student.photo||"").trim();if(photo&&photo!==oldPhoto){addLog("สำเร็จ: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();return true;}if(photo){addLog("พบลิงก์รูปใน H: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();return true;}await sleep(750);}catch(err){addLog(`ตรวจรอบ ${i} ไม่สำเร็จ: ${err.message||err.name}`);await sleep(750);}}
       addLog("ยังไม่พบลิงก์ใน H หลังตรวจแบบเร็ว: "+key);setDebug({message:"verify timeout",last});return false;}
     function nextAfterSave(){currentImageData="";fileInput.value="";preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;goToOffset(1);showToast("พร้อมถ่ายนักเรียนคนถัดไป");updateStatus();}
     function currentIndex(){const key=normalize(studentId.value);if(!key)return-1;return students.findIndex(s=>[s.id,s.citizenId,s.studentNo].some(k=>normalize(k)===key));}
@@ -207,7 +437,7 @@
     function downloadImage(){if(!currentImageData){showToast("ยังไม่มีรูปภาพ");return;}const a=document.createElement("a");a.href=currentImageData;a.download=fileName();document.body.appendChild(a);a.click();a.remove();}
     function clearAll(){studentId.value="";currentImageData="";fileInput.value="";preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;lookupStudent();updateStatus();showToast("ล้างข้อมูลแล้ว");}
     function handleKeys(e){if(e.key==="Enter"&&e.target===studentId&&!e.ctrlKey){e.preventDefault();captureImage();}if(e.key==="Enter"&&e.ctrlKey){e.preventDefault();savePhoto();}if(e.key==="ArrowRight"&&e.altKey){e.preventDefault();goToOffset(1);}if(e.key==="ArrowLeft"&&e.altKey){e.preventDefault();goToOffset(-1);}}
-    (async function init(){loadSettings();lookupStudent();fitVideoToStage();addLog("เปิดระบบ Songkran Photo School");if(!isSecure())addLog("คำเตือน: ต้องเปิดผ่าน HTTPS เพื่อใช้กล้อง");await enumerateCameras();await testBackend();await loadStudents();updateStatus();})();
+    (async function init(){loadSettings();setSaveStage(0,0,"พร้อมบันทึก");lookupStudent();fitVideoToStage();addLog("เปิดระบบ Songkran Photo School");if(!isSecure())addLog("คำเตือน: ต้องเปิดผ่าน HTTPS เพื่อใช้กล้อง");await enumerateCameras();await testBackend();await loadStudents();updateStatus();})();
   </script>
 </body>
 </html>
