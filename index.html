@@ -215,6 +215,54 @@
     .camera-stage{display:grid!important;place-items:center!important}
     #video{object-fit:contain!important;width:auto;height:auto;max-width:none!important;max-height:none!important}
 
+
+    /* Final balance fix: no large blank gap, left column groups camera + fast save, right side stays light */
+    .capture-left{min-width:0;display:grid;gap:14px;align-content:start}
+    @media(min-width:1181px){
+      .work{padding:14px 22px 24px!important}
+      #photo.active .capture-grid{
+        display:grid!important;
+        grid-template-columns:minmax(640px,1fr) minmax(350px,410px)!important;
+        grid-template-areas:none!important;
+        gap:18px!important;
+        align-items:start!important;
+      }
+      #photo.active .camera-card,#photo.active .camera-save-card,#photo.active .side{grid-area:auto!important}
+      #photo.active .capture-left{display:grid!important;gap:14px!important;align-content:start!important}
+      #photo.active .camera-card{position:relative!important;top:auto!important;align-self:start!important}
+      #photo.active .camera-stage{height:clamp(320px,48vh,540px)!important;min-height:320px!important;max-height:540px!important;border-radius:16px 16px 0 0!important}
+      #photo.active .tools{padding:10px 12px!important;gap:10px!important}
+      #photo.active .camera-save-card{
+        margin-top:0!important;
+        padding:14px 16px!important;
+        display:grid!important;
+        grid-template-columns:minmax(250px,.78fr) minmax(330px,1.22fr)!important;
+        gap:10px 14px!important;
+        align-items:start!important;
+        background:linear-gradient(135deg,#ffffff 0%,#f3f9ff 100%)!important;
+      }
+      #photo.active .camera-save-card h2{grid-column:1/-1!important;margin:0!important;font-size:18px!important}
+      #photo.active .camera-save-card .checkline,#photo.active .camera-save-card > .hint,#photo.active .camera-save-card .sound-row,#photo.active .camera-save-card .save-flow{grid-column:1/2!important}
+      #photo.active .camera-save-card .stack{grid-column:2/3!important;grid-row:2/span 4!important;margin-top:0!important;display:grid!important;align-content:start!important}
+      #photo.active .camera-save-card .save-flow{margin-top:8px!important;padding:10px!important}
+      #photo.active .save-step{min-height:50px!important;padding:6px!important}
+      #photo.active .camera-save-card .big-save{font-size:20px!important;padding:15px 16px!important}
+      #photo.active .side{display:grid!important;gap:12px!important;align-content:start!important;overflow:visible!important;max-height:none!important}
+      #photo.active .side-card{padding:14px!important}
+      #photo.active .report-card{overflow:visible!important;max-height:none!important}
+      #photo.active .report-classes-mini{max-height:115px!important}
+      #photo.active .missing-list{max-height:120px!important}
+    }
+    @media(max-width:1180px){
+      .capture-left{display:grid;gap:14px}
+      .camera-save-card{margin-top:0!important}
+    }
+    @media(max-width:760px){
+      .camera-save-card{padding:14px!important}
+      .camera-save-card .stack{margin-top:12px!important}
+      .camera-save-card .save-steps{grid-template-columns:repeat(3,1fr)!important}
+    }
+
   </style>
 </head>
 <body>
@@ -235,6 +283,7 @@
       <div class="work">
         <section id="photo" class="screen active">
           <div class="capture-grid">
+            <div class="capture-left">
             <section class="camera-card card">
               <div class="camera-stage">
                 <video id="video" autoplay playsinline muted></video><canvas id="canvas"></canvas>
@@ -263,6 +312,7 @@
                   <div class="quick-row"><button id="downloadBtn" class="btn full" disabled>ดาวน์โหลดรูป</button><button id="clearBtn" class="btn full">ล้างข้อมูล</button></div>
                 </div>
               </div>
+            </div>
             <aside class="side">
               <div class="side-card card">
                 <h2>เลขประจำตัวนักเรียน</h2>
@@ -318,7 +368,7 @@
               <div class="form-group fullrow"><label>Google Drive Folder ID</label><input id="folderId" class="input" type="text" /></div>
               <div class="form-group fullrow"><label>Apps Script Web App URL</label><input id="scriptUrl" class="input" type="url" /></div>
               <div class="form-group"><label>นามสกุลไฟล์</label><select id="fileExt" class="select"><option value="jpg">jpg - แนะนำ ใช้ส่งเร็ว</option><option value="png">png</option></select></div>
-              <div class="form-group"><label>ขนาดรูปก่อนส่ง</label><select id="imageSize" class="select"><option value="600" selected>เร็วพิเศษ 600px - ส่งไวขึ้น</option><option value="720">เร็วมาก 720px - แนะนำถ่ายจำนวนมาก</option><option value="900">สมดุล 900px</option><option value="1200">คมชัด 1200px</option></select></div>
+              <div class="form-group"><label>ขนาดรูปก่อนส่ง</label><select id="imageSize" class="select"><option value="900">สมดุล 900px - ส่งเร็วและชัด</option><option value="1200" selected>คมชัดสูง 1200px - แนะนำ</option><option value="1600">คมชัดมาก 1600px - ไฟล์ใหญ่ขึ้น</option></select></div>
               <div class="form-group fullrow"><label class="checkline"><input id="replaceFile" type="checkbox" checked /> แทนที่ไฟล์เดิมเมื่อชื่อซ้ำ</label></div>
             </div>
             <button id="saveSettingBtn" class="save-setting">บันทึกการตั้งค่า</button>
@@ -385,7 +435,7 @@
       sheetGid:"0",
       folderId:"1pbDDqzC5fVmQ4taEtFu_3n75e45KtlUW",
       scriptUrl:"https://script.google.com/macros/s/AKfycbzYnfuFvx9p4e5EyTE9zl1NRh8IjVcJ9tKNv8l2ggtBmP15hdwBf9jOYwVaKlv_iol5/exec",
-      fileExt:"jpg",imageSize:"600",replaceFile:true
+      fileExt:"jpg",imageSize:"1200",replaceFile:true
     };
     const $=id=>document.getElementById(id);
     const video=$("video"),canvas=$("canvas"),cameraEmpty=$("cameraEmpty"),rotationBadge=$("rotationBadge"),toast=$("toast"),logBox=$("logBox"),debug=$("debug");
@@ -566,7 +616,7 @@
 
     function setDebug(obj){debug.textContent=typeof obj==="string"?obj:JSON.stringify(obj,null,2);} function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
     function normalize(v){return String(v||"").trim().replace(/\s+/g,"");} function updateStatus(){cameraStatus.textContent=stream?"เปิด":"ปิด";studentStatus.textContent=String(students.length);imageStatus.textContent=currentImageData?"1":"0";backendStatus.textContent=scriptUrl.value.trim()?"พร้อม":"-";renderLiveReport();}
-    function loadSettings(){let saved={};try{saved=JSON.parse(localStorage.getItem("smartPhotoSettings")||"{}");}catch(e){}const data={...DEFAULTS,...saved};if(!data.scriptUrl||data.scriptUrl!==DEFAULTS.scriptUrl){data.scriptUrl=DEFAULTS.scriptUrl;}if(!data.folderId||data.folderId!==DEFAULTS.folderId){data.folderId=DEFAULTS.folderId;}sheetId.value=data.sheetId;sheetGid.value=data.sheetGid;folderId.value=data.folderId;scriptUrl.value=data.scriptUrl;fileExt.value=data.fileExt;imageSize.value=data.imageSize||"720";replaceFile.checked=data.replaceFile!==false;saveSettings(false);}
+    function loadSettings(){let saved={};try{saved=JSON.parse(localStorage.getItem("smartPhotoSettings")||"{}");}catch(e){}const data={...DEFAULTS,...saved};if(!data.scriptUrl||data.scriptUrl!==DEFAULTS.scriptUrl){data.scriptUrl=DEFAULTS.scriptUrl;}if(!data.folderId||data.folderId!==DEFAULTS.folderId){data.folderId=DEFAULTS.folderId;}sheetId.value=data.sheetId;sheetGid.value=data.sheetGid;folderId.value=data.folderId;scriptUrl.value=data.scriptUrl;fileExt.value=data.fileExt;if(!data.imageSize||data.imageSize==="600"||data.imageSize==="720"){data.imageSize="1200";}imageSize.value=data.imageSize;replaceFile.checked=data.replaceFile!==false;saveSettings(false);}
     function saveSettings(notify=true){const data={sheetId:sheetId.value.trim(),sheetGid:sheetGid.value.trim(),folderId:folderId.value.trim(),scriptUrl:scriptUrl.value.trim(),fileExt:fileExt.value,imageSize:imageSize.value,replaceFile:replaceFile.checked};localStorage.setItem("smartPhotoSettings",JSON.stringify(data));if(notify)showToast("บันทึกการตั้งค่าแล้ว");updateStatus();}
     function jsonp(action,params={},timeoutMs=25000){return new Promise((resolve,reject)=>{const url=scriptUrl.value.trim();if(!url.includes("/exec")){reject(new Error("Apps Script URL ไม่ถูกต้อง"));return;}const cb="__spcb_"+Date.now()+"_"+Math.floor(Math.random()*99999);const qs=new URLSearchParams({action,callback:cb,t:Date.now(),...params});const s=document.createElement("script");let done=false;const timer=setTimeout(()=>{if(done)return;done=true;cleanup();reject(new Error("หมดเวลารอ Apps Script: "+action));},timeoutMs);function cleanup(){clearTimeout(timer);delete window[cb];s.remove();}window[cb]=data=>{if(done)return;done=true;cleanup();resolve(data);};s.onerror=()=>{if(done)return;done=true;cleanup();reject(new Error("เรียก Apps Script ไม่สำเร็จ: "+action));};s.src=url+(url.includes("?")?"&":"?")+qs.toString();document.body.appendChild(s);});}
     async function testBackend(){try{showLoading("ทดสอบ Backend","กำลังเชื่อมต่อ Apps Script...",20);showToast("กำลังทดสอบ Backend...");addLog("ทดสอบ Backend");const data=await jsonp("test",{},30000);updateLoading(80,"ได้รับข้อมูลจาก Backend แล้ว");setDebug(data);if(!data.ok)throw new Error(data.message||"Backend error");showToast(`Backend พร้อมใช้งาน\nSheet: ${data.sheetName}\nFolder: ${data.folderName}\nRows: ${data.lastRow}`,6500);addLog("Backend พร้อมใช้งานจริง");hideLoading();}catch(err){showToast("ทดสอบ Backend ไม่สำเร็จ: "+err.message,9000);addLog("Backend error: "+err.message);setDebug(err.message);hideLoading(0);}}
@@ -627,12 +677,12 @@
         ctx.drawImage(copy,0,0);
       }
     }
-    async function compressDataUrl(dataUrl){const maxSize=Number(imageSize.value||600),quality=.72;return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>h&&w>maxSize){h=Math.round(h*maxSize/w);w=maxSize;}else if(h>=w&&h>maxSize){w=Math.round(w*maxSize/h);h=maxSize;}const c=document.createElement("canvas");c.width=w;c.height=h;const cx=c.getContext("2d");cx.fillStyle="#ffffff";cx.fillRect(0,0,w,h);cx.drawImage(img,0,0,w,h);trimBlackBorderFromCanvas(c);const mime=fileExt.value==="png"?"image/png":"image/jpeg";resolve(c.toDataURL(mime,mime==="image/jpeg"?quality:undefined));};img.onerror=()=>reject(new Error("ย่อรูปไม่สำเร็จ"));img.src=dataUrl;});}
+    async function compressDataUrl(dataUrl){const maxSize=Number(imageSize.value||1200),quality=.90;return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>h&&w>maxSize){h=Math.round(h*maxSize/w);w=maxSize;}else if(h>=w&&h>maxSize){w=Math.round(w*maxSize/h);h=maxSize;}const c=document.createElement("canvas");c.width=w;c.height=h;const cx=c.getContext("2d");cx.fillStyle="#ffffff";cx.fillRect(0,0,w,h);cx.drawImage(img,0,0,w,h);trimBlackBorderFromCanvas(c);const mime=fileExt.value==="png"?"image/png":"image/jpeg";resolve(c.toDataURL(mime,mime==="image/jpeg"?quality:undefined));};img.onerror=()=>reject(new Error("ย่อรูปไม่สำเร็จ"));img.src=dataUrl;});}
     async function captureImage(){if(!stream||!video.videoWidth){showToast("กรุณาเปิดกล้องก่อนถ่ายภาพ");return;}try{showLoading("กำลังเตรียมรูป","กำลังจับภาพจากกล้อง...",35);drawVideo();updateLoading(65,"กำลังย่อขนาดรูปให้ส่งเร็ว...");const mime=fileExt.value==="png"?"image/png":"image/jpeg";currentImageData=await compressDataUrl(canvas.toDataURL(mime,.78));updateLoading(92,"เตรียมรูปสำเร็จ");showPreview(currentImageData);showToast("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");addLog("ถ่ายภาพสำเร็จ ไม่มีขอบดำ");updateStatus();hideLoading(120);}catch(err){hideLoading(0);showToast("ถ่ายภาพไม่สำเร็จ: "+(err.message||err.name),7000);}}
     async function handleFile(){const f=fileInput.files&&fileInput.files[0];if(!f)return;if(!f.type.startsWith("image/")){showToast("กรุณาเลือกไฟล์รูปภาพเท่านั้น");fileInput.value="";return;}const r=new FileReader();r.onload=async()=>{currentImageData=await compressDataUrl(r.result);showPreview(currentImageData);showToast("เลือกไฟล์รูปภาพสำเร็จ");addLog("เลือกไฟล์: "+f.name);};r.readAsDataURL(f);}function showPreview(src){preview.src=src;preview.style.display="block";downloadBtn.disabled=false;updateStatus();}
     function fileName(){return (normalize(studentId.value)||"student-photo")+"."+(fileExt.value||"jpg");}
-    async function savePhoto(){if(isSaving)return;const key=normalize(studentId.value);if(!key){showToast("กรุณากรอกเลขประจำตัวนักเรียนก่อนบันทึก");studentId.focus();return;}const stu=studentMap.get(key);if(!stu){showToast("ไม่พบนักเรียนในฐานข้อมูล กรุณาตรวจเลขหรือโหลดฐานข้อมูลใหม่",7000);return;}if(!currentImageData&&stream&&video.videoWidth){await captureImage();}if(!currentImageData){showToast("กรุณาถ่ายภาพหรือเลือกไฟล์ก่อนบันทึก");return;}isSaving=true;saveBtn.disabled=true;saveBtn.textContent="กำลังส่งรูป...";setSaveStage(0,8,"กำลังส่งรูป...");showLoading("บันทึกรูป","ขั้นที่ 1/3 กำลังส่งรูปไป Drive/Sheet",8);try{const imageToSend=currentImageData;const oldPhoto=String(stu.photo||"").trim();const shouldQuick=quickMode&&quickMode.checked;const payload={searchKey:key,studentId:stu.id||"",citizenId:stu.citizenId||"",studentNo:stu.studentNo||key,fullName:stu.fullName||"",classLevel:stu.classLevel||"",school:stu.school||"",fileName:fileName(),folderId:folderId.value.trim(),replaceFile:replaceFile.checked,imageData:imageToSend};setDebug({step:"send-fast-background-verify",payload:{...payload,imageData:"[base64 length "+imageToSend.length+"]"}});addLog("ส่งรูปแบบเร็ว: "+fileName()+" | "+(stu.fullName||key)+" | ขนาดข้อมูล "+Math.round(imageToSend.length/1024)+" KB");await fetch(scriptUrl.value.trim(),{method:"POST",mode:"no-cors",cache:"no-store",body:JSON.stringify(payload)});setSaveStage(1,48,"ส่งแล้ว • ตรวจ Sheet เบื้องหลัง");updateLoading(100,"ส่งข้อมูลแล้ว กำลังตรวจ Sheet เบื้องหลัง");hideLoading(120);showToast(shouldQuick?"ส่งรูปแล้ว ไปคนถัดไปได้ทันที":"ส่งรูปแล้ว กำลังตรวจ Sheet...",4200);if(shouldQuick){nextAfterSave();}verifySaved(key,oldPhoto).then(ok=>{if(ok){setSaveStage(3,100,"บันทึกสำเร็จ");playSuccessSound();showToast("บันทึกลง Drive/Sheet สำเร็จ",4200);addLog("ตรวจย้อนหลังสำเร็จ: "+key);renderLiveReport&&renderLiveReport();}else{setSaveStage(1,70,"ส่งแล้ว แต่ยังไม่พบลิงก์ H");showToast("ส่งรูปแล้ว แต่ยังไม่พบลิงก์ใน Sheet กรุณาตรวจอีกครั้ง",6500);}});}catch(err){setSaveStage(0,0,"บันทึกไม่สำเร็จ");hideLoading(0);showToast("บันทึกไม่สำเร็จ: "+(err.message||err.name),9000);addLog("บันทึกไม่สำเร็จ: "+(err.message||err.name));}finally{isSaving=false;saveBtn.disabled=false;saveBtn.textContent="บันทึกเข้า Drive/Sheet";}}
-    async function verifySaved(key,oldPhoto){await sleep(380);let last=null;const totalRounds=5;for(let i=1;i<=totalRounds;i++){try{addLog(`ตรวจคอลัมน์ H รอบ ${i}/${totalRounds}`);setSaveStage(1,50+Math.round(i*8),"ตรวจ Sheet รอบ "+i+"/"+totalRounds);const data=await jsonp("student",{key},8000);last=data;setDebug({verifyRound:i,data});if(!data.ok||!data.found)throw new Error(data.message||"ตรวจไม่พบข้อมูลนักเรียน");const photo=String(data.student.photo||"").trim();if(photo&&photo!==oldPhoto){addLog("สำเร็จ: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();return true;}if(photo){addLog("พบลิงก์รูปใน H: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();return true;}await sleep(520);}catch(err){addLog(`ตรวจรอบ ${i} ไม่สำเร็จ: ${err.message||err.name}`);await sleep(520);}}
+    async function savePhoto(){if(isSaving)return;const key=normalize(studentId.value);if(!key){showToast("กรุณากรอกเลขประจำตัวนักเรียนก่อนบันทึก");studentId.focus();return;}const stu=studentMap.get(key);if(!stu){showToast("ไม่พบนักเรียนในฐานข้อมูล กรุณาตรวจเลขหรือโหลดฐานข้อมูลใหม่",7000);return;}if(!currentImageData&&stream&&video.videoWidth){await captureImage();}if(!currentImageData){showToast("กรุณาถ่ายภาพหรือเลือกไฟล์ก่อนบันทึก");return;}isSaving=true;saveBtn.disabled=true;saveBtn.textContent="กำลังส่งรูป...";setSaveStage(0,10,"กำลังส่งรูปคุณภาพสูง...");showLoading("บันทึกรูป","กำลังส่งรูปคุณภาพสูงไป Drive/Sheet",10);try{const imageToSend=currentImageData;const oldPhoto=String(stu.photo||"").trim();const pendingToken="__pending__"+Date.now();const shouldQuick=quickMode&&quickMode.checked;const payload={searchKey:key,studentId:stu.id||"",citizenId:stu.citizenId||"",studentNo:stu.studentNo||key,fullName:stu.fullName||"",classLevel:stu.classLevel||"",school:stu.school||"",fileName:fileName(),folderId:folderId.value.trim(),replaceFile:replaceFile.checked,imageData:imageToSend};setDebug({step:"send-high-quality-background-verify",payload:{...payload,imageData:"[base64 length "+imageToSend.length+"]"}});addLog("ส่งรูปคุณภาพสูง: "+fileName()+" | "+(stu.fullName||key)+" | ขนาดข้อมูล "+Math.round(imageToSend.length/1024)+" KB");await fetch(scriptUrl.value.trim(),{method:"POST",mode:"no-cors",cache:"no-store",body:JSON.stringify(payload)});if(!oldPhoto){stu.photo=pendingToken;updateStatus();}setSaveStage(1,52,"ส่งแล้ว • ตรวจ Sheet เบื้องหลัง");updateLoading(100,"ส่งข้อมูลแล้ว ตรวจ Sheet ต่อเบื้องหลัง");hideLoading(90);showToast(shouldQuick?"ส่งรูปแล้ว ไปคนถัดไปได้ทันที":"ส่งรูปแล้ว กำลังตรวจ Sheet...",4200);if(shouldQuick){nextAfterSave();}verifySaved(key,oldPhoto).then(ok=>{if(ok){setSaveStage(3,100,"บันทึกสำเร็จ");playSuccessSound();showToast("บันทึกลง Drive/Sheet สำเร็จ",4200);addLog("ตรวจย้อนหลังสำเร็จ: "+key);renderLiveReport&&renderLiveReport();}else{const local=studentMap.get(key);if(local&&local.photo===pendingToken){local.photo="";updateStatus();}setSaveStage(1,70,"ส่งแล้ว แต่ยังไม่พบลิงก์ H");showToast("ส่งรูปแล้ว แต่ยังไม่พบลิงก์ใน Sheet กรุณาตรวจอีกครั้ง",6500);}});}catch(err){setSaveStage(0,0,"บันทึกไม่สำเร็จ");hideLoading(0);showToast("บันทึกไม่สำเร็จ: "+(err.message||err.name),9000);addLog("บันทึกไม่สำเร็จ: "+(err.message||err.name));}finally{isSaving=false;saveBtn.disabled=false;saveBtn.textContent="บันทึกเข้า Drive/Sheet";}}
+        async function verifySaved(key,oldPhoto){await sleep(380);let last=null;const totalRounds=5;for(let i=1;i<=totalRounds;i++){try{addLog(`ตรวจคอลัมน์ H รอบ ${i}/${totalRounds}`);setSaveStage(1,50+Math.round(i*8),"ตรวจ Sheet รอบ "+i+"/"+totalRounds);const data=await jsonp("student",{key},8000);last=data;setDebug({verifyRound:i,data});if(!data.ok||!data.found)throw new Error(data.message||"ตรวจไม่พบข้อมูลนักเรียน");const photo=String(data.student.photo||"").trim();if(photo&&photo!==oldPhoto){addLog("สำเร็จ: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();return true;}if(photo){addLog("พบลิงก์รูปใน H: "+photo);const local=studentMap.get(key);if(local)local.photo=photo;updateStatus();return true;}await sleep(520);}catch(err){addLog(`ตรวจรอบ ${i} ไม่สำเร็จ: ${err.message||err.name}`);await sleep(520);}}
       addLog("ยังไม่พบลิงก์ใน H หลังตรวจแบบเร็ว: "+key);setDebug({message:"verify timeout",last});return false;}
     function nextAfterSave(){currentImageData="";fileInput.value="";preview.removeAttribute("src");preview.style.display="none";downloadBtn.disabled=true;goToOffset(1);showToast("พร้อมถ่ายนักเรียนคนถัดไป");updateStatus();}
     function currentIndex(){const key=normalize(studentId.value);if(!key)return-1;return students.findIndex(s=>[s.id,s.citizenId,s.studentNo].some(k=>normalize(k)===key));}
